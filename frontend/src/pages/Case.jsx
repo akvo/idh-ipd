@@ -1,7 +1,11 @@
 import React from "react";
 import { Row, Col, Select, Card, Menu } from "antd";
 
+import Chart from "../lib/chart";
+
 import "./case.scss";
+
+import CaseMap from "../components/CaseMap";
 
 import { UIStore } from "../data/store";
 
@@ -55,18 +59,22 @@ const Case = ({ history }) => {
       <hr />
       {/* // Detail */}
       <Row className="case-wrapper">
-        <Col span={8}>Map</Col>
+        <Col span={8}>
+          <CaseMap projects={[]} markers={[]} />
+        </Col>
         <Col span={16}>
-          <Row className="case-body">
-            <Col span={8} className="case-title">
+          <Row justify="center" className="case-body" gutter={[24, 24]}>
+            <Col span={6} className="case-title">
               <h2>Kenya</h2>
               <span>Country</span>
             </Col>
-            <Col span={8} className="case-title">
+            <Col span={6} className="case-title">
               <h2>Coffee</h2>
               <span>Commodity</span>
             </Col>
-            <Col span={8}>Image</Col>
+            <Col span={6} className="case-title">
+              Image
+            </Col>
           </Row>
           <Row className="case-body" justify="space-between">
             <Col span={4}>
@@ -121,7 +129,7 @@ const Case = ({ history }) => {
             </Col>
           </Row>
           <Row className="case-body" justify="center" gutter={[24, 24]}>
-            <Col span={6}>
+            <Col span={7}>
               <Card className="case-card">
                 <h3>16</h3>
                 <p>
@@ -131,7 +139,7 @@ const Case = ({ history }) => {
                 </p>
               </Card>
             </Col>
-            <Col span={6}>
+            <Col span={7}>
               <Card className="case-card">
                 <h3>220</h3>
                 <p>
@@ -141,7 +149,7 @@ const Case = ({ history }) => {
                 </p>
               </Card>
             </Col>
-            <Col span={6}>
+            <Col span={7}>
               <Card className="case-card">
                 <h3>2863</h3>
                 <p>
@@ -170,7 +178,14 @@ const Case = ({ history }) => {
         </Col> */}
         <Col span={24}>
           <Row className="case-body">
-            <Col span={14}>Charts</Col>
+            <Col span={14}>
+              <Chart
+                key={"Net Income Focus Crop"}
+                title={"Net Income Focus Crop"}
+                type="BARSTACK"
+                wrapper={false}
+              />
+            </Col>
             <Col span={10} className="case-detail">
               <h3>Net Income Focus Crop</h3>
               <p>On the left we present the net-income from the focus crop.</p>
@@ -192,10 +207,24 @@ const Case = ({ history }) => {
                 household members.
               </p>
             </Col>
-            <Col span={14}>Charts</Col>
+            <Col span={14}>
+              <Chart
+                key={"Other income"}
+                title={"Other income"}
+                type="BARSTACK"
+                wrapper={false}
+              />
+            </Col>
           </Row>
           <Row className="case-body">
-            <Col span={14}>Charts</Col>
+            <Col span={14}>
+              <Chart
+                key={"The living income gap"}
+                title={"The living income gap"}
+                type="BARSTACK"
+                wrapper={false}
+              />
+            </Col>
             <Col span={10} className="case-detail">
               <h3>The living income gap</h3>
               <p>

@@ -24,34 +24,29 @@ const BarStack = (data, extra) => {
   let series = _.chain(data)
     .groupBy("name")
     .map((x, i) => {
-      if (i.toLowerCase() === "pending") {
-        return {
-          name: i,
-          label: {
-            formatter: function (params) {
-              let total = data
-                .filter((d) => d.name.toLowerCase() === "achieved")
-                .find((d) => d.group === params.name);
-              if (total?.value) {
-                return total.value + params.value;
-              }
-              return "";
-            },
-            show: true,
-            position: "top",
-            color: "#a43332",
-          },
-          stack: "t",
-          type: "bar",
-          barWidth: 50,
-          data: x.map((v) => v.value),
-          itemStyle: {
-            color: "transparent",
-            borderType: "dashed",
-            borderColor: "#000",
-          },
-        };
-      }
+      // if (i.toLowerCase() === "pending") {
+      //   return {
+      //     name: i,
+      //     label: {
+      //       formatter: function (params) {
+      //         console.log(params);
+      //         return "Label formatter";
+      //       },
+      //       show: true,
+      //       position: "top",
+      //       color: "#a43332",
+      //     },
+      //     stack: "t",
+      //     type: "bar",
+      //     barWidth: 50,
+      //     data: x.map((v) => v.value),
+      //     itemStyle: {
+      //       color: "transparent",
+      //       borderType: "dashed",
+      //       borderColor: "#000",
+      //     },
+      //   };
+      // }
       return {
         name: i,
         label: {

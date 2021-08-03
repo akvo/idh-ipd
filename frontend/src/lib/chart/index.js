@@ -34,17 +34,26 @@ const Chart = ({
   span = 12,
   data,
   extra = {},
+  wrapper = true,
 }) => {
   const option = generateOptions({ type: type, data: data }, extra);
+  if (wrapper) {
+    return (
+      <Col span={12} style={{ height: height }}>
+        <Card title={title}>
+          <ReactECharts
+            option={option}
+            style={{ height: height - 50, width: "100%" }}
+          />
+        </Card>
+      </Col>
+    );
+  }
   return (
-    <Col span={12} style={{ height: height }}>
-      <Card title={title}>
-        <ReactECharts
-          option={option}
-          style={{ height: height - 50, width: "100%" }}
-        />
-      </Card>
-    </Col>
+    <ReactECharts
+      option={option}
+      style={{ height: height - 50, width: "100%" }}
+    />
   );
 };
 

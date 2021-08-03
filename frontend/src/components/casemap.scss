@@ -1,0 +1,17 @@
+path:focus {
+  outline: -webkit-focus-ring-color auto 0px !important;
+}
+text.points {
+  text-shadow: 2px 2px 4px #ffffff;
+  font-family: sans-serif;
+  fill: #000;
+}
+circle.points {
+  cursor: pointer;
+}
+circle.points:hover {
+  stroke: #ddd;
+}
+circle.points:hover ~ text.points {
+  fill: #eb455b;
+}
