@@ -23,7 +23,7 @@ services:
     depends_on:
       - db
     environment:
-      - DATABASE_URL=jdbc:postgresql://db/gpml?user=ipd&password=password
+      - DATABASE_URL=postgresql://ipd:password@localhost:5432/idh_ipd
     network_mode: service:mainnetwork
     image: amancevice/pandas:0.24.2-slim
     command: ["./dev.sh"]
