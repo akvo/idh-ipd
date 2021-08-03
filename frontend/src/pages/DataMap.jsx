@@ -23,7 +23,29 @@ const mapMaxZoom = 4;
 const data = [];
 const topic = "";
 
-const DataMap = (props) => {
+const ToolTipContent = ({ data, geo }) => {
+  return (
+    <div className="map-tooltip">
+      <h3>{geo.MAP_LABEL}</h3>
+      <ul>
+        <li key={1}>
+          <b>15</b>
+          <span>companies engaged</span>
+        </li>
+        <li key={2}>
+          <b>5</b>
+          <span>commodities</span>
+        </li>
+        <li key={3}>
+          <span>Average actual income: </span>
+          <b>100$/month</b>
+        </li>
+      </ul>
+    </div>
+  );
+};
+
+const DataMap = ({ history }) => {
   const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1 });
   const [toolTipContent, setTooltipContent] = useState("");
   const [filterColor, setFilterColor] = useState(null);
@@ -84,8 +106,8 @@ const DataMap = (props) => {
       <ComposableMap
         data-tip=""
         projection="geoEquirectangular"
-        projectionConfig={{ scale: 100 }}
-        height={350}
+        projectionConfig={{ scale: 125 }}
+        height={400}
         style={{ outline: "none" }}
       >
         <ZoomableGroup
@@ -104,7 +126,9 @@ const DataMap = (props) => {
                   geography={geo}
                   onMouseEnter={() => {
                     const { MAP_LABEL } = geo.properties;
-                    setTooltipContent(MAP_LABEL);
+                    setTooltipContent(
+                      <ToolTipContent data={[]} geo={geo.properties} />
+                    );
                   }}
                   onMouseLeave={() => {
                     setTooltipContent("");
@@ -132,7 +156,9 @@ const DataMap = (props) => {
           </Geographies>
         </ZoomableGroup>
       </ComposableMap>
-      <ReactTooltip>{toolTipContent}</ReactTooltip>
+      <ReactTooltip type="light" className="opaque">
+        {toolTipContent}
+      </ReactTooltip>
     </div>
   );
 };

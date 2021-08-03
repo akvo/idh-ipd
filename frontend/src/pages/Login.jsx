@@ -1,15 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Row, Col, Form, Input, Button, Card } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { Row, Col, Form, Input, Button, Card, notification } from "antd";
 
 import "./login.scss";
 
-const Login = (props) => {
+import { UIStore } from "../data/store";
+
+const Login = ({ history }) => {
   const onFinish = (values) => {
+    const { email, password } = values;
+    if (email === "admin@mail.com" && password === "secret") {
+      notification.success({ message: "Login success" });
+      UIStore.update((s) => {
+        s.user = { email: "admin@mail.com", name: "Admin" };
+      });
+      history.push("/");
+      return;
+    }
+    notification.error({
+      message: "Login failed, email/password doesn't match",
+    });
     console.log("Received values of form: ", values);
-    props.setUser(true);
-    props.history.push("/");
   };
 
   return (
@@ -24,21 +35,24 @@ const Login = (props) => {
             onFinish={onFinish}
           >
             <Form.Item
-              name="username"
+              name="email"
+              label="E-mail"
               rules={[
+                {
+                  type: "email",
+                  message: "The input is not valid E-mail!",
+                },
                 {
                   required: true,
                   message: "Please input your Username!",
                 },
               ]}
             >
-              <Input
-                prefix={<UserOutlined className="site-form-item-icon" />}
-                placeholder="Username"
-              />
+              <Input placeholder="E-mail" />
             </Form.Item>
             <Form.Item
               name="password"
+              label="Password"
               rules={[
                 {
                   required: true,
@@ -46,11 +60,7 @@ const Login = (props) => {
                 },
               ]}
             >
-              <Input
-                prefix={<LockOutlined className="site-form-item-icon" />}
-                type="password"
-                placeholder="Password"
-              />
+              <Input type="password" placeholder="Password" />
             </Form.Item>
             <Form.Item>
               <a className="login-form-forgot" href="#">

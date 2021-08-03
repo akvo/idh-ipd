@@ -12,11 +12,13 @@ import Nav from "./components/Nav";
 
 import "./App.scss";
 
+import { UIStore } from "./data/store";
+
 const history = createBrowserHistory();
 const { Header, Content, Footer } = Layout;
 
 function App() {
-  const [user, setUser] = useState(false);
+  const user = UIStore.useState((s) => s.user);
 
   return (
     <Router history={history}>
@@ -30,34 +32,16 @@ function App() {
           </div>
         </Header>
         <Content>
-          <ProtectedRoute
-            exact
-            path="/"
-            user={user}
-            setUser={setUser}
-            component={Introduction}
-          />
-          <ProtectedRoute
-            exact
-            path="/data-map"
-            user={user}
-            setUser={setUser}
-            component={DataMap}
-          />
-          <Route
-            exact
-            path="/login"
-            render={(props) => (
-              <Login {...props} user={user} setUser={setUser} />
-            )}
-          />
+          <ProtectedRoute exact path="/" component={Introduction} />
+          <ProtectedRoute exact path="/data-map" component={DataMap} />
+          <Route exact path="/login" render={(props) => <Login {...props} />} />
           <Route
             exact
             path="/register"
             render={(props) => <Register {...props} />}
           />
         </Content>
-        <Footer className={`footer ${(!user) && "fixed"}`}>
+        <Footer className={`footer ${!user && "fixed"}`}>
           IDH - IPD ©2021 Created by Akvo
         </Footer>
       </Layout>

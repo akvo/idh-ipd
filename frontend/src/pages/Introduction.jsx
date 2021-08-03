@@ -3,12 +3,7 @@ import { Row, Col, Image } from "antd";
 
 import "./introduction.scss";
 
-const Introduction = (props) => {
-  const handleLogout = (e) => {
-    e.preventDefault();
-    props.setUser(false);
-  };
-
+const Introduction = ({ history }) => {
   return (
     <Row justify="center">
       <Col>
@@ -90,7 +85,6 @@ const Introduction = (props) => {
             </Col>
           </Row>
         </div>
-        <button onClick={handleLogout}>Log Out</button>
       </Col>
     </Row>
   );

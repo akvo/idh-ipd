@@ -1,7 +1,11 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
-const ProtectedRoute = ({ component: Component, user, ...rest }) => {
+import { UIStore } from "../data/store";
+
+const ProtectedRoute = ({ component: Component, ...rest }) => {
+  const user = UIStore.useState((s) => s.user);
+
   return (
     <Route
       {...rest}
