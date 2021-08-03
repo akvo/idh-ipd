@@ -2,7 +2,7 @@
   margin: 25px 0;
   .case-body {
     margin-bottom: 25px;
-    .case-detail {
+    .case-title {
       text-align: center;
       h2 {
         font-size: 32px;
@@ -14,11 +14,16 @@
         font-weight: 600;
       }
     }
+    .case-detail {
+      h3 {
+        font-weight: 600;
+      }
+    }
     .case-card {
       text-align: center;
       h3 {
         font-size: 28px;
-        font-weight: bold;
+        font-weight: 600;
       }
     }
   }

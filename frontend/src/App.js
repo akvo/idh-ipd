@@ -15,7 +15,7 @@ import "./App.scss";
 
 import { UIStore } from "./data/store";
 import axios from "axios";
-import { titleCase } from "./utils/util";
+import { titleCase } from "./lib/util";
 
 const history = createBrowserHistory();
 const { Header, Content, Footer } = Layout;
@@ -25,7 +25,7 @@ function App() {
   const page = UIStore.useState((s) => s.page);
 
   useEffect(() => {
-    document.title = titleCase(page);
+    document.title = titleCase(page, "-");
   }, [page]);
 
   return (

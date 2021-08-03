@@ -115,8 +115,8 @@ const DataMap = ({ history }) => {
       <ComposableMap
         data-tip=""
         projection="geoEquirectangular"
-        projectionConfig={{ scale: 125 }}
-        height={400}
+        projectionConfig={{ scale: 110 }}
+        height={350}
         style={{ outline: "none" }}
       >
         <ZoomableGroup
@@ -143,7 +143,6 @@ const DataMap = ({ history }) => {
                     key={geo.rsmKey}
                     geography={geo}
                     onMouseEnter={() => {
-                      const { MAP_LABEL } = geo.properties;
                       setTooltipContent(
                         <ToolTipContent data={[]} geo={geo.properties} />
                       );
