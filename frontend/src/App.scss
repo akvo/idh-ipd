@@ -38,3 +38,12 @@
   padding-top: 100px;
   padding-bottom: 50px;
 }
+
+.footer {
+  text-align: center;
+}
+.footer.fixed {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}

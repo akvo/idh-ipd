@@ -1,0 +1,11 @@
+.map-wrapper {
+  padding: 0 4rem;
+  .map-buttons {
+    position: absolute;
+    z-index: 1;
+
+    button {
+      margin-left: 10px;
+    }
+  }
+}
