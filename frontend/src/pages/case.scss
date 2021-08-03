@@ -1,0 +1,25 @@
+.case-wrapper {
+  margin: 25px 0;
+  .case-body {
+    margin-bottom: 25px;
+    .case-detail {
+      text-align: center;
+      h2 {
+        font-size: 32px;
+        font-weight: 400;
+        margin-bottom: 0;
+      }
+      span {
+        font-size: 30px;
+        font-weight: 600;
+      }
+    }
+    .case-card {
+      text-align: center;
+      h3 {
+        font-size: 28px;
+        font-weight: bold;
+      }
+    }
+  }
+}

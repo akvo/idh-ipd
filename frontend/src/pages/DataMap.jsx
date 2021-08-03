@@ -16,12 +16,12 @@ import {
 
 import "./datamap.scss";
 
+import { UIStore } from "../data/store";
+
 const geoUrl = "/world.topo.json";
 const colorRange = ["#bbedda", "#a7e1cb", "#92d5bd", "#7dcaaf", "#67bea1"];
 const higlightColor = "#84b4cc";
 const mapMaxZoom = 4;
-const data = [];
-const topic = "";
 
 const ToolTipContent = ({ data, geo }) => {
   return (
@@ -49,10 +49,11 @@ const DataMap = ({ history }) => {
   const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1 });
   const [toolTipContent, setTooltipContent] = useState("");
   const [filterColor, setFilterColor] = useState(null);
+  const { data, countries } = UIStore.useState();
 
   const domain = data.reduce(
     (acc, curr) => {
-      const v = curr[topic];
+      const v = curr;
       const [min, max] = acc;
       return [min, v > max ? v : max];
     },
@@ -62,15 +63,23 @@ const DataMap = ({ history }) => {
   const colorScale = scaleQuantize().domain(domain).range(colorRange);
 
   const fillColor = (v) => {
-    const color = v === 0 ? "#fff" : colorScale(v);
+    const color = v === 0 ? "#f6f6f6" : colorScale(v);
     if (filterColor !== null) {
       return filterColor === color ? higlightColor : color;
     }
     return color;
   };
 
+  const handleOnClickCountry = (country) => {
+    UIStore.update((s) => {
+      s.page = "case";
+      s.selectedCountry = country;
+    });
+    history.push("/case");
+  };
+
   return (
-    <div className="map-wrapper">
+    <div className="container map-wrapper">
       <div className="map-buttons">
         <Tooltip title="zoom out">
           <Button
@@ -120,38 +129,51 @@ const DataMap = ({ history }) => {
         >
           <Geographies geography={geoUrl}>
             {({ geographies }) => {
-              return geographies.map((geo) => (
-                <Geography
-                  key={geo.rsmKey}
-                  geography={geo}
-                  onMouseEnter={() => {
-                    const { MAP_LABEL } = geo.properties;
-                    setTooltipContent(
-                      <ToolTipContent data={[]} geo={geo.properties} />
-                    );
-                  }}
-                  onMouseLeave={() => {
-                    setTooltipContent("");
-                  }}
-                  style={{
-                    default: {
-                      fill: "#f6f6f6",
-                      outline: "none",
-                      stroke: "#79B0CC",
-                      strokeWidth: "0.35",
-                      strokeOpacity: "0.8",
-                    },
-                    hover: {
-                      fill: higlightColor,
-                      outline: "none",
-                    },
-                    pressed: {
-                      fill: "#E42",
-                      outline: "none",
-                    },
-                  }}
-                />
-              ));
+              return geographies.map((geo) => {
+                let curr = 0;
+                if (geo.properties.MAP_LABEL) {
+                  curr = countries.find(
+                    (c) =>
+                      c.name.toLowerCase() ===
+                      geo.properties.MAP_LABEL.toLowerCase()
+                  );
+                }
+                return (
+                  <Geography
+                    key={geo.rsmKey}
+                    geography={geo}
+                    onMouseEnter={() => {
+                      const { MAP_LABEL } = geo.properties;
+                      setTooltipContent(
+                        <ToolTipContent data={[]} geo={geo.properties} />
+                      );
+                    }}
+                    onMouseLeave={() => {
+                      setTooltipContent("");
+                    }}
+                    onClick={() => {
+                      curr && handleOnClickCountry(curr);
+                    }}
+                    style={{
+                      default: {
+                        fill: fillColor(curr ? curr : 0),
+                        outline: "none",
+                        stroke: curr ? "#fff" : "#79B0CC",
+                        strokeWidth: "0.2",
+                        strokeOpacity: "0.8",
+                      },
+                      hover: {
+                        fill: higlightColor,
+                        outline: "none",
+                      },
+                      pressed: {
+                        fill: "#E42",
+                        outline: "none",
+                      },
+                    }}
+                  />
+                );
+              });
             }}
           </Geographies>
         </ZoomableGroup>
