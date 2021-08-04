@@ -242,7 +242,7 @@ const Case = ({ history }) => {
             <Col span={10} className="case-detail">
               <h3>The living income gap</h3>
               <p>
-                THe living income gap is the difference between the actual
+                The living income gap is the difference between the actual
                 income of smallholder farmers and the living income benchmark
                 level for the country where the farmers are from. Etc,
               </p>

@@ -14,6 +14,7 @@ import Register from "./pages/Register";
 import Introduction from "./pages/Introduction";
 import DataMap from "./pages/DataMap";
 import Case from "./pages/Case";
+import Benchmarking from "./pages/Benchmarking";
 
 import { UIStore } from "./data/store";
 import { titleCase } from "./lib/util";
@@ -33,7 +34,7 @@ function App() {
   return (
     <Router history={history}>
       <Layout className="layout">
-        <Header style={{ position: "fixed", zIndex: 1, width: "100%" }}>
+        <Header style={{ position: "fixed", zIndex: 9999, width: "100%" }}>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <Link to="/">
               <div className="logo" />
@@ -45,6 +46,7 @@ function App() {
           <ProtectedRoute exact path="/" component={Introduction} />
           <ProtectedRoute exact path="/data-map" component={DataMap} />
           <ProtectedRoute exact path="/case" component={Case} />
+          <ProtectedRoute exact path="/benchmarking" component={Benchmarking} />
           <Route exact path="/login" render={(props) => <Login {...props} />} />
           <Route
             exact
