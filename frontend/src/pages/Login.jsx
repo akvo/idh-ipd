@@ -44,7 +44,7 @@ const Login = ({ history }) => {
                 },
                 {
                   required: true,
-                  message: "Please input your Username!",
+                  message: "Please input your E-mail!",
                 },
               ]}
             >

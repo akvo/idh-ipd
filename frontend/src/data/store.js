@@ -52,7 +52,7 @@ const countries = [
 ];
 
 const defaultState = {
-  page: "introduction",
+  page: "login",
   user: null,
   data: [],
   config: {},

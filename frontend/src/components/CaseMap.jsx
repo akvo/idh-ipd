@@ -19,9 +19,12 @@ const CaseMap = ({ projects, markers }) => {
 
   return (
     <ComposableMap
-      projectionConfig={{ scale: 800, projection: "geoEqualEarth" }}
+      projectionConfig={{ scale: 650, projection: "geoEqualEarth" }}
+      style={{
+        height: "100%",
+      }}
     >
-      <ZoomableGroup zoom={3} center={center["kenya"]} maxZoom={2} minZoom={2}>
+      <ZoomableGroup zoom={3} center={center["kenya"]} maxZoom={3} minZoom={3}>
         <Geographies geography={geoUrl}>
           {({ geographies }) =>
             geographies.map((geo, i) => {
@@ -33,14 +36,14 @@ const CaseMap = ({ projects, markers }) => {
                   geography={geo}
                   style={{
                     default: {
-                      fill: isMatch ? "#699DD7" : "#EAEAEC",
-                      stroke: "#FFF",
+                      fill: isMatch ? "#699DD7" : "#f6f6f6",
+                      stroke: "#79B0CC",
                       strokeWidth: 0.5,
                       outline: "none",
                     },
                     hover: {
-                      fill: isMatch ? "#699DD7" : "#EAEAEC",
-                      stroke: "#FFF",
+                      fill: isMatch ? "#699DD7" : "#f6f6f6",
+                      stroke: "#79B0CC",
                       strokeWidth: 0.5,
                       outline: "none",
                     },

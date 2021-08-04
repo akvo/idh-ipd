@@ -1,10 +1,10 @@
 import React from "react";
-import { Row, Col, Select, Card, Menu } from "antd";
-
-import Chart from "../lib/chart";
+import { Row, Col, Select, Card, Menu, Image } from "antd";
+import CountUp from "react-countup";
 
 import "./case.scss";
 
+import Chart from "../lib/chart";
 import CaseMap from "../components/CaseMap";
 
 import { UIStore } from "../data/store";
@@ -56,9 +56,8 @@ const Case = ({ history }) => {
           </Select>
         </Col>
       </Row>
-      <hr />
       {/* // Detail */}
-      <Row className="case-wrapper">
+      <Row className="case-wrapper hero">
         <Col span={8}>
           <CaseMap projects={[]} markers={[]} />
         </Col>
@@ -73,13 +72,15 @@ const Case = ({ history }) => {
               <span>Commodity</span>
             </Col>
             <Col span={6} className="case-title">
-              Image
+              <Image height={75} src="/icons/coffee.png" />
             </Col>
           </Row>
           <Row className="case-body" justify="space-between">
             <Col span={4}>
               <Card className="case-card">
-                <h3>0.1</h3>
+                <h3>
+                  <CountUp start={0} end={0.1} duration={2} />
+                </h3>
                 <p>
                   Farm size
                   <br />
@@ -89,7 +90,9 @@ const Case = ({ history }) => {
             </Col>
             <Col span={4}>
               <Card className="case-card">
-                <h3>2.39</h3>
+                <h3>
+                  <CountUp start={0} end={2.39} duration={2} />
+                </h3>
                 <p>
                   Price
                   <br />
@@ -99,7 +102,9 @@ const Case = ({ history }) => {
             </Col>
             <Col span={4}>
               <Card className="case-card">
-                <h3>300</h3>
+                <h3>
+                  <CountUp start={0} end={300} duration={2} />
+                </h3>
                 <p>
                   Production
                   <br />
@@ -109,7 +114,9 @@ const Case = ({ history }) => {
             </Col>
             <Col span={5}>
               <Card className="case-card">
-                <h3>557</h3>
+                <h3>
+                  <CountUp start={0} end={557} duration={2} />
+                </h3>
                 <p>
                   Production Costs
                   <br />
@@ -119,7 +126,9 @@ const Case = ({ history }) => {
             </Col>
             <Col span={4}>
               <Card className="case-card">
-                <h3>204</h3>
+                <h3>
+                  <CountUp start={0} end={204} duration={2} />
+                </h3>
                 <p>
                   Other income
                   <br />
@@ -131,7 +140,9 @@ const Case = ({ history }) => {
           <Row className="case-body" justify="center" gutter={[24, 24]}>
             <Col span={7}>
               <Card className="case-card">
-                <h3>16</h3>
+                <h3>
+                  <CountUp start={0} end={16} duration={2} />
+                </h3>
                 <p>
                   Net-income focus crop
                   <br />
@@ -141,7 +152,9 @@ const Case = ({ history }) => {
             </Col>
             <Col span={7}>
               <Card className="case-card">
-                <h3>220</h3>
+                <h3>
+                  <CountUp start={0} end={220} duration={2} />
+                </h3>
                 <p>
                   Actual income
                   <br />
@@ -151,7 +164,9 @@ const Case = ({ history }) => {
             </Col>
             <Col span={7}>
               <Card className="case-card">
-                <h3>2863</h3>
+                <h3>
+                  <CountUp start={0} end={2863} duration={2} />
+                </h3>
                 <p>
                   Living income gap
                   <br />
@@ -162,7 +177,6 @@ const Case = ({ history }) => {
           </Row>
         </Col>
       </Row>
-      <hr />
       {/* // Charts */}
       <Row className="case-wrapper">
         {/* <Col span={4}>
@@ -232,6 +246,25 @@ const Case = ({ history }) => {
                 income of smallholder farmers and the living income benchmark
                 level for the country where the farmers are from. Etc,
               </p>
+              <Row justify="space-between">
+                <Col span={11}>
+                  <Card className="case-card">
+                    <h4>% of total HH income from focus crop</h4>
+                    <h3>
+                      <CountUp start={0} end={7} duration={2} />%
+                    </h3>
+                  </Card>
+                </Col>
+                <Col span={11}>
+                  <Card className="case-card">
+                    <h4>
+                      Share of households earning an income above the LI
+                      benchmark
+                    </h4>
+                    <h3>N.A.</h3>
+                  </Card>
+                </Col>
+              </Row>
             </Col>
           </Row>
         </Col>

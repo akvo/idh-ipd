@@ -2,6 +2,10 @@ import React, { useEffect } from "react";
 import { Router, Route, Link } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import { Layout } from "antd";
+import AOS from "aos";
+import axios from "axios";
+
+import "./App.scss";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import Nav from "./components/Nav";
@@ -11,10 +15,7 @@ import Introduction from "./pages/Introduction";
 import DataMap from "./pages/DataMap";
 import Case from "./pages/Case";
 
-import "./App.scss";
-
 import { UIStore } from "./data/store";
-import axios from "axios";
 import { titleCase } from "./lib/util";
 
 const history = createBrowserHistory();
@@ -28,6 +29,7 @@ function App() {
     document.title = titleCase(page, "-");
   }, [page]);
 
+  AOS.init();
   return (
     <Router history={history}>
       <Layout className="layout">
