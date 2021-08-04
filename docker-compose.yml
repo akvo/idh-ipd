@@ -30,6 +30,5 @@ services:
     volumes:
       - ./backend:/app:delegated
     working_dir: /app
-
 volumes:
   pg-data:

@@ -1,2 +1,6 @@
+alembic==1.6.5
 fastapi==0.67.0
+FastAPI-SQLAlchemy==0.2.1
+pydantic==1.8.2
+psycopg2-binary==2.9.1
 uvicorn==0.14.0
