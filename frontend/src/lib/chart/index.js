@@ -7,6 +7,7 @@ import BarStack from "./BarStack";
 import BarGroup from "./BarGroup";
 import LineStack from "./LineStack";
 import Line from "./Line";
+import { titleCase } from "../util";
 
 export const generateOptions = ({ type, data }, extra) => {
   switch (type) {
@@ -39,8 +40,8 @@ const Chart = ({
   const option = generateOptions({ type: type, data: data }, extra);
   if (wrapper) {
     return (
-      <Col span={12} style={{ height: height }}>
-        <Card title={title}>
+      <Col span={span} style={{ height: height }}>
+        <Card title={titleCase(title)}>
           <ReactECharts
             option={option}
             style={{ height: height - 50, width: "100%" }}
