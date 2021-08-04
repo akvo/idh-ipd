@@ -39,7 +39,7 @@ const Benchmarking = ({ history }) => {
   return (
     <div className="container">
       {/* // Option */}
-      <Row justify="end" className="compare-options-wrapper">
+      <Row justify="end" className="compare-options-wrapper" data-aos="fade-up">
         <Col span={6} className="compare-options-body">
           <span className="text">Compare with</span>
           <Radio.Group
@@ -68,7 +68,7 @@ const Benchmarking = ({ history }) => {
         </Col>
       </Row>
       {/* // Chart 1 */}
-      <Row className="compare-wrapper">
+      <Row className="compare-wrapper" data-aos="fade-up">
         <Col span="12">
           <Chart key={"Comparing net income"} type="BARSTACK" wrapper={false} />
         </Col>
@@ -90,7 +90,7 @@ const Benchmarking = ({ history }) => {
         </Col>
       </Row>
       {/* // Chart 2 */}
-      <Row className="compare-wrapper">
+      <Row className="compare-wrapper" data-aos="fade-up">
         <Col span="12" className="compare-body">
           <h3>Comparing the living income gap</h3>
           <p>

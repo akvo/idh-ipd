@@ -79,7 +79,7 @@ const DataMap = ({ history }) => {
   };
 
   return (
-    <div className="container map-wrapper">
+    <div className="container map-wrapper" data-aos="fade-up">
       <div className="map-buttons">
         <Tooltip title="zoom out">
           <Button

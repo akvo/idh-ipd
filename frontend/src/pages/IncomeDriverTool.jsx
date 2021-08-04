@@ -37,7 +37,7 @@ const IncomeDriverTool = ({ history }) => {
 
   return (
     <>
-      <Row className="hero-wrapper">
+      <Row className="hero-wrapper" data-aos="fade-up">
         <div className="container">
           <Col className="hero-body">
             <h3>Income Drivers</h3>
@@ -51,7 +51,7 @@ const IncomeDriverTool = ({ history }) => {
       </Row>
       <div className="container">
         {/* // Option */}
-        <Row justify="end" className="idt-wrapper">
+        <Row justify="end" className="idt-wrapper" data-aos="fade-up">
           <Col span={4}>
             <Select
               showSearch
@@ -69,7 +69,12 @@ const IncomeDriverTool = ({ history }) => {
           </Col>
         </Row>
         {/* // Charts */}
-        <Row className="idt-wrapper" justify="space-between" gutter={[10, 10]}>
+        <Row
+          className="idt-wrapper"
+          justify="space-between"
+          gutter={[10, 10]}
+          data-aos="fade-up"
+        >
           {["price", "land", "yield", "production"].map((d, i) => (
             <Chart key={d} title={d} type="BAR" height={350} span={6} />
           ))}

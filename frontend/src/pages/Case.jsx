@@ -39,7 +39,7 @@ const Case = ({ history }) => {
   return (
     <div className="container">
       {/* // Dropdown */}
-      <Row justify="end">
+      <Row justify="end" data-aos="fade-up">
         <Col span={4}>
           <Select
             showSearch
@@ -57,12 +57,17 @@ const Case = ({ history }) => {
         </Col>
       </Row>
       {/* // Detail */}
-      <Row className="case-wrapper hero">
+      <Row className="case-wrapper hero" data-aos="fade-up">
         <Col span={8}>
           <CaseMap projects={[]} markers={[]} />
         </Col>
         <Col span={16}>
-          <Row justify="center" className="case-body" gutter={[24, 24]}>
+          <Row
+            justify="center"
+            className="case-body"
+            gutter={[24, 24]}
+            data-aos="fade-up"
+          >
             <Col span={6} className="case-title">
               <h2>Kenya</h2>
               <span>Country</span>
@@ -75,7 +80,7 @@ const Case = ({ history }) => {
               <Image height={75} src="/icons/coffee.png" />
             </Col>
           </Row>
-          <Row className="case-body" justify="space-between">
+          <Row className="case-body" justify="space-between" data-aos="fade-up">
             <Col span={4}>
               <Card className="case-card">
                 <h3>
@@ -191,7 +196,7 @@ const Case = ({ history }) => {
           </Menu>
         </Col> */}
         <Col span={24}>
-          <Row className="case-body">
+          <Row className="case-body" data-aos="fade-up">
             <Col span={14}>
               <Chart
                 key={"Net Income Focus Crop"}
@@ -209,7 +214,7 @@ const Case = ({ history }) => {
               </p>
             </Col>
           </Row>
-          <Row className="case-body">
+          <Row className="case-body" data-aos="fade-up">
             <Col span={10} className="case-detail">
               <h3>Other income</h3>
               <p>
