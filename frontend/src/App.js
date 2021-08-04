@@ -6,6 +6,7 @@ import AOS from "aos";
 import axios from "axios";
 
 import "./App.scss";
+import "aos/dist/aos.css";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import Nav from "./components/Nav";
