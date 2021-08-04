@@ -38,6 +38,12 @@ spec:
           image: eu.gcr.io/akvo-lumen/idh-ipd/backend:${CI_COMMIT}
           ports:
             - containerPort: 5000
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: idh-ipd
+                  key: database-url
           readinessProbe:
             httpGet:
               path: /health-check
