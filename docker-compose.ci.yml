@@ -12,7 +12,7 @@ services:
     command: ["nginx", "-g", "daemon off;"]
   backend:
     image: eu.gcr.io/akvo-lumen/idh-ipd/backend:latest
-    command: ["python", "main.py"]
+    command: ["sh", "run.sh"]
     environment:
       - DATABASE_URL=postgresql://ipd:password@db:5432/idh_ipd
   ci:
