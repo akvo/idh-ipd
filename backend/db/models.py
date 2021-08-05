@@ -33,3 +33,45 @@ class User(Base):
     @property
     def serialize(self) -> UserDict:
         return {"id": self.id, "email": self.email, "role": self.role}
+
+
+class CountryDict(TypedDict):
+    id: int
+    name: str
+
+
+class Country(Base):
+    __tablename__ = "country"
+    id = Column(Integer, primary_key=True, index=True, nullable=True)
+    name = Column(String, unique=True)
+
+    def __init__(self, name: str):
+        self.name = name
+
+    def __repr__(self) -> int:
+        return f"<Country {self.id}>"
+
+    @property
+    def serialize(self) -> CountryDict:
+        return {"id": self.id, "name": self.name}
+
+
+class CropDict(TypedDict):
+    id: int
+    name: str
+
+
+class Crop(Base):
+    __tablename__ = "crop"
+    id = Column(Integer, primary_key=True, index=True, nullable=True)
+    name = Column(String, unique=True)
+
+    def __init__(self, name: str):
+        self.name = name
+
+    def __repr__(self) -> int:
+        return f"<Crop {self.id}>"
+
+    @property
+    def serialize(self) -> CropDict:
+        return {"id": self.id, "name": self.name}

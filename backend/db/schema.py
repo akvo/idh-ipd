@@ -9,3 +9,19 @@ class UserBase(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class CountryBase(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        orm_mode = True
+
+
+class CropBase(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        orm_mode = True

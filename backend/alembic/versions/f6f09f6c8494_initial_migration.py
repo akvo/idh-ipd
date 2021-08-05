@@ -17,14 +17,12 @@ depends_on = None
 
 def upgrade():
     op.create_table(
-        'user', sa.Column('id', sa.Integer(), nullable=False),
-        sa.Column('email', sa.String(), nullable=True),
-        sa.Column('role',
-                  sa.Enum('user', 'admin', name='userrole'),
-                  nullable=True),
+        'user', sa.Column('id', sa.Integer()),
+        sa.Column('email', sa.String()),
+        sa.Column('role', sa.Enum('user', 'admin', name='userrole')),
         sa.Column('created', sa.DateTime(), nullable=True),
         sa.PrimaryKeyConstraint('id'), sa.UniqueConstraint('email'))
-    op.create_index(op.f('ix_user_id'), 'user', ['id'], unique=False)
+    op.create_index(op.f('ix_user_id'), 'user', ['id'], unique=True)
 
 
 def downgrade():
