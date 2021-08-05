@@ -25,3 +25,19 @@ class CropBase(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class CompanyBase(BaseModel):
+    id: int
+    name: str
+    country: int
+    crop: int
+    land_size: float
+    price: float
+    yields: int
+    prod_cost: int
+    other_income: int
+    living_income: int
+
+    class Config:
+        orm_mode = True

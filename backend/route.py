@@ -3,9 +3,9 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from db import crud_user, crud_country, crud_crop, models
+from db import crud_user, crud_country, crud_crop, crud_company, models
 from db.connection import SessionLocal, engine
-from db.schema import UserBase, CountryBase, CropBase
+from db.schema import UserBase, CountryBase, CropBase, CompanyBase
 from db.models import UserRole
 
 models.Base.metadata.create_all(bind=engine)
@@ -106,3 +106,49 @@ def get_crop_by_id(id: int, session: Session = Depends(get_session)):
     if crop is None:
         raise HTTPException(status_code=404, detail="crop not found")
     return crop.serialize
+
+
+@routes.post("/company/",
+             response_model=CompanyBase,
+             summary="add new company")
+def add_company(name: str,
+                country: int,
+                crop: int,
+                land_size: float,
+                price: float,
+                yields: int,
+                prod_cost: int,
+                other_income: int,
+                living_income: int,
+                session: Session = Depends(get_session)):
+    company = crud_company.add_company(session=session,
+                                       name=name,
+                                       country=country,
+                                       crop=crop,
+                                       land_size=land_size,
+                                       price=price,
+                                       yields=yields,
+                                       prod_cost=prod_cost,
+                                       other_income=other_income,
+                                       living_income=living_income)
+    return company
+
+
+@routes.get("/company/",
+            response_model=List[CompanyBase],
+            summary="get all companies")
+def get_company(skip: int = 0,
+                limit: int = 100,
+                session: Session = Depends(get_session)):
+    company = crud_company.get_company(session=session, skip=skip, limit=limit)
+    return [i.serialize for i in company]
+
+
+@routes.get("/company/{id:path}",
+            response_model=CompanyBase,
+            summary="get company detail")
+def get_company_by_id(id: int, session: Session = Depends(get_session)):
+    company = crud_company.get_company_by_id(session=session, id=id)
+    if company is None:
+        raise HTTPException(status_code=404, detail="company not found")
+    return company.serialize
