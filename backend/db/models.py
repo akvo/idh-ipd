@@ -69,6 +69,7 @@ class Company(Base):
 class CountryDict(TypedDict):
     id: int
     name: str
+    code: str
     company: List[CompanyDict]
 
 
@@ -76,19 +77,21 @@ class Country(Base):
     __tablename__ = "country"
     id = Column(Integer, primary_key=True, index=True, nullable=True)
     name = Column(String, unique=True)
+    code = Column(String)
     company = relationship("Company",
                            cascade="all, delete",
                            passive_deletes=True)
 
-    def __init__(self, name: str):
+    def __init__(self, name: str, code: str):
         self.name = name
+        self.code = code
 
     def __repr__(self) -> int:
         return f"<Country {self.id}>"
 
     @property
     def serialize(self) -> CountryDict:
-        return {"id": self.id, "name": self.name}
+        return {"id": self.id, "name": self.name, "code": self.code }
 
 
 class CropDict(TypedDict):

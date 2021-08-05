@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -61,8 +61,8 @@ def get_user_by_id(id: int, session: Session = Depends(get_session)):
 @routes.post("/country/",
              response_model=CountryBase,
              summary="add new country")
-def add_country(name: str, session: Session = Depends(get_session)):
-    country = crud_country.add_country(session=session, name=name)
+def add_country(name: str, code: Optional[str] = None, session: Session = Depends(get_session)):
+    country = crud_country.add_country(session=session, name=name, code=code)
     return country
 
 

@@ -3,8 +3,8 @@ from sqlalchemy.orm import Session
 from .models import Country, CountryDict
 
 
-def add_country(session: Session, name: str) -> CountryDict:
-    country = Country(name=name)
+def add_country(session: Session, name: str, code: str) -> CountryDict:
+    country = Country(name=name, code=code)
     session.add(country)
     session.commit()
     session.flush()

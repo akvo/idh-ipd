@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel
 from .models import UserRole
 
@@ -13,7 +14,8 @@ class UserBase(BaseModel):
 
 class CountryBase(BaseModel):
     id: int
-    name: str
+    name: Optional[str] = None
+    code: Optional[str] = None
 
     class Config:
         orm_mode = True
