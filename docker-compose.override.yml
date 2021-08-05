@@ -5,10 +5,7 @@ services:
     ports:
       - 3000:3000
       - 5000:5000
-      - 5432:5432
       - 5050:5050
-  db:
-    network_mode: service:mainnetwork
   pgadmin:
     network_mode: service:mainnetwork
     image: dpage/pgadmin4:5.4
