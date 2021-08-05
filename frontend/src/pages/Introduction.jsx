@@ -106,7 +106,7 @@ const Introduction = ({ history }) => {
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={50}
+                    height={75}
                     src="/introduction/revenue.png"
                   />
                   <h4>Revenue ($)</h4>
@@ -116,7 +116,7 @@ const Introduction = ({ history }) => {
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={50}
+                    height={75}
                     src="/introduction/farm-size.png"
                   />
                   <h4>Farm size (ha)</h4>
@@ -126,7 +126,7 @@ const Introduction = ({ history }) => {
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={50}
+                    height={75}
                     src="/introduction/yield.png"
                   />
                   <h4>Yield (kg/ha)</h4>
@@ -136,7 +136,7 @@ const Introduction = ({ history }) => {
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={50}
+                    height={75}
                     src="/introduction/price.png"
                   />
                   <h4>Price ($/kg)</h4>
@@ -150,13 +150,13 @@ const Introduction = ({ history }) => {
             justify="center"
             gutter={[24, 24]}
           >
-            <Col span={8}>
+            <Col span={12}>
               <Row justify="space-around" align="middle" className="meta-body">
                 <Col span={3}>
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={50}
+                    height={75}
                     src="/introduction/production.png"
                   />
                   <h4>Production costs ($/ha)</h4>
@@ -166,7 +166,7 @@ const Introduction = ({ history }) => {
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={50}
+                    height={75}
                     src="/introduction/farm-size.png"
                   />
                   <h4>Farm size (ha)</h4>
@@ -176,14 +176,14 @@ const Introduction = ({ history }) => {
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={50}
+                    height={75}
                     src="/introduction/cost.png"
                   />
                   <h4>Production cost ($)</h4>
                 </Col>
               </Row>
             </Col>
-            <Col span={13}>
+            <Col span={9}>
               <h3>Focus crop production costs</h3>
               <p>
                 The focus crop production costs are calculated by multiplying
@@ -212,7 +212,7 @@ const Introduction = ({ history }) => {
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={50}
+                    height={75}
                     src="/introduction/net-income.png"
                   />
                   <h4>Net-income focus crop ($)</h4>
@@ -222,7 +222,7 @@ const Introduction = ({ history }) => {
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={50}
+                    height={75}
                     src="/introduction/revenue.png"
                   />
                   <h4>Revenues ($)</h4>
@@ -232,10 +232,111 @@ const Introduction = ({ history }) => {
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={50}
+                    height={75}
                     src="/introduction/production.png"
                   />
                   <h4>Production cost ($)</h4>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </div>
+        <div className="content-wrapper even meta-wrapper" data-aos="fade-up">
+          <Row
+            className="meta-left"
+            align="middle"
+            justify="center"
+            gutter={[24, 24]}
+          >
+            <Col span={12}>
+              <Row justify="space-around" align="middle" className="meta-body">
+                <Col span={3}>
+                  <Image
+                    className="meta-img"
+                    preview={false}
+                    height={75}
+                    src="/introduction/net-income-other.png"
+                  />
+                  <h4>Net-income from other farm sources</h4>
+                </Col>
+                <Col span={3}>
+                  <Image
+                    className="meta-img"
+                    preview={false}
+                    height={75}
+                    src="/introduction/off-farm-labour-income.png"
+                  />
+                  <h4>Off-farm labour income</h4>
+                </Col>
+                <Col span={3}>
+                  <Image
+                    className="meta-img"
+                    preview={false}
+                    height={75}
+                    src="/introduction/other-income.png"
+                  />
+                  <h4>Other income</h4>
+                </Col>
+              </Row>
+            </Col>
+            <Col span={9}>
+              <h3>Other income</h3>
+              <p>
+                The majority of farmer’ households also earn an income from
+                other sources than the focus crop. This can be income from other
+                crops, livestock, income earned from off-farm labour or non-farm
+                non labour sources (e.g. remittances, government transfers).
+              </p>
+            </Col>
+          </Row>
+        </div>
+        <div
+          className="content-wrapper odd bg-white meta-wrapper"
+          data-aos="fade-up"
+        >
+          <Row
+            className="meta-right"
+            align="middle"
+            justify="center"
+            gutter={[24, 24]}
+          >
+            <Col span={9}>
+              <h3>Actual household income</h3>
+              <p>
+                Actual household income is the sum of net-income from the focus
+                crop and other income.
+              </p>
+            </Col>
+            <Col span={12}>
+              <Row justify="space-around" align="middle" className="meta-body">
+                <Col span={3}>
+                  <Image
+                    className="meta-img"
+                    preview={false}
+                    height={75}
+                    src="/introduction/actual-income.png"
+                  />
+                  <h4>Actual income</h4>
+                </Col>
+                <Col span={1}>=</Col>
+                <Col span={3}>
+                  <Image
+                    className="meta-img"
+                    preview={false}
+                    height={75}
+                    src="/introduction/net-income.png"
+                  />
+                  <h4>Net-income focus crop</h4>
+                </Col>
+                <Col span={1}>-</Col>
+                <Col span={3}>
+                  <Image
+                    className="meta-img"
+                    preview={false}
+                    height={75}
+                    src="/introduction/other-income.png"
+                  />
+                  <h4>Other income</h4>
                 </Col>
               </Row>
             </Col>

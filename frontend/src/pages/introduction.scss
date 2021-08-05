@@ -20,6 +20,9 @@
       .meta-body {
         text-align: center;
       }
+      .meta-img {
+        filter: brightness(0) invert(0);
+      }
     }
   }
   &.even {
@@ -45,7 +48,7 @@
         text-align: center;
       }
       .meta-img {
-        filter: invert(1);
+        filter: brightness(0) invert(1);
       }
     }
   }
