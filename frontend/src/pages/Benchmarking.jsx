@@ -40,7 +40,7 @@ const Benchmarking = ({ history }) => {
     <div className="container">
       {/* // Option */}
       <Row justify="end" className="compare-options-wrapper" data-aos="fade-up">
-        <Col span={6} className="compare-options-body">
+        <Col span={5} className="compare-options-body">
           <span className="text">Compare with</span>
           <Radio.Group
             onChange={(e) => setCompare(e.target.value)}

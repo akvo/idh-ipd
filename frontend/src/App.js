@@ -3,7 +3,6 @@ import { Router, Route, Link } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import { Layout } from "antd";
 import AOS from "aos";
-import axios from "axios";
 
 import "./App.scss";
 import "aos/dist/aos.css";
@@ -30,6 +29,10 @@ function App() {
 
   useEffect(() => {
     document.title = titleCase(page, "-");
+    page !== "case" &&
+      UIStore.update((s) => {
+        s.selectedCountry = null;
+      });
   }, [page]);
 
   AOS.init();

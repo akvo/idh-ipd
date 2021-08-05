@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Row, Col, Select, Card, Menu, Image } from "antd";
 import CountUp from "react-countup";
 
@@ -6,6 +6,7 @@ import "./case.scss";
 
 import Chart from "../lib/chart";
 import CaseMap from "../components/CaseMap";
+import CountUpCard from "../components/CountUpCard";
 
 import { UIStore } from "../data/store";
 
@@ -13,8 +14,13 @@ const { Option } = Select;
 
 const Case = ({ history }) => {
   const { countries, selectedCountry } = UIStore.useState();
+  const [country, setCountry] = useState(null);
 
   const onChange = (value) => {
+    console.log(`selected ${value}`);
+  };
+
+  const handleOnChangeCountry = (value) => {
     console.log(`selected ${value}`);
   };
 
@@ -22,10 +28,16 @@ const Case = ({ history }) => {
     console.log("search:", val);
   };
 
-  const renderOptions = () => {
-    const options = selectedCountry
-      ? selectedCountry.companies
-      : countries.map((x) => x.companies).flat();
+  const renderOptions = (type) => {
+    let options = [];
+    if (type === "country") {
+      options = selectedCountry ? [selectedCountry] : countries;
+    }
+    if (type === "company") {
+      options = selectedCountry
+        ? selectedCountry.companies
+        : countries.map((x) => x.companies).flat();
+    }
     return options.map((comp) => {
       const { id, name, sector } = comp;
       return (
@@ -39,7 +51,22 @@ const Case = ({ history }) => {
   return (
     <div className="container">
       {/* // Dropdown */}
-      <Row justify="end" data-aos="fade-up">
+      <Row justify="end" data-aos="fade-up" gutter={[14, 12]}>
+        <Col span={4}>
+          <Select
+            showSearch
+            style={{ width: "100%" }}
+            placeholder="Select Country"
+            optionFilterProp="children"
+            onChange={handleOnChangeCountry}
+            value={selectedCountry && selectedCountry?.id}
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+          >
+            {renderOptions("country")}
+          </Select>
+        </Col>
         <Col span={4}>
           <Select
             showSearch
@@ -47,12 +74,12 @@ const Case = ({ history }) => {
             placeholder="Select Company"
             optionFilterProp="children"
             onChange={onChange}
-            onSearch={onSearch}
+            value={selectedCountry && selectedCountry?.companies[0]?.id}
             filterOption={(input, option) =>
               option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
             }
           >
-            {renderOptions()}
+            {renderOptions("company")}
           </Select>
         </Col>
       </Row>
@@ -81,104 +108,67 @@ const Case = ({ history }) => {
             </Col>
           </Row>
           <Row className="case-body" justify="space-between" data-aos="fade-up">
-            <Col span={4}>
-              <Card className="case-card">
-                <h3>
-                  <CountUp start={0} end={0.1} duration={2} />
-                </h3>
-                <p>
-                  Farm size
-                  <br />
-                  (ha)
-                </p>
-              </Card>
-            </Col>
-            <Col span={4}>
-              <Card className="case-card">
-                <h3>
-                  <CountUp start={0} end={2.39} duration={2} />
-                </h3>
-                <p>
-                  Price
-                  <br />
-                  (USD / kg)
-                </p>
-              </Card>
-            </Col>
-            <Col span={4}>
-              <Card className="case-card">
-                <h3>
-                  <CountUp start={0} end={300} duration={2} />
-                </h3>
-                <p>
-                  Production
-                  <br />
-                  (kg / Ha)
-                </p>
-              </Card>
-            </Col>
-            <Col span={5}>
-              <Card className="case-card">
-                <h3>
-                  <CountUp start={0} end={557} duration={2} />
-                </h3>
-                <p>
-                  Production Costs
-                  <br />
-                  (USD / Ha)
-                </p>
-              </Card>
-            </Col>
-            <Col span={4}>
-              <Card className="case-card">
-                <h3>
-                  <CountUp start={0} end={204} duration={2} />
-                </h3>
-                <p>
-                  Other income
-                  <br />
-                  (USD / year)
-                </p>
-              </Card>
-            </Col>
+            <CountUpCard
+              data={{
+                value: 0.1,
+                text: "Farm size",
+                unit: "(ha)",
+              }}
+            />
+            <CountUpCard
+              data={{
+                value: 2.39,
+                text: "Price",
+                unit: "(USD/kg)",
+              }}
+            />
+            <CountUpCard
+              data={{
+                value: 300,
+                text: "Production",
+                unit: "(kg/ha)",
+              }}
+            />
+            <CountUpCard
+              data={{
+                value: 557,
+                text: "Production Costs",
+                unit: "(USD/ha)",
+              }}
+            />
+            <CountUpCard
+              data={{
+                value: 204,
+                text: "Other income",
+                unit: "(USD/year)",
+              }}
+            />
           </Row>
           <Row className="case-body" justify="center" gutter={[24, 24]}>
-            <Col span={7}>
-              <Card className="case-card">
-                <h3>
-                  <CountUp start={0} end={16} duration={2} />
-                </h3>
-                <p>
-                  Net-income focus crop
-                  <br />
-                  (USD/year)
-                </p>
-              </Card>
-            </Col>
-            <Col span={7}>
-              <Card className="case-card">
-                <h3>
-                  <CountUp start={0} end={220} duration={2} />
-                </h3>
-                <p>
-                  Actual income
-                  <br />
-                  (USD/year)
-                </p>
-              </Card>
-            </Col>
-            <Col span={7}>
-              <Card className="case-card">
-                <h3>
-                  <CountUp start={0} end={2863} duration={2} />
-                </h3>
-                <p>
-                  Living income gap
-                  <br />
-                  (USD/year)
-                </p>
-              </Card>
-            </Col>
+            <CountUpCard
+              span={7}
+              data={{
+                value: 16,
+                text: "Net-income focus crop",
+                unit: "(USD/year)",
+              }}
+            />
+            <CountUpCard
+              span={7}
+              data={{
+                value: 220,
+                text: "Actual income",
+                unit: "(USD/year)",
+              }}
+            />
+            <CountUpCard
+              span={7}
+              data={{
+                value: 2863,
+                text: "Living income gap",
+                unit: "(USD/year)",
+              }}
+            />
           </Row>
         </Col>
       </Row>
@@ -252,23 +242,24 @@ const Case = ({ history }) => {
                 level for the country where the farmers are from. Etc,
               </p>
               <Row justify="space-between">
-                <Col span={11}>
-                  <Card className="case-card">
-                    <h4>% of total HH income from focus crop</h4>
-                    <h3>
-                      <CountUp start={0} end={7} duration={2} />%
-                    </h3>
-                  </Card>
-                </Col>
-                <Col span={11}>
-                  <Card className="case-card">
-                    <h4>
-                      Share of households earning an income above the LI
-                      benchmark
-                    </h4>
-                    <h3>N.A.</h3>
-                  </Card>
-                </Col>
+                <CountUpCard
+                  span={11}
+                  type="reverse"
+                  percent={true}
+                  data={{
+                    value: 7,
+                    text: "% of total HH income from focus crop",
+                  }}
+                />
+                <CountUpCard
+                  span={11}
+                  type="reverse"
+                  percent={true}
+                  data={{
+                    text:
+                      "Share of households earning an income above the LI benchmark",
+                  }}
+                />
               </Row>
             </Col>
           </Row>
