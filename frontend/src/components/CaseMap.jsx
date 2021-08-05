@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   ComposableMap,
   ZoomableGroup,
   Geographies,
   Geography,
-  Marker,
 } from "react-simple-maps";
-import { scaleQuantile } from "d3-scale";
 
 import "./casemap.scss";
 
@@ -15,8 +13,6 @@ import { center } from "../data/country-center";
 const geoUrl = "/world.topo.json";
 
 const CaseMap = ({ projects, markers }) => {
-  const [province, setProvince] = useState(null);
-
   return (
     <ComposableMap
       projectionConfig={{ scale: 650, projection: "geoEqualEarth" }}

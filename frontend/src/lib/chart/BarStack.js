@@ -1,11 +1,7 @@
-import {
-  Easing,
-  Color,
-  TextStyle,
-  backgroundColor,
-  Icons,
-} from "./chart-style.js";
-import _ from "lodash";
+import { Easing, Color, TextStyle, backgroundColor } from "./chart-style.js";
+import uniq from "lodash/uniq";
+import chain from "lodash/chain";
+import sortBy from "lodash/sortBy";
 
 const BarStack = (data, extra) => {
   if (!data) {
@@ -19,9 +15,9 @@ const BarStack = (data, extra) => {
       },
     };
   }
-  let xAxis = _.uniq(data.map((x) => x.group));
-  let legends = _.uniq(data.map((x) => x.name));
-  let series = _.chain(data)
+  let xAxis = uniq(data.map((x) => x.group));
+  let legends = uniq(data.map((x) => x.name));
+  let series = chain(data)
     .groupBy("name")
     .map((x, i) => {
       // if (i.toLowerCase() === "pending") {
@@ -60,11 +56,11 @@ const BarStack = (data, extra) => {
       };
     })
     .value();
-  series = _.sortBy(series, "name");
+  series = sortBy(series, "name");
   let option = {
     ...Color,
     legend: {
-      data: _.sortBy(legends).filter((l) => l.toLowerCase() !== "pending"),
+      data: sortBy(legends).filter((l) => l.toLowerCase() !== "pending"),
       icon: "circle",
       top: "0px",
       left: "center",

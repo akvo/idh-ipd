@@ -4,7 +4,6 @@ import {
   Legend,
   TextStyle,
   backgroundColor,
-  Icons,
 } from "./chart-style.js";
 import sumBy from "lodash/sumBy";
 

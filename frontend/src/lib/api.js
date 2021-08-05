@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const config = {
-  baseUrl: "/api",
+  baseURL: "/api",
   headers: {
     "Content-Type": "application/json",
   },

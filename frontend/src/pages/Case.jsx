@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Row, Col, Select, Card, Menu, Image } from "antd";
-import CountUp from "react-countup";
+import { Row, Col, Select, Menu, Image } from "antd";
 
 import "./case.scss";
 
@@ -14,7 +13,6 @@ const { Option } = Select;
 
 const Case = ({ history }) => {
   const { countries, selectedCountry } = UIStore.useState();
-  const [country, setCountry] = useState(null);
 
   const onChange = (value) => {
     console.log(`selected ${value}`);
@@ -22,10 +20,6 @@ const Case = ({ history }) => {
 
   const handleOnChangeCountry = (value) => {
     console.log(`selected ${value}`);
-  };
-
-  const onSearch = (val) => {
-    console.log("search:", val);
   };
 
   const renderOptions = (type) => {

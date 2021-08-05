@@ -19,6 +19,7 @@ import IncomeDriverTool from "./pages/IncomeDriverTool";
 
 import { UIStore } from "./data/store";
 import { titleCase } from "./lib/util";
+import api from "./lib/api";
 
 const history = createBrowserHistory();
 const { Header, Content, Footer } = Layout;
@@ -28,6 +29,11 @@ function App() {
   const page = UIStore.useState((s) => s.page);
 
   useEffect(() => {
+    // api.get("/country/").then((res) => {
+    //   UIStore.update((s) => {
+    //     s.countries = res.data;
+    //   });
+    // });
     document.title = titleCase(page, "-");
     page !== "case" &&
       UIStore.update((s) => {
