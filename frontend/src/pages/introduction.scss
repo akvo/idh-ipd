@@ -1,5 +1,12 @@
 .title-wrapper {
   text-align: center;
+  h1 {
+    font-size: 30px;
+    font-weight: 600;
+  }
+  p {
+    font-size: 20px;
+  }
 }
 
 .content-wrapper {
@@ -19,6 +26,9 @@
       }
       .meta-body {
         text-align: center;
+      }
+      .meta-symbol {
+        font-size: 30px;
       }
       .meta-img {
         filter: brightness(0) invert(0);
@@ -46,6 +56,9 @@
       }
       .meta-body {
         text-align: center;
+      }
+      .meta-symbol {
+        font-size: 30px;
       }
       .meta-img {
         filter: brightness(0) invert(1);

@@ -76,7 +76,7 @@ const IncomeDriverTool = ({ history }) => {
           data-aos="fade-up"
         >
           {["price", "land", "yield", "production"].map((d, i) => (
-            <Chart key={d} title={d} type="BAR" height={350} span={6} />
+            <Chart key={d} title={d} type="BAR" height={500} span={6} />
           ))}
         </Row>
       </div>

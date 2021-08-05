@@ -111,7 +111,9 @@ const Introduction = ({ history }) => {
                   />
                   <h4>Revenue ($)</h4>
                 </Col>
-                <Col span={1}>=</Col>
+                <Col span={1} className="meta-symbol">
+                  =
+                </Col>
                 <Col span={3}>
                   <Image
                     className="meta-img"
@@ -121,7 +123,9 @@ const Introduction = ({ history }) => {
                   />
                   <h4>Farm size (ha)</h4>
                 </Col>
-                <Col span={1}>X</Col>
+                <Col span={1} className="meta-symbol">
+                  x
+                </Col>
                 <Col span={3}>
                   <Image
                     className="meta-img"
@@ -131,7 +135,9 @@ const Introduction = ({ history }) => {
                   />
                   <h4>Yield (kg/ha)</h4>
                 </Col>
-                <Col span={1}>X</Col>
+                <Col span={1} className="meta-symbol">
+                  x
+                </Col>
                 <Col span={3}>
                   <Image
                     className="meta-img"
@@ -161,7 +167,9 @@ const Introduction = ({ history }) => {
                   />
                   <h4>Production costs ($/ha)</h4>
                 </Col>
-                <Col span={1}>X</Col>
+                <Col span={1} className="meta-symbol">
+                  x
+                </Col>
                 <Col span={3}>
                   <Image
                     className="meta-img"
@@ -171,7 +179,9 @@ const Introduction = ({ history }) => {
                   />
                   <h4>Farm size (ha)</h4>
                 </Col>
-                <Col span={1}>=</Col>
+                <Col span={1} className="meta-symbol">
+                  =
+                </Col>
                 <Col span={3}>
                   <Image
                     className="meta-img"
@@ -217,7 +227,9 @@ const Introduction = ({ history }) => {
                   />
                   <h4>Net-income focus crop ($)</h4>
                 </Col>
-                <Col span={1}>=</Col>
+                <Col span={1} className="meta-symbol">
+                  =
+                </Col>
                 <Col span={3}>
                   <Image
                     className="meta-img"
@@ -227,7 +239,9 @@ const Introduction = ({ history }) => {
                   />
                   <h4>Revenues ($)</h4>
                 </Col>
-                <Col span={1}>-</Col>
+                <Col span={1} className="meta-symbol">
+                  -
+                </Col>
                 <Col span={3}>
                   <Image
                     className="meta-img"
@@ -318,7 +332,9 @@ const Introduction = ({ history }) => {
                   />
                   <h4>Actual income</h4>
                 </Col>
-                <Col span={1}>=</Col>
+                <Col span={1} className="meta-symbol">
+                  =
+                </Col>
                 <Col span={3}>
                   <Image
                     className="meta-img"
@@ -328,7 +344,9 @@ const Introduction = ({ history }) => {
                   />
                   <h4>Net-income focus crop</h4>
                 </Col>
-                <Col span={1}>-</Col>
+                <Col span={1} className="meta-symbol">
+                  +
+                </Col>
                 <Col span={3}>
                   <Image
                     className="meta-img"
