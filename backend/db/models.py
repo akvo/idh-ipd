@@ -62,7 +62,7 @@ class Company(Base):
             "yields": self.yields,
             "prod_cost": self.prod_cost,
             "other_income": self.other_income,
-            "living_income": self.living_income,
+            "living_income": self.living_income
         }
 
 

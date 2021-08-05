@@ -5,8 +5,10 @@ from sqlalchemy.orm import Session
 
 from db import crud_user, crud_country, crud_crop, crud_company, models
 from db.connection import SessionLocal, engine
-from db.schema import UserBase, CountryBase, CropBase, CompanyBase
+from db.schema import UserBase, CountryBase, CropBase
+from db.schema import CompanyBase, CompanyResponse
 from db.models import UserRole
+import util.params as params
 
 models.Base.metadata.create_all(bind=engine)
 routes = APIRouter()
@@ -135,20 +137,20 @@ def add_company(name: str,
 
 
 @routes.get("/company/",
-            response_model=List[CompanyBase],
+            response_model=List[CompanyResponse],
             summary="get all companies")
 def get_company(skip: int = 0,
                 limit: int = 100,
                 session: Session = Depends(get_session)):
     company = crud_company.get_company(session=session, skip=skip, limit=limit)
-    return [i.serialize for i in company]
+    return [params.with_extra_data(i.serialize) for i in company]
 
 
 @routes.get("/company/{id:path}",
-            response_model=CompanyBase,
+            response_model=CompanyResponse,
             summary="get company detail")
 def get_company_by_id(id: int, session: Session = Depends(get_session)):
     company = crud_company.get_company_by_id(session=session, id=id)
     if company is None:
         raise HTTPException(status_code=404, detail="company not found")
-    return company.serialize
+    return params.with_extra_data(company.serialize)
