@@ -28,3 +28,4 @@ def upgrade():
 def downgrade():
     op.drop_index(op.f('ix_user_id'), table_name='user')
     op.drop_table('user')
+    op.execute('DROP TYPE userrole')
