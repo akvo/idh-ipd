@@ -50,7 +50,7 @@ const Case = ({ history }) => {
     }
   }, [loading, countries, selectedCountry]);
 
-  const onChange = (value) => {
+  const handleOnChangeCompany = (value) => {
     const country = countries.find((x) => x.id === defCountry);
     const tmp = {
       ...country,
@@ -138,7 +138,7 @@ const Case = ({ history }) => {
               style={{ width: "100%" }}
               placeholder="Select Company"
               optionFilterProp="children"
-              onChange={onChange}
+              onChange={handleOnChangeCompany}
               value={defCompany}
               filterOption={(input, option) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
