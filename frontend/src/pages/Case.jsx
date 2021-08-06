@@ -113,40 +113,43 @@ const Case = ({ history }) => {
   }
 
   return (
-    <div className="container">
-      {/* // Dropdown */}
-      <Row justify="end" data-aos="fade-up" gutter={[14, 12]}>
-        <Col span={4}>
-          <Select
-            showSearch
-            style={{ width: "100%" }}
-            placeholder="Select Country"
-            optionFilterProp="children"
-            onChange={handleOnChangeCountry}
-            value={defCountry}
-            filterOption={(input, option) =>
-              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            }
-          >
-            {renderOptions("country")}
-          </Select>
-        </Col>
-        <Col span={4}>
-          <Select
-            showSearch
-            style={{ width: "100%" }}
-            placeholder="Select Company"
-            optionFilterProp="children"
-            onChange={onChange}
-            value={defCompany}
-            filterOption={(input, option) =>
-              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            }
-          >
-            {renderOptions("company")}
-          </Select>
-        </Col>
-      </Row>
+    <>
+      <div className="container">
+        {/* // Dropdown */}
+        <Row justify="end" data-aos="fade-up" gutter={[14, 12]}>
+          <Col span={4}>
+            <Select
+              showSearch
+              style={{ width: "100%" }}
+              placeholder="Select Country"
+              optionFilterProp="children"
+              onChange={handleOnChangeCountry}
+              value={defCountry}
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+            >
+              {renderOptions("country")}
+            </Select>
+          </Col>
+          <Col span={4}>
+            <Select
+              showSearch
+              style={{ width: "100%" }}
+              placeholder="Select Company"
+              optionFilterProp="children"
+              onChange={onChange}
+              value={defCompany}
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+            >
+              {renderOptions("company")}
+            </Select>
+          </Col>
+        </Row>
+      </div>
+
       {/* // Detail */}
       <Row className="case-wrapper hero" data-aos="fade-up">
         <Col span={8}>
@@ -250,7 +253,7 @@ const Case = ({ history }) => {
           </Menu>
         </Col> */}
         <Col span={24}>
-          <Row className="case-body" data-aos="fade-up" gutter={[50, 50]}>
+          <Row className="case-body odd" data-aos="fade-up" gutter={[50, 50]}>
             <Col span={14}>
               {data && (
                 <Chart
@@ -283,7 +286,7 @@ const Case = ({ history }) => {
               </p>
             </Col>
           </Row>
-          <Row className="case-body" data-aos="fade-up" gutter={[50, 50]}>
+          <Row className="case-body even" data-aos="fade-up" gutter={[50, 50]}>
             <Col span={10} className="case-detail">
               <h3>Other Income</h3>
               <p>
@@ -306,7 +309,7 @@ const Case = ({ history }) => {
               />
             </Col>
           </Row>
-          <Row className="case-body" data-aos="fade-up" gutter={[50, 50]}>
+          <Row className="case-body odd" data-aos="fade-up" gutter={[50, 50]}>
             <Col span={14}>
               <Chart
                 key="The living income gap"
@@ -356,7 +359,7 @@ const Case = ({ history }) => {
           </Row>
         </Col>
       </Row>
-    </div>
+    </>
   );
 };
 
