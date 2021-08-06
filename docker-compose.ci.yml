@@ -10,11 +10,15 @@ services:
   frontend:
     image: eu.gcr.io/akvo-lumen/idh-ipd/frontend:latest
     command: ["nginx", "-g", "daemon off;"]
+    depends_on:
+      - backend
   backend:
     image: eu.gcr.io/akvo-lumen/idh-ipd/backend:latest
     command: ["sh", "run.sh"]
     environment:
       - DATABASE_URL=postgresql://ipd:password@db:5432/idh_ipd
+    depends_on:
+      - db
   ci:
     network_mode: service:mainnetwork
     image: alpine:3.14.0
