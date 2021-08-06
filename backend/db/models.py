@@ -8,6 +8,9 @@ from sqlalchemy.orm import relationship
 from .connection import Base
 
 
+# BEGIN COMPANY
+
+
 class CompanyDict(TypedDict):
     id: int
     name: str
@@ -33,10 +36,12 @@ class Company(Base):
     prod_cost = Column(Integer, nullable=True)
     other_income = Column(Integer, nullable=True)
     living_income = Column(Integer, nullable=True)
+    hh_income = Column(Integer, nullable=True)
+    net_income = Column(Integer, nullable=True)
 
     def __init__(self, name: str, country: int, crop: int, land_size: float,
                  price: float, yields: int, prod_cost: int, other_income: int,
-                 living_income: int):
+                 living_income: int, hh_income: int, net_income: int):
         self.name = name
         self.country = country
         self.crop = crop
@@ -46,6 +51,8 @@ class Company(Base):
         self.prod_cost = prod_cost
         self.other_income = other_income
         self.living_income = living_income
+        self.hh_income = hh_income
+        self.net_income = net_income
 
     def __repr__(self) -> int:
         return f"<Company {self.id}>"
@@ -62,8 +69,13 @@ class Company(Base):
             "yields": self.yields,
             "prod_cost": self.prod_cost,
             "other_income": self.other_income,
-            "living_income": self.living_income
+            "living_income": self.living_income,
+            "hh_income": self.hh_income,
+            "net_income": self.net_income,
         }
+
+
+# BEGIN COUNTRY
 
 
 class CountryDict(TypedDict):
@@ -91,7 +103,10 @@ class Country(Base):
 
     @property
     def serialize(self) -> CountryDict:
-        return {"id": self.id, "name": self.name, "code": self.code }
+        return {"id": self.id, "name": self.name, "code": self.code}
+
+
+# BEGIN CROP
 
 
 class CropDict(TypedDict):
@@ -117,6 +132,9 @@ class Crop(Base):
     @property
     def serialize(self) -> CropDict:
         return {"id": self.id, "name": self.name, "company": self.company}
+
+
+# BEGIN USER
 
 
 class UserRole(enum.Enum):

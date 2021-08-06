@@ -34,32 +34,17 @@ class CompanyBase(BaseModel):
     name: str
     country: int
     crop: int
-    land_size: float
-    price: float
-    yields: int
-    prod_cost: int
-    other_income: int
-    living_income: int
+    land_size: Optional[float] = None
+    price: Optional[float] = None
+    yields: Optional[int] = None
+    prod_cost: Optional[int] = None
+    net_income: Optional[int] = None
+    hh_income: Optional[int] = None
+    other_income: Optional[int] = None
+    living_income: Optional[int] = None
+    living_income_gap: Optional[int] = None
+    share_income: Optional[int] = None
+    revenue: Optional[int] = None
 
     class Config:
         orm_mode = True
-
-
-class CompanyResponse(BaseModel):
-    id: int
-    name: str
-    country: int
-    crop: int
-    land_size: float
-    price: float
-    yields: int
-    prod_cost: int
-    other_income: int
-    living_income: int
-    living_income: int
-    revenue: int
-    total_prod_cost: int
-    net_income: int
-    actual_household_income: int
-    living_income_gap: int
-    share_income: float
