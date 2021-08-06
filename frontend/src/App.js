@@ -16,6 +16,7 @@ import DataMap from "./pages/DataMap";
 import Case from "./pages/Case";
 import Benchmarking from "./pages/Benchmarking";
 import IncomeDriverTool from "./pages/IncomeDriverTool";
+import Doc from "./pages/Doc";
 
 import { UIStore } from "./data/store";
 import { titleCase } from "./lib/util";
@@ -57,6 +58,7 @@ function App() {
             path="/income-driver-tool"
             component={IncomeDriverTool}
           />
+          <Route exact path="/docs" component={Doc} />
           <Route exact path="/login" render={(props) => <Login {...props} />} />
           <Route
             exact
@@ -65,7 +67,8 @@ function App() {
           />
         </Content>
         <Footer className={`footer ${!user && "fixed"}`}>
-          IDH - IPD ©2021 Created by Akvo
+          IDH - IPD ©2021 Created by Akvo |{" "}
+          <Link to="/docs">Documentation</Link>
         </Footer>
       </Layout>
     </Router>

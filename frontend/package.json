@@ -23,6 +23,7 @@
     "react-scripts": "4.0.3",
     "react-simple-maps": "^2.3.0",
     "react-tooltip": "^4.2.21",
+    "swagger-ui-react": "^4.0.0-beta.2",
     "web-vitals": "^1.0.1"
   },
   "devDependencies": {
