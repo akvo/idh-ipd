@@ -1,8 +1,7 @@
 .case-wrapper {
-  margin: 25px 0;
+  margin-top: 25px;
+  margin-bottom: 40px;
   &.hero {
-    margin-left: -4rem;
-    margin-right: -4rem;
     background: #f2f5fc;
     .case-body {
       padding-right: 4rem;
@@ -10,7 +9,15 @@
     }
   }
   .case-body {
-    margin-bottom: 25px;
+    margin-top: 25px;
+    margin-bottom: 50px;
+    &.odd {
+      padding: 40px 4rem;
+    }
+    &.even {
+      padding: 40px 4rem;
+      background: #f2f5fc;
+    }
     .case-title {
       text-align: center;
       h2 {
