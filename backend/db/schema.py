@@ -77,3 +77,9 @@ class CountryCompanyBase(BaseModel):
     name: str
     code: str
     company: List[CompanyBase]
+
+
+class CropCompanyBase(BaseModel):
+    id: int
+    name: str
+    company: List[CompanyBase]

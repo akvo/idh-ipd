@@ -18,3 +18,8 @@ def get_crop(session: Session, skip: int = 0, limit: int = 100) -> List[Crop]:
 
 def get_crop_by_id(session: Session, id: int) -> Crop:
     return session.query(Crop).filter(Crop.id == id).first()
+
+
+def get_company(session: Session) -> Crop:
+    country = session.query(Crop).filter(Crop.company != None).all()
+    return country
