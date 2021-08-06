@@ -1,6 +1,6 @@
 import { Easing, Color, TextStyle, backgroundColor } from "./chart-style.js";
 import uniq from "lodash/uniq";
-import chain from "lodash/chain";
+import groupBy from "lodash/groupBy";
 import sortBy from "lodash/sortBy";
 
 const BarStack = (data, extra) => {
@@ -15,52 +15,28 @@ const BarStack = (data, extra) => {
       },
     };
   }
+
   let xAxis = uniq(data.map((x) => x.group));
   let legends = uniq(data.map((x) => x.name));
-  let series = chain(data)
-    .groupBy("name")
-    .map((x, i) => {
-      // if (i.toLowerCase() === "pending") {
-      //   return {
-      //     name: i,
-      //     label: {
-      //       formatter: function (params) {
-      //         console.log(params);
-      //         return "Label formatter";
-      //       },
-      //       show: true,
-      //       position: "top",
-      //       color: "#a43332",
-      //     },
-      //     stack: "t",
-      //     type: "bar",
-      //     barWidth: 50,
-      //     data: x.map((v) => v.value),
-      //     itemStyle: {
-      //       color: "transparent",
-      //       borderType: "dashed",
-      //       borderColor: "#000",
-      //     },
-      //   };
-      // }
-      return {
-        name: i,
-        label: {
-          show: true,
-          position: "inside",
-        },
-        barWidth: 50,
-        stack: "t",
-        type: "bar",
-        data: x.map((v) => v.value),
-      };
-    })
-    .value();
+  let series = data.map((x, i) => {
+    return {
+      name: x.name,
+      label: {
+        show: true,
+        position: "inside",
+      },
+      barWidth:
+        Object.keys(groupBy(data, (x) => x.group)).length === 1 ? 200 : 50,
+      stack: x.group,
+      type: "bar",
+      data: x.value,
+    };
+  });
   series = sortBy(series, "name");
   let option = {
     ...Color,
     legend: {
-      data: sortBy(legends).filter((l) => l.toLowerCase() !== "pending"),
+      data: sortBy(legends),
       icon: "circle",
       top: "0px",
       left: "center",
@@ -87,7 +63,7 @@ const BarStack = (data, extra) => {
     },
     tooltip: {
       trigger: "item",
-      formatter: "{b}: {c}",
+      formatter: "{a}: {c}",
       backgroundColor: "#ffffff",
       ...TextStyle,
     },

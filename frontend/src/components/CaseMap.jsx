@@ -15,12 +15,12 @@ const geoUrl = "/world.topo.json";
 const CaseMap = ({ projects, markers, name }) => {
   return (
     <ComposableMap
-      projectionConfig={{ scale: 650, projection: "geoEqualEarth" }}
+      projectionConfig={{ scale: 200, projection: "geoEqualEarth" }}
       style={{
         height: "100%",
       }}
     >
-      <ZoomableGroup zoom={3} center={center[name]} maxZoom={3} minZoom={3}>
+      <ZoomableGroup zoom={2} center={center[name]} maxZoom={2} minZoom={2}>
         <Geographies geography={geoUrl}>
           {({ geographies }) =>
             geographies.map((geo, i) => {

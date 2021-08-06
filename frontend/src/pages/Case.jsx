@@ -51,7 +51,7 @@ const Case = ({ history }) => {
   }, [loading, countries, selectedCountry]);
 
   const onChange = (value) => {
-    const country = countries.find((x) => x.id === value);
+    const country = countries.find((x) => x.id === defCountry);
     const tmp = {
       ...country,
       company: country?.company.find((x) => x.id === value),
@@ -61,8 +61,12 @@ const Case = ({ history }) => {
   };
 
   const handleOnChangeCountry = (value) => {
+    UIStore.update((s) => {
+      s.selectedCountry = null;
+    });
     setDefCountry(value);
     setDefCompany(null);
+    renderOptions("company");
   };
 
   const renderOptions = (type) => {
@@ -71,12 +75,13 @@ const Case = ({ history }) => {
       options = countries;
     }
     if (type === "company") {
+      const country_id = selectedCountry || defCountry;
       const companies = countries
-        .filter((x) => x.id === defCountry)
+        .filter((x) => x.id === country_id)
         .map((x) => x.company)
         .flat();
       options = selectedCountry
-        ? countries.filter((x) => x.id === selectedCountry)
+        ? countries.find((x) => x.id === country_id).company
         : sortBy(companies, (x) => x.name);
     }
     return (
@@ -92,7 +97,17 @@ const Case = ({ history }) => {
     );
   };
 
-  console.log(data);
+  const generateChartData = (config, group) => {
+    return config.map((x) => {
+      return {
+        group: group,
+        name: x,
+        value: [data.company[x]],
+      };
+    });
+  };
+
+  data && console.log(data);
   if (loading) {
     return <Loading />;
   }
@@ -235,25 +250,40 @@ const Case = ({ history }) => {
           </Menu>
         </Col> */}
         <Col span={24}>
-          <Row className="case-body" data-aos="fade-up">
+          <Row className="case-body" data-aos="fade-up" gutter={[50, 50]}>
             <Col span={14}>
-              <Chart
-                key={"Net Income Focus Crop"}
-                title={"Net Income Focus Crop"}
-                type="BARSTACK"
-                wrapper={false}
-              />
+              {data && (
+                <Chart
+                  key="Net Income Focus Crop"
+                  title="Net Income Focus Crop"
+                  type="BARSTACK"
+                  height={350}
+                  data={generateChartData(
+                    ["revenue", "prod_cost"],
+                    "net_income"
+                  )}
+                  wrapper={false}
+                />
+              )}
             </Col>
             <Col span={10} className="case-detail">
-              <h3>Net Income Focus Crop</h3>
-              <p>On the left we present the net-income from the focus crop.</p>
+              <h3>
+                Net Income {crops.find((x) => x.id === data.company.crop).name}
+              </h3>
               <p>
-                Net-income from the focus crop = Focus crop revenues - Focus
-                crop production costs
+                On the left we present the net-income from the{" "}
+                {crops.find((x) => x.id === data.company.crop).name}.
+              </p>
+              <p>
+                Net-income from the{" "}
+                {crops.find((x) => x.id === data.company.crop).name} ={" "}
+                {crops.find((x) => x.id === data.company.crop).name} revenues -{" "}
+                {crops.find((x) => x.id === data.company.crop).name} production
+                costs
               </p>
             </Col>
           </Row>
-          <Row className="case-body" data-aos="fade-up">
+          <Row className="case-body" data-aos="fade-up" gutter={[50, 50]}>
             <Col span={10} className="case-detail">
               <h3>Other Income</h3>
               <p>
@@ -267,19 +297,30 @@ const Case = ({ history }) => {
             </Col>
             <Col span={14}>
               <Chart
-                key={"Other income"}
-                title={"Other income"}
+                key="Other income"
+                title="Other income"
+                height={350}
                 type="BARSTACK"
+                data={generateChartData(["other_income"], "other_income")}
                 wrapper={false}
               />
             </Col>
           </Row>
-          <Row className="case-body">
+          <Row className="case-body" data-aos="fade-up" gutter={[50, 50]}>
             <Col span={14}>
               <Chart
-                key={"The living income gap"}
-                title={"The living income gap"}
+                key="The living income gap"
+                title="The living income gap"
                 type="BARSTACK"
+                data={generateChartData(
+                  [
+                    "other_income",
+                    "living_income",
+                    "living_income_gap",
+                    "hh_income",
+                  ],
+                  "living_income_gap"
+                )}
                 wrapper={false}
               />
             </Col>
@@ -296,7 +337,7 @@ const Case = ({ history }) => {
                   type="reverse"
                   percent={true}
                   data={{
-                    value: 7,
+                    value: data.company.living_income_gap,
                     text: "% of total HH income from focus crop",
                   }}
                 />
@@ -305,6 +346,7 @@ const Case = ({ history }) => {
                   type="reverse"
                   percent={true}
                   data={{
+                    value: data.company.share_income,
                     text:
                       "Share of households earning an income above the LI benchmark",
                   }}
