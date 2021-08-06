@@ -24,10 +24,10 @@ const Benchmarking = ({ history }) => {
 
   const renderOptions = () => {
     const options = selectedCountry
-      ? selectedCountry.companies
-      : countries.map((x) => x.companies).flat();
+      ? selectedCountry.company
+      : countries.map((x) => x.company).flat();
     return options.map((comp) => {
-      const { id, name, sector } = comp;
+      const { id, name } = comp;
       return (
         <Option key={`${id}-${name}`} value={id}>
           {name}

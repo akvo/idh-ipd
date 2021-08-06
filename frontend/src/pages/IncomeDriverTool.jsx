@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { Row, Col, Select, Card } from "antd";
-import CountUp from "react-countup";
+import React from "react";
+import { Row, Col, Select } from "antd";
 
 import "./incomedrivertool.scss";
 
@@ -23,10 +22,10 @@ const IncomeDriverTool = ({ history }) => {
 
   const renderOptions = () => {
     const options = selectedCountry
-      ? selectedCountry.companies
-      : countries.map((x) => x.companies).flat();
+      ? selectedCountry.company
+      : countries.map((x) => x.company).flat();
     return options.map((comp) => {
-      const { id, name, sector } = comp;
+      const { id, name } = comp;
       return (
         <Option key={`${id}-${name}`} value={id}>
           {name}

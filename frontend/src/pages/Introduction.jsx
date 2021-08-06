@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col, Image } from "antd";
 
 import "./introduction.scss";
@@ -6,13 +6,34 @@ import "./introduction.scss";
 import Loading from "../components/Loading";
 
 import { UIStore } from "../data/store";
+import api from "../lib/api";
 
 const Introduction = ({ history }) => {
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    UIStore.update((s) => {
-      s.page = "introduction";
-    });
-  }, []);
+    if (loading) {
+      // load data
+      api.get("/country-company").then((res) => {
+        UIStore.update((s) => {
+          s.countries = res.data;
+        });
+      });
+      api.get("/crop/?skip=0&limit=100").then((res) => {
+        UIStore.update((s) => {
+          s.crops = res.data;
+        });
+      });
+      UIStore.update((s) => {
+        s.page = "introduction";
+      });
+      setLoading(false);
+    }
+  }, [loading]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <Row justify="center">

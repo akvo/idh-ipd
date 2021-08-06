@@ -1,46 +1,101 @@
-import React, { useState } from "react";
-import { Row, Col, Select, Menu, Image } from "antd";
+import React, { useState, useEffect } from "react";
+import { Row, Col, Select, Image } from "antd";
 
 import "./case.scss";
 
 import Chart from "../lib/chart";
 import CaseMap from "../components/CaseMap";
 import CountUpCard from "../components/CountUpCard";
+import Loading from "../components/Loading";
 
 import { UIStore } from "../data/store";
+import sortBy from "lodash/sortBy";
 
 const { Option } = Select;
 
 const Case = ({ history }) => {
-  const { countries, selectedCountry } = UIStore.useState();
+  const { countries, selectedCountry, crops } = UIStore.useState();
+  const [defCountry, setDefCountry] = useState(null);
+  const [defCompany, setDefCompany] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    if (loading) {
+      if (selectedCountry) {
+        const filterCountry = countries.find((x) => x.id === selectedCountry);
+        setDefCountry(selectedCountry);
+        setDefCompany(filterCountry?.company[0]?.id);
+        const tmp = {
+          ...filterCountry,
+          company: filterCountry?.company[0],
+        };
+        setData(tmp);
+      }
+      if (!selectedCountry) {
+        const countriesHasCompany = countries.filter(
+          (x) => x.company.length > 0
+        );
+        setDefCountry(countriesHasCompany[0]?.id);
+        setDefCompany(countriesHasCompany[0]?.company[0]?.id);
+        const tmp = {
+          ...countriesHasCompany[0],
+          company: countriesHasCompany[0]?.company[0],
+        };
+        setData(tmp);
+      }
+      setTimeout(() => {
+        setLoading(false);
+      }, 3000);
+    }
+  }, [loading, countries, selectedCountry]);
 
   const onChange = (value) => {
-    console.log(`selected ${value}`);
+    const country = countries.find((x) => x.id === value);
+    const tmp = {
+      ...country,
+      company: country?.company.find((x) => x.id === value),
+    };
+    setData(tmp);
+    setDefCompany(value);
   };
 
   const handleOnChangeCountry = (value) => {
-    console.log(`selected ${value}`);
+    setDefCountry(value);
+    setDefCompany(null);
   };
 
   const renderOptions = (type) => {
     let options = [];
     if (type === "country") {
-      options = selectedCountry ? [selectedCountry] : countries;
+      options = countries;
     }
     if (type === "company") {
+      const companies = countries
+        .filter((x) => x.id === defCountry)
+        .map((x) => x.company)
+        .flat();
       options = selectedCountry
-        ? selectedCountry.companies
-        : countries.map((x) => x.companies).flat();
+        ? countries.filter((x) => x.id === selectedCountry)
+        : sortBy(companies, (x) => x.name);
     }
-    return options.map((comp) => {
-      const { id, name, sector } = comp;
-      return (
-        <Option key={`${id}-${name}`} value={id}>
-          {name}
-        </Option>
-      );
-    });
+    return (
+      options &&
+      options.map((comp) => {
+        const { id, name } = comp;
+        return (
+          <Option key={`${id}-${name}`} value={id}>
+            {name}
+          </Option>
+        );
+      })
+    );
   };
+
+  console.log(data);
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="container">
@@ -53,7 +108,7 @@ const Case = ({ history }) => {
             placeholder="Select Country"
             optionFilterProp="children"
             onChange={handleOnChangeCountry}
-            value={selectedCountry && selectedCountry?.id}
+            value={defCountry}
             filterOption={(input, option) =>
               option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
             }
@@ -68,7 +123,7 @@ const Case = ({ history }) => {
             placeholder="Select Company"
             optionFilterProp="children"
             onChange={onChange}
-            value={selectedCountry && selectedCountry?.companies[0]?.id}
+            value={defCompany}
             filterOption={(input, option) =>
               option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
             }
@@ -80,7 +135,7 @@ const Case = ({ history }) => {
       {/* // Detail */}
       <Row className="case-wrapper hero" data-aos="fade-up">
         <Col span={8}>
-          <CaseMap projects={[]} markers={[]} />
+          <CaseMap projects={[]} markers={[]} name={data.name} />
         </Col>
         <Col span={16}>
           <Row
@@ -90,11 +145,11 @@ const Case = ({ history }) => {
             data-aos="fade-up"
           >
             <Col span={6} className="case-title">
-              <h2>Kenya</h2>
+              <h2>{data.name}</h2>
               <span>Country</span>
             </Col>
             <Col span={6} className="case-title">
-              <h2>Coffee</h2>
+              <h2>{crops.find((x) => x.id === data.company.crop).name}</h2>
               <span>Commodity</span>
             </Col>
             <Col span={6} className="case-title">
@@ -104,35 +159,35 @@ const Case = ({ history }) => {
           <Row className="case-body" justify="space-between" data-aos="fade-up">
             <CountUpCard
               data={{
-                value: 0.1,
+                value: data.company.land_size,
                 text: "Farm size",
                 unit: "(ha)",
               }}
             />
             <CountUpCard
               data={{
-                value: 2.39,
+                value: data.company.price,
                 text: "Price",
                 unit: "(USD/kg)",
               }}
             />
             <CountUpCard
               data={{
-                value: 300,
+                value: data.company.yields,
                 text: "Production",
                 unit: "(kg/ha)",
               }}
             />
             <CountUpCard
               data={{
-                value: 557,
+                value: data.company.prod_cost,
                 text: "Production Costs",
                 unit: "(USD/ha)",
               }}
             />
             <CountUpCard
               data={{
-                value: 204,
+                value: data.company.other_income,
                 text: "Other income",
                 unit: "(USD/year)",
               }}
@@ -142,7 +197,7 @@ const Case = ({ history }) => {
             <CountUpCard
               span={7}
               data={{
-                value: 16,
+                value: data.company.net_income,
                 text: "Net-income focus crop",
                 unit: "(USD/year)",
               }}
@@ -150,7 +205,7 @@ const Case = ({ history }) => {
             <CountUpCard
               span={7}
               data={{
-                value: 220,
+                value: data.company.hh_income,
                 text: "Actual income",
                 unit: "(USD/year)",
               }}
@@ -158,7 +213,7 @@ const Case = ({ history }) => {
             <CountUpCard
               span={7}
               data={{
-                value: 2863,
+                value: data.company.living_income_gap,
                 text: "Living income gap",
                 unit: "(USD/year)",
               }}
@@ -200,7 +255,7 @@ const Case = ({ history }) => {
           </Row>
           <Row className="case-body" data-aos="fade-up">
             <Col span={10} className="case-detail">
-              <h3>Other income</h3>
+              <h3>Other Income</h3>
               <p>
                 On the right we present the value of the average other income
                 generated by the farmer households. This can be income generated

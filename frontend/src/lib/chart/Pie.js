@@ -105,7 +105,7 @@ const Pie = (data, extra, Doughnut = false) => {
           normal: {
             formatter: function (params) {
               let values = params.data.value;
-              return "Total" + "\n" + values;
+              return `Total\n${values}`;
             },
             show: !Doughnut,
             position: "center",
