@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel
 from .models import UserRole, DriverIncomeStatus
 
@@ -70,3 +70,10 @@ class DriverIncomeBase(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class CountryCompanyBase(BaseModel):
+    id: int
+    name: str
+    code: str
+    company: List[CompanyBase]

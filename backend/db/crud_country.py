@@ -20,3 +20,12 @@ def get_country(session: Session,
 
 def get_country_by_id(session: Session, id: int) -> Country:
     return session.query(Country).filter(Country.id == id).first()
+
+
+def get_country_by_name(session: Session, name: str) -> Country:
+    return session.query(Country).filter(Country.name == name).first()
+
+
+def get_company(session: Session) -> Country:
+    country = session.query(Country).filter(Country.company != None).all()
+    return country

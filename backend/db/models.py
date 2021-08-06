@@ -196,7 +196,8 @@ class Country(Base):
     code = Column(String)
     company = relationship("Company",
                            cascade="all, delete",
-                           passive_deletes=True)
+                           passive_deletes=True,
+                           backref="company")
 
     def __init__(self, name: str, code: str):
         self.name = name
@@ -207,7 +208,12 @@ class Country(Base):
 
     @property
     def serialize(self) -> CountryDict:
-        return {"id": self.id, "name": self.name, "code": self.code}
+        return {
+            "id": self.id,
+            "name": self.name,
+            "code": self.code,
+            "company": self.company
+        }
 
 
 # BEGIN CROP

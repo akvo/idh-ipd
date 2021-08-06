@@ -9,6 +9,7 @@ from db import models
 from db.connection import SessionLocal, engine
 from db.schema import UserBase, CountryBase, CropBase
 from db.schema import CompanyBase, DriverIncomeBase
+from db.schema import CountryCompanyBase
 from db.models import Company, DriverIncome
 from db.models import UserRole, DriverIncomeStatus
 import util.params as params
@@ -226,3 +227,11 @@ def get_driver_income_by_id(id: int, session: Session = Depends(get_session)):
     if driver_income is None:
         raise HTTPException(status_code=404, detail="driver income not found")
     return driver_income.serialize
+
+
+@routes.get("/country-company",
+            response_model=List[CountryCompanyBase],
+            summary="get country and the company list")
+def get_country_company(session: Session = Depends(get_session)):
+    country = crud_country.get_company(session=session)
+    return [i.serialize for i in country]
