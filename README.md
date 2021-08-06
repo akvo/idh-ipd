@@ -34,3 +34,18 @@ Then visit: [localhost:8080](http://localhost:8080). Any endpoints with prefix `
 see:
 - [nginx](https://github.com/akvo/idh-ipd/blob/main/frontend/nginx/conf.d/default.conf) config
 - [mainnetwork](https://github.com/akvo/idh-ipd/blob/cc7090a805898e6983761418828bf20806d15326/docker-compose.override.yml#L4-L7) container setup
+
+# Database Seeder
+
+Assuming you have `prod-company.csv` and `prod-driver-income.csv` inside `./backend/data` folder
+you will be able to run
+
+- Company Seeder
+```
+docker-compose exec backend python -m seeder.company
+```
+
+- Driver Income Seeder
+```
+docker-compose exec backend python -m seeder.driver_income
+```
