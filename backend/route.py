@@ -170,7 +170,7 @@ def get_company_by_id(id: int, session: Session = Depends(get_session)):
 
 @routes.post("/driver-income/",
              response_model=DriverIncomeBase,
-             summary="add new driver_income")
+             summary="add new driver income")
 def add_driver_income(country: int,
                       crop: int,
                       status: DriverIncomeStatus,
@@ -207,9 +207,9 @@ def add_driver_income(country: int,
     return driver_income.serialize
 
 
-@routes.get("/driver-income/",
+@routes.get("/driver-income",
             response_model=List[DriverIncomeBase],
-            summary="get all companies")
+            summary="get all driver income")
 def get_driver_income(skip: int = 0,
                       limit: int = 100,
                       session: Session = Depends(get_session)):
@@ -219,12 +219,16 @@ def get_driver_income(skip: int = 0,
     return [i.serialize for i in driver_income]
 
 
-@routes.get("/driver-income/{id:path}",
+@routes.get("/driver-income/{crop:path}/{country:path}",
             response_model=DriverIncomeBase,
-            summary="get driver income detail")
-def get_driver_income_by_id(id: int, session: Session = Depends(get_session)):
-    driver_income = crud_driver_income.get_driver_income_by_id(session=session,
-                                                               id=id)
+            summary="get driver income")
+def get_driver_income_detail(
+        crop: int, country: int, session: Session = Depends(get_session)):
+    driver_income = crud_driver_income.get_driver_income_by_crop_and_country(
+        session=session,
+        crop=crop,
+        country=country,
+    )
     if driver_income is None:
         raise HTTPException(status_code=404, detail="driver income not found")
     return driver_income.serialize
