@@ -1,6 +1,6 @@
 from typing import Optional
 from pydantic import BaseModel
-from .models import UserRole
+from .models import UserRole, DriverIncomeStatus
 
 
 class UserBase(BaseModel):
@@ -45,6 +45,28 @@ class CompanyBase(BaseModel):
     living_income_gap: Optional[int] = None
     share_income: Optional[int] = None
     revenue: Optional[int] = None
+
+    class Config:
+        orm_mode = True
+
+
+class DriverIncomeBase(BaseModel):
+    id: int
+    country: int
+    crop: int
+    status: DriverIncomeStatus
+    area: Optional[float] = None
+    price: Optional[float] = None
+    cop_pha: Optional[int] = None
+    cop_pkg: Optional[float] = None
+    efficiency: Optional[int] = None
+    yields: Optional[int] = None
+    diversification: Optional[int] = None
+    revenue: Optional[int] = None
+    total_revenue: Optional[int] = None
+    net_income: Optional[int] = None
+    living_income: Optional[int] = None
+    source: Optional[str] = None
 
     class Config:
         orm_mode = True

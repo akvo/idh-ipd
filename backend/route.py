@@ -3,11 +3,14 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from db import crud_user, crud_country, crud_crop, crud_company, models
+from db import crud_user, crud_country, crud_crop
+from db import crud_company, crud_driver_income
+from db import models
 from db.connection import SessionLocal, engine
 from db.schema import UserBase, CountryBase, CropBase
-from db.schema import CompanyBase
-from db.models import Company, UserRole
+from db.schema import CompanyBase, DriverIncomeBase
+from db.models import Company, DriverIncome
+from db.models import UserRole, DriverIncomeStatus
 import util.params as params
 
 models.Base.metadata.create_all(bind=engine)
@@ -161,3 +164,65 @@ def get_company_by_id(id: int, session: Session = Depends(get_session)):
     if company is None:
         raise HTTPException(status_code=404, detail="company not found")
     return params.with_extra_data(company.serialize)
+
+
+@routes.post("/driver-income/",
+             response_model=DriverIncomeBase,
+             summary="add new driver_income")
+def add_driver_income(country: int,
+                      crop: int,
+                      status: DriverIncomeStatus,
+                      area: float = None,
+                      price: float = None,
+                      cop_pha: int = None,
+                      cop_pkg: float = None,
+                      efficiency: int = None,
+                      yields: int = None,
+                      diversification: int = None,
+                      revenue: int = None,
+                      total_revenue: int = None,
+                      net_income: int = None,
+                      living_income: int = None,
+                      source: str = None,
+                      session: Session = Depends(get_session)):
+    driver_income = crud_driver_income.add_driver_income(
+        session=session,
+        data=DriverIncome(country=country,
+                          crop=crop,
+                          status=status,
+                          area=area,
+                          price=price,
+                          cop_pha=cop_pha,
+                          cop_pkg=cop_pkg,
+                          efficiency=efficiency,
+                          yields=yields,
+                          diversification=diversification,
+                          revenue=revenue,
+                          total_revenue=total_revenue,
+                          net_income=net_income,
+                          living_income=living_income,
+                          source=source))
+    return driver_income.serialize
+
+
+@routes.get("/driver-income/",
+            response_model=List[DriverIncomeBase],
+            summary="get all companies")
+def get_driver_income(skip: int = 0,
+                      limit: int = 100,
+                      session: Session = Depends(get_session)):
+    driver_income = crud_driver_income.get_driver_income(session=session,
+                                                         skip=skip,
+                                                         limit=limit)
+    return [i.serialize for i in driver_income]
+
+
+@routes.get("/driver-income/{id:path}",
+            response_model=DriverIncomeBase,
+            summary="get driver income detail")
+def get_driver_income_by_id(id: int, session: Session = Depends(get_session)):
+    driver_income = crud_driver_income.get_driver_income_by_id(session=session,
+                                                               id=id)
+    if driver_income is None:
+        raise HTTPException(status_code=404, detail="driver income not found")
+    return driver_income.serialize

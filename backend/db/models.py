@@ -2,10 +2,114 @@ from typing import List
 from typing_extensions import TypedDict
 import enum
 from datetime import datetime
-from sqlalchemy import Column, Integer, Float, String, Enum, DateTime
+from sqlalchemy import Column, Integer, Float, String, Text, Enum, DateTime
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 from .connection import Base
+
+# BEGIN DRIVER INCOME
+
+
+class DriverIncomeStatus(enum.Enum):
+    feasible = 'feasible'
+    current = 'current'
+
+
+class DriverIncomeDict(TypedDict):
+    id: int
+    country: int
+    crop: int
+    status: DriverIncomeStatus
+    area: float
+    price: float
+    cop_pha: int
+    cop_pkg: float
+    efficiency: int
+    yields: int
+    diversification: int
+    revenue: int
+    total_revenue: int
+    net_income: int
+    living_income: int
+    source: str
+
+
+class DriverIncome(Base):
+    __tablename__ = "driver_income"
+    id = Column(Integer, primary_key=True, index=True, nullable=True)
+    country = Column(Integer, ForeignKey('country.id'))
+    crop = Column(Integer, ForeignKey('crop.id'))
+    status = Column(Enum(DriverIncomeStatus))
+    area = Column(Float, nullable=True)
+    price = Column(Float, nullable=True)
+    cop_pha = Column(Integer, nullable=True)
+    cop_pkg = Column(Float, nullable=True)
+    efficiency = Column(Integer, nullable=True)
+    yields = Column(Integer, nullable=True)
+    diversification = Column(Integer, nullable=True)
+    revenue = Column(Integer, nullable=True)
+    total_revenue = Column(Integer, nullable=True)
+    net_income = Column(Integer, nullable=True)
+    living_income = Column(Integer, nullable=True)
+    source = Column(Text, nullable=True)
+
+    def __init__(
+        self,
+        country: int,
+        crop: int,
+        status: DriverIncomeStatus,
+        area: float,
+        price: float,
+        cop_pha: int,
+        cop_pkg: float,
+        efficiency: int,
+        yields: int,
+        diversification: int,
+        revenue: int,
+        total_revenue: int,
+        net_income: int,
+        living_income: int,
+        source: str,
+    ):
+        self.country = country
+        self.crop = crop
+        self.status = status
+        self.area = area
+        self.price = price
+        self.cop_pha = cop_pha
+        self.cop_pkg = cop_pkg
+        self.efficiency = efficiency
+        self.yields = yields
+        self.diversification = diversification
+        self.revenue = revenue
+        self.total_revenue = total_revenue
+        self.net_income = net_income
+        self.living_income = living_income
+        self.source = source
+
+    def __repr__(self) -> int:
+        return f"<DriverIncome {self.id}>"
+
+    @property
+    def serialize(self) -> DriverIncomeDict:
+        return {
+            "id": self.id,
+            "country": self.country,
+            "crop": self.crop,
+            "status": self.status,
+            "area": self.area,
+            "price": self.price,
+            "cop_pha": self.cop_pha,
+            "cop_pkg": self.cop_pkg,
+            "efficiency": self.efficiency,
+            "yields": self.yields,
+            "diversification": self.diversification,
+            "revenue": self.revenue,
+            "total_revenue": self.total_revenue,
+            "net_income": self.net_income,
+            "living_income": self.living_income,
+            "source": self.source,
+        }
 
 
 # BEGIN COMPANY

@@ -33,7 +33,8 @@ def upgrade():
         sa.Column('net_income', sa.Integer(), nullable=True),
         sa.Column('living_income', sa.Integer(), nullable=True),
         sa.Column('source', sa.Text(), nullable=True),
-        sa.PrimaryKeyConstraint('id'), sa.UniqueConstraint('country', 'crop'))
+        sa.PrimaryKeyConstraint('id'),
+        sa.UniqueConstraint('country', 'crop', 'status'))
     op.create_index(op.f('ix_driver_income_id'),
                     'driver_income', ['id'],
                     unique=True)
