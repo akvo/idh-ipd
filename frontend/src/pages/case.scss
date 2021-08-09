@@ -6,16 +6,20 @@
     .case-body {
       padding-right: 4rem;
       margin-top: 25px;
+      width: 100%;
     }
   }
   .case-body {
     margin-top: 25px;
     margin-bottom: 50px;
+    width: 100%;
     &.odd {
-      padding: 40px 4rem;
+      padding-bottom: 40px;
+      padding-top: 40px;
     }
     &.even {
-      padding: 40px 4rem;
+      padding-top: 40px;
+      padding-bottom: 40px;
       background: #f2f5fc;
     }
     .case-title {

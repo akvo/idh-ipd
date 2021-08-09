@@ -170,7 +170,12 @@ const Case = ({ history }) => {
               <span>Commodity</span>
             </Col>
             <Col span={4} className="case-title">
-              <Image height={75} src="/icons/coffee.png" />
+              <Image
+                height={75}
+                src={`/icons/${crops
+                  .find((x) => x.id === data.company.crop)
+                  .name.toLowerCase()}.png`}
+              />
             </Col>
           </Row>
           <Row className="case-body" justify="space-between" data-aos="fade-up">
@@ -252,7 +257,12 @@ const Case = ({ history }) => {
           </Menu>
         </Col> */}
         <Col span={24}>
-          <Row className="case-body odd" data-aos="fade-up" gutter={[50, 50]}>
+          <Row
+            className="container case-body odd"
+            data-aos="fade-up"
+            gutter={[50, 50]}
+            style={{ marginLeft: 0, marginRight: 0 }}
+          >
             <Col span={14}>
               {data && (
                 <Chart
@@ -285,7 +295,12 @@ const Case = ({ history }) => {
               </p>
             </Col>
           </Row>
-          <Row className="case-body even" data-aos="fade-up" gutter={[50, 50]}>
+          <Row
+            className="container case-body even"
+            data-aos="fade-up"
+            gutter={[50, 50]}
+            style={{ marginLeft: 0, marginRight: 0 }}
+          >
             <Col span={10} className="case-detail">
               <h3>Other Income</h3>
               <p>
@@ -308,7 +323,12 @@ const Case = ({ history }) => {
               />
             </Col>
           </Row>
-          <Row className="case-body odd" data-aos="fade-up" gutter={[50, 50]}>
+          <Row
+            className="container case-body odd"
+            data-aos="fade-up"
+            gutter={[50, 50]}
+            style={{ marginLeft: 0, marginRight: 0 }}
+          >
             <Col span={14}>
               <Chart
                 key="The living income gap"
