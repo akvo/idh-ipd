@@ -64,6 +64,30 @@ const chartTmp = [
         key: "hh_income",
       },
     ],
+    table: [
+      {
+        section: "comparing-the-living-income-gap",
+        title: "% of total HH income from focus crop",
+        percent: true,
+        column: [
+          {
+            name: "living_income_gap",
+            key: "living_income_gap",
+          },
+        ],
+      },
+      {
+        section: "comparing-the-living-income-gap",
+        title: "Share of households earning an income above the LI benchmark",
+        percent: false,
+        column: [
+          {
+            name: "share_income",
+            key: "share_income",
+          },
+        ],
+      },
+    ],
   },
 ];
 
@@ -84,6 +108,7 @@ const Benchmarking = ({ history }) => {
         .map((x) => x.company)
         .flat()
         .filter((x) => x.crop === company.crop);
+
       const tmp = chartTmp.map((x) => {
         const companyChart = x.chart.map((c) => {
           return {
@@ -99,14 +124,6 @@ const Benchmarking = ({ history }) => {
             value: sumBy(otherInCountry, (v) => v[c.key]),
           };
         });
-
-        if (type === "country") {
-          return {
-            ...x,
-            chart: [...companyChart, ...countryChart],
-          };
-        }
-
         const sectorChart = x.chart.map((c) => {
           return {
             ...c,
@@ -115,9 +132,56 @@ const Benchmarking = ({ history }) => {
           };
         });
 
+        let tableTmp = [];
+        if (x.hasTable) {
+          tableTmp = x.table.map((d) => {
+            const companyTable = d.column.map((t) => {
+              return {
+                ...t,
+                group: company.name,
+                value: company[t.key],
+              };
+            });
+            const countryTable = d.column.map((t) => {
+              return {
+                ...t,
+                group: "Others in Country",
+                value: sumBy(otherInCountry, (v) => v[t.key]),
+              };
+            });
+            const sectorTable = d.column.map((t) => {
+              return {
+                ...t,
+                group: "Others in Sector",
+                value: sumBy(otherInSector, (v) => v[t.key]),
+              };
+            });
+
+            if (type === "country") {
+              return {
+                ...d,
+                column: [...companyTable, ...countryTable],
+              };
+            } else {
+              return {
+                ...d,
+                column: [...companyTable, ...sectorTable],
+              };
+            }
+          });
+        }
+
+        if (type === "country") {
+          return {
+            ...x,
+            chart: [...companyChart, ...countryChart],
+            table: tableTmp,
+          };
+        }
         return {
           ...x,
           chart: [...companyChart, ...sectorChart],
+          table: tableTmp,
         };
       });
       setChart(tmp);
@@ -135,7 +199,7 @@ const Benchmarking = ({ history }) => {
       generateChartData(country, company, compare);
       setLoading(false);
     }
-  }, [loading, countries, generateChartData]);
+  }, [loading, countries, generateChartData, compare]);
 
   const handleOnChangeCompare = (e) => {
     setCompare(e.target.value);
@@ -183,44 +247,44 @@ const Benchmarking = ({ history }) => {
     );
   };
 
-  const renderTable = () => {
-    return (
-      <Row justify="space-between" gutter={[12, 12]}>
+  const renderTable = (table) => {
+    if (!table) {
+      return;
+    }
+
+    return table.map((x, i) => (
+      <Row
+        key={`${x.title}-wrapper`}
+        justify="space-between"
+        gutter={[12, 12]}
+        style={{ marginBottom: "25px" }}
+      >
         <Col span={24}>
           <Card className="compare-card">
             <Card.Grid hoverable={false} style={{ width: "100%" }}>
-              <h4>% of total HH income from focus crop</h4>
+              <h4>{x.title}</h4>
             </Card.Grid>
-            <Card.Grid hoverable={false}>
-              <h4>Company 3</h4>
-              <h3>
-                <CountUp start={0} end={7} duration={2} />%
-              </h3>
-            </Card.Grid>
-            <Card.Grid hoverable={false}>
-              <h4>Others in Kenya</h4>
-              <h3>
-                <CountUp start={0} end={7} duration={2} />%
-              </h3>
-            </Card.Grid>
-            <Card.Grid hoverable={false}>
-              <h4>Others in Sector</h4>
-              <h3>
-                <CountUp start={0} end={7} duration={2} />%
-              </h3>
-            </Card.Grid>
-          </Card>
-        </Col>
-        <Col span={24}>
-          <Card className="compare-card">
-            <h4>
-              Share of households earning an income above the LI benchmark
-            </h4>
-            <h3>N.A.</h3>
+            {x.column.map((c, i) => (
+              <Card.Grid
+                key={`${c.group}-${i}`}
+                hoverable={false}
+                style={{ width: "50%" }}
+              >
+                <h4>{c.group}</h4>
+                <h3>
+                  {c.value ? (
+                    <CountUp start={0} end={c.value} duration={2} />
+                  ) : (
+                    "N.A."
+                  )}
+                  {c.percent ? "%" : ""}
+                </h3>
+              </Card.Grid>
+            ))}
           </Card>
         </Col>
       </Row>
-    );
+    ));
   };
 
   const renderChart = () => {
@@ -246,7 +310,7 @@ const Benchmarking = ({ history }) => {
               <Col span="12" className="compare-body">
                 <h3>{c.title}</h3>
                 <p>{c.description}</p>
-                {c.hasTable && renderTable()}
+                {c.hasTable && renderTable(c?.table)}
               </Col>
             </Row>
           );
@@ -261,7 +325,7 @@ const Benchmarking = ({ history }) => {
             <Col span="12" className="compare-body">
               <h3>{c.title}</h3>
               <p>{c.description}</p>
-              {c.hasTable && renderTable()}
+              {c.hasTable && renderTable(c?.table)}
             </Col>
             <Col span="12">
               <Chart
