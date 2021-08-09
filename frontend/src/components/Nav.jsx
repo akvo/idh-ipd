@@ -9,7 +9,7 @@ const Nav = ({ logout, loginWithPopup, isAuthenticated }) => {
 
   const handleOnClickMenu = ({ key }) => {
     UIStore.update((s) => {
-      s.page = key;
+      s.page = key === "auth" ? "introduction" : key;
     });
   };
 
@@ -19,23 +19,30 @@ const Nav = ({ logout, loginWithPopup, isAuthenticated }) => {
       mode="horizontal"
       selectedKeys={[page]}
       onClick={handleOnClickMenu}
+      style={{
+        minWidth: isAuthenticated ? "680px" : "100px",
+      }}
     >
       <Menu.Item key="introduction">
         <Link to="/">Introduction</Link>
       </Menu.Item>
-      <Menu.Item key="data-map">
-        <Link to="/data-map">Data Map</Link>
-      </Menu.Item>
-      <Menu.Item key="case">
-        <Link to="/case">Case</Link>
-      </Menu.Item>
-      <Menu.Item key="benchmarking">
-        <Link to="/benchmarking">Benchmarking</Link>
-      </Menu.Item>
-      <Menu.Item key="income-driver-tool">
-        <Link to="/income-driver-tool">Income Driver Tool</Link>
-      </Menu.Item>
-      <Menu.Item key="login">
+      {isAuthenticated && (
+        <>
+          <Menu.Item key="data-map">
+            <Link to="/data-map">Data Map</Link>
+          </Menu.Item>
+          <Menu.Item key="case">
+            <Link to="/case">Case</Link>
+          </Menu.Item>
+          <Menu.Item key="benchmarking">
+            <Link to="/benchmarking">Benchmarking</Link>
+          </Menu.Item>
+          <Menu.Item key="income-driver-tool">
+            <Link to="/income-driver-tool">Income Driver Tool</Link>
+          </Menu.Item>
+        </>
+      )}
+      <Menu.Item key="auth">
         {isAuthenticated ? (
           <Link to="/" onClick={logout}>
             Logout

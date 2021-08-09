@@ -1,7 +1,7 @@
 import { Store } from "pullstate";
 
 const defaultState = {
-  page: "login",
+  page: "introduction",
   user: null,
   countries: [],
   companies: [],

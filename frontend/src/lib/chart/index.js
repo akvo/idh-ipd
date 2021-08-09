@@ -9,7 +9,7 @@ import LineStack from "./LineStack";
 import Line from "./Line";
 import { titleCase } from "../util";
 
-export const generateOptions = ({ type, data }, extra) => {
+export const generateOptions = ({ type, data }, extra, axis) => {
   switch (type) {
     case "PIE":
       return Pie(data, extra);
@@ -18,7 +18,7 @@ export const generateOptions = ({ type, data }, extra) => {
     case "BARSTACK":
       return BarStack(data, extra);
     case "BARGROUP":
-      return BarGroup(data, extra);
+      return BarGroup(data, extra, axis);
     case "LINE":
       return Line(data, extra);
     case "LINESTACK":
@@ -36,8 +36,9 @@ const Chart = ({
   data,
   extra = {},
   wrapper = true,
+  axis = null,
 }) => {
-  const option = generateOptions({ type: type, data: data }, extra);
+  const option = generateOptions({ type: type, data: data }, extra, axis);
   if (wrapper) {
     return (
       <Col span={span} style={{ height: height }}>

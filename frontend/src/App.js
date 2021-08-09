@@ -20,6 +20,7 @@ import Doc from "./pages/Doc";
 import { UIStore } from "./data/store";
 import { titleCase } from "./lib/util";
 import { useAuth0 } from "@auth0/auth0-react";
+import api from "./lib/api";
 
 const history = createBrowserHistory();
 const { Header, Content, Footer } = Layout;
@@ -37,32 +38,41 @@ function App() {
 
   useEffect(() => {
     document.title = titleCase(page, "-");
-    if (page !== "case") {
-      UIStore.update((s) => {
-        s.selectedCountry = null;
-      });
-    }
-  }, [page]);
-
-  useEffect(() => {
     (async function () {
       const response = await getIdTokenClaims();
       if (isAuthenticated) {
-        UIStore.update((s) => {
-          s.user = { token: response.__raw, ...user };
-        });
+        api
+          .get("/country-company")
+          .then((res) => res.data)
+          .then((country) => {
+            api
+              .get("/crop/?skip=0&limit=100")
+              .then((res) => res.data)
+              .then((crop) => {
+                UIStore.update((c) => {
+                  c.countries = country;
+                  c.crops = crop;
+                  c.selectedCountry = page === "case" ? null : page;
+                  c.user = user;
+                });
+              });
+          });
+        api.setToken(response.__raw);
       }
     })();
-  }, [getIdTokenClaims, isAuthenticated, loginWithPopup, user]);
-
-  console.log(userData);
+  }, [getIdTokenClaims, isAuthenticated, loginWithPopup, user, page]);
 
   AOS.init();
   return (
     <Router history={history}>
       <Layout className="layout">
         <Header style={{ position: "fixed", zIndex: 2, width: "100%" }}>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
             <Link to="/">
               <div className="logo" />
             </Link>
@@ -74,7 +84,7 @@ function App() {
           </div>
         </Header>
         <Content>
-          <ProtectedRoute exact path="/" component={Introduction} />
+          <Route exact path="/" component={Introduction} />
           <ProtectedRoute exact path="/data-map" component={DataMap} />
           <ProtectedRoute exact path="/case" component={Case} />
           <ProtectedRoute exact path="/benchmarking" component={Benchmarking} />
@@ -84,11 +94,11 @@ function App() {
             component={IncomeDriverTool}
           />
           <Route exact path="/docs" component={Doc} />
-          <Route
+          {/* <Route
             exact
             path="/register"
             render={(props) => <Register {...props} />}
-          />
+          /> */}
         </Content>
         <Footer className={`footer ${!user && "fixed"}`}>
           IDH - IPD ©2021 Created by Akvo |{" "}

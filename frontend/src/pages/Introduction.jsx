@@ -13,21 +13,12 @@ const Introduction = ({ history }) => {
 
   useEffect(() => {
     if (loading) {
-      // load data
-      api.get("/country-company").then((res) => {
-        UIStore.update((s) => {
-          s.countries = res.data;
-        });
-      });
-      api.get("/crop/?skip=0&limit=100").then((res) => {
-        UIStore.update((s) => {
-          s.crops = res.data;
-        });
-      });
-      UIStore.update((s) => {
-        s.page = "introduction";
-      });
-      setLoading(false);
+      // UIStore.update((s) => {
+      //   s.page = "introduction";
+      // });
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
     }
   }, [loading]);
 
