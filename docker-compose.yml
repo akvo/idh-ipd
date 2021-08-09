@@ -5,6 +5,8 @@ services:
     image: alpine:3.14.0
     command: ["tail", "-f", "/dev/null"]
   db:
+    ports:
+      - 5432:5432
     image: postgres:12-alpine
     environment:
       - POSTGRES_PASSWORD=password
