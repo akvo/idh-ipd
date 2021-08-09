@@ -27,17 +27,20 @@ const { Header, Content, Footer } = Layout;
 function App() {
   const {
     isAuthenticated,
-    getIdTokenClaims,
     loginWithPopup,
     logout,
     user,
+    getAccessTokenSilently,
   } = useAuth0();
   const page = UIStore.useState((s) => s.page);
 
   useEffect(() => {
     document.title = titleCase(page, "-");
     (async function () {
-      const response = await getIdTokenClaims();
+      const response = await getAccessTokenSilently({
+        audience: "ipd-backend",
+        scope: "read:users",
+      });
       if (isAuthenticated) {
         api
           .get("/country-company")
@@ -55,10 +58,17 @@ function App() {
                 });
               });
           });
-        api.setToken(response?.__raw);
+        api.setToken(response);
+        /*
+        setTimeout(() => {
+          api.get("/secure").then((x) => {
+            console.log(x.email);
+          });
+        }, 1000);
+        */
       }
     })();
-  }, [getIdTokenClaims, isAuthenticated, loginWithPopup, user, page]);
+  }, [getAccessTokenSilently, isAuthenticated, loginWithPopup, user, page]);
 
   AOS.init();
   return (

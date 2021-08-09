@@ -10,8 +10,6 @@ ReactDOM.render(
     domain="idh-ipd.eu.auth0.com"
     clientId="99w2F1wVLZq8GqJwZph1kE42GuAZFvlF"
     redirectUri={window.location.origin}
-    audience="https://idh-ipd.eu.auth0.com/api/v2/"
-    scope="read:users"
   >
     <React.StrictMode>
       <App />
