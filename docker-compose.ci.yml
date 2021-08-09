@@ -8,7 +8,6 @@ services:
       - 3000:3000
       - 5000:5000
       - 5050:5050
-      - 5432:5432
   db:
     network_mode: service:mainnetwork
     command: "postgres -c 'shared_buffers=128MB' -c 'fsync=off' -c 'synchronous_commit=off' -c 'full_page_writes=off' -c 'max_connections=100' -c 'bgwriter_lru_maxpages=0' -c 'client_min_messages=warning'"
@@ -23,7 +22,7 @@ services:
     image: eu.gcr.io/akvo-lumen/idh-ipd/backend:latest
     command: ["sh", "run.sh"]
     environment:
-      - DATABASE_URL=postgresql://ipd:password@localhost:5432/idh_ipd
+      - DATABASE_URL=postgresql://ipd:password@db:5432/idh_ipd
   ci:
     network_mode: service:mainnetwork
     image: alpine:3.14
