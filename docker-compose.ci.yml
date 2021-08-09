@@ -19,6 +19,7 @@ services:
     command: ["sh", "run.sh"]
     environment:
       - DATABASE_URL=postgresql://ipd:password@db:5432/idh_ipd
+      - SKIP_MIGRATION=yes
   ci:
     network_mode: service:mainnetwork
     image: alpine:3.14

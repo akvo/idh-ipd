@@ -44,9 +44,6 @@ spec:
                 secretKeyRef:
                   name: idh-ipd
                   key: database-url
-          env:
-            - name: RUN_MIGRATION
-              value: "true"
           readinessProbe:
             httpGet:
               path: /health-check
