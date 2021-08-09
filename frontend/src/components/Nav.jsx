@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import { UIStore } from "../data/store";
 
-const Nav = () => {
+const Nav = ({ logout, loginWithPopup, isAuthenticated }) => {
   const page = UIStore.useState((s) => s.page);
 
   const handleOnClickMenu = ({ key }) => {
@@ -34,6 +34,17 @@ const Nav = () => {
       </Menu.Item>
       <Menu.Item key="income-driver-tool">
         <Link to="/income-driver-tool">Income Driver Tool</Link>
+      </Menu.Item>
+      <Menu.Item key="login">
+        {isAuthenticated ? (
+          <Link to="/" onClick={logout}>
+            Logout
+          </Link>
+        ) : (
+          <Link to="/" onClick={loginWithPopup}>
+            Login
+          </Link>
+        )}
       </Menu.Item>
     </Menu>
   );

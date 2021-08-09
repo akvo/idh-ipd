@@ -9,7 +9,6 @@ import "aos/dist/aos.css";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import Nav from "./components/Nav";
-import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Introduction from "./pages/Introduction";
 import DataMap from "./pages/DataMap";
@@ -20,21 +19,43 @@ import Doc from "./pages/Doc";
 
 import { UIStore } from "./data/store";
 import { titleCase } from "./lib/util";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const history = createBrowserHistory();
 const { Header, Content, Footer } = Layout;
 
 function App() {
-  const user = UIStore.useState((s) => s.user);
+  const {
+    isAuthenticated,
+    getIdTokenClaims,
+    loginWithPopup,
+    logout,
+    user,
+  } = useAuth0();
+  const userData = UIStore.useState((s) => s.user);
   const page = UIStore.useState((s) => s.page);
 
   useEffect(() => {
     document.title = titleCase(page, "-");
-    page !== "case" &&
+    if (page !== "case") {
       UIStore.update((s) => {
         s.selectedCountry = null;
       });
+    }
   }, [page]);
+
+  useEffect(() => {
+    (async function () {
+      const response = await getIdTokenClaims();
+      if (isAuthenticated) {
+        UIStore.update((s) => {
+          s.user = { token: response.__raw, ...user };
+        });
+      }
+    })();
+  }, [getIdTokenClaims, isAuthenticated, loginWithPopup, user]);
+
+  console.log(userData);
 
   AOS.init();
   return (
@@ -45,7 +66,11 @@ function App() {
             <Link to="/">
               <div className="logo" />
             </Link>
-            {user && <Nav />}
+            <Nav
+              loginWithPopup={loginWithPopup}
+              isAuthenticated={isAuthenticated}
+              logout={logout}
+            />
           </div>
         </Header>
         <Content>
@@ -59,7 +84,6 @@ function App() {
             component={IncomeDriverTool}
           />
           <Route exact path="/docs" component={Doc} />
-          <Route exact path="/login" render={(props) => <Login {...props} />} />
           <Route
             exact
             path="/register"
