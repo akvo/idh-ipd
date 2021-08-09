@@ -20,10 +20,9 @@ services:
       - db
   backend:
     environment:
-      - AUTH0_DOMAIN="${IPD_AUTH0_DOMAIN}"
-      - AUTH0_CLIENT_ID="${IPD_AUTH0_CLIENT_ID}"
-      - AUTH0_SECRET="${IPD_AUTH0_SECRET}"
-      - AUTH0_AUDIENCE="${IPD_AUTH0_AUDIENCE}"
-
+      - AUTH0_DOMAIN=$IPD_AUTH0_DOMAIN
+      - AUTH0_CLIENT_ID=$IPD_AUTH0_CLIENT_ID
+      - AUTH0_AUDIENCE=$IPD_AUTH0_AUDIENCE
+      - AUTH0_SECRET=$IPD_AUTH0_SECRET
 volumes:
   pg-admin-data:
