@@ -17,12 +17,13 @@ from db.models import UserRole, DriverIncomeStatus
 import util.params as params
 import requests as r
 from fastapi_auth0 import Auth0, Auth0User
-from os import environ
+from os import environ, path
 
 AUTH0_DOMAIN = environ['AUTH0_DOMAIN']
 AUTH0_CLIENT_ID = environ['AUTH0_CLIENT_ID']
 AUTH0_SECRET = environ['AUTH0_SECRET']
 AUTH0_AUDIENCE = environ['AUTH0_AUDIENCE']
+TOKEN_TMP = "./tmp/token.txt"
 
 
 class CustomAuth0User(Auth0User):
@@ -38,8 +39,11 @@ models.Base.metadata.create_all(bind=engine)
 routes = APIRouter()
 
 
-def validate_user_by_id(USER_ID, refresh=True):
+def validate_user_by_id(USER_ID, refresh=False):
     access_token = None
+    if path.exists(TOKEN_TMP) and not refresh:
+        with open(TOKEN_TMP, 'r') as access:
+            access_token = access.read()
     if refresh:
         data = {
             "client_id": AUTH0_CLIENT_ID,
@@ -50,11 +54,15 @@ def validate_user_by_id(USER_ID, refresh=True):
         access_token = r.post(f"https://{AUTH0_DOMAIN}/oauth/token", data=data)
         access_token = access_token.json()
         access_token = access_token['access_token']
-        with open('./tmp/token.txt', 'w') as access:
+        with open(TOKEN_TMP, 'w') as access:
             access.write(access_token)
     user = r.get(f"https://idh-ipd.eu.auth0.com/api/v2/users/{USER_ID}",
                  headers={"Authorization": "Bearer {}".format(access_token)})
-    return user.json()
+    if user.status_code == 200:
+        return user.json()
+    if user.status_code == 401:
+        validate_user_by_id(USER_ID, True)
+    return False
 
 
 def get_session():
@@ -65,9 +73,11 @@ def get_session():
         session.close()
 
 
-@routes.get("/secure", dependencies=[Depends(auth.implicit_scheme)])
+@routes.get("/secure", dependencies=[Depends(auth.implicit_scheme)], tags=["Secure"])
 async def get_secure(user: CustomAuth0User = Security(auth.get_user)):
     data = validate_user_by_id(user.id)
+    if not data:
+        raise HTTPException(status_code=404, detail="User not found")
     return data
 
 
