@@ -20,6 +20,10 @@ services:
     environment:
       - DATABASE_URL=postgresql://ipd:password@db:5432/idh_ipd
       - SKIP_MIGRATION=yes
+      - AUTH0_DOMAIN
+      - AUTH0_CLIENT_ID
+      - AUTH0_SECRET
+      - AUTH0_AUDIENCE
   ci:
     network_mode: service:mainnetwork
     image: alpine:3.14
