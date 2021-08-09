@@ -43,7 +43,7 @@ const BarGroup = (data, extra, axis) => {
       align: "auto",
       orient: "horizontal",
       textStyle: {
-        fontFamily: "Roboto",
+        fontFamily: "Gotham A,Gotham B",
         fontWeight: "bold",
         fontSize: 12,
       },
@@ -58,7 +58,7 @@ const BarGroup = (data, extra, axis) => {
       show: true,
       label: {
         color: "#222",
-        fontFamily: "Roboto",
+        fontFamily: "Gotham A,Gotham B",
       },
     },
     tooltip: {
@@ -79,7 +79,7 @@ const BarGroup = (data, extra, axis) => {
           },
         },
         axisLabel: {
-          fontFamily: "Roboto",
+          fontFamily: "Gotham A,Gotham B",
           fontSize: 12,
           color: "#222",
         },
@@ -94,7 +94,7 @@ const BarGroup = (data, extra, axis) => {
         inside: false,
         backgroundColor: "#f2f2f2",
         padding: 5,
-        fontFamily: "Roboto",
+        fontFamily: "Gotham A,Gotham B",
         fontSize: 12,
       },
       axisLine: { show: false },
