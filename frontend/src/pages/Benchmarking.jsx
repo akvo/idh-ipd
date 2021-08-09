@@ -76,7 +76,7 @@ const Benchmarking = ({ history }) => {
   const [chart, setChart] = useState(null);
 
   const generateChartData = useCallback(
-    (country, company) => {
+    (country, company, type) => {
       const otherInCountry = country.company.filter(
         (x) => x.company !== company.id
       );
@@ -99,6 +99,14 @@ const Benchmarking = ({ history }) => {
             value: sumBy(otherInCountry, (v) => v[c.key]),
           };
         });
+
+        if (type === "country") {
+          return {
+            ...x,
+            chart: [...companyChart, ...countryChart],
+          };
+        }
+
         const sectorChart = x.chart.map((c) => {
           return {
             ...c,
@@ -106,9 +114,10 @@ const Benchmarking = ({ history }) => {
             value: sumBy(otherInSector, (v) => v[c.key]),
           };
         });
+
         return {
           ...x,
-          chart: [...companyChart, ...countryChart, ...sectorChart],
+          chart: [...companyChart, ...sectorChart],
         };
       });
       setChart(tmp);
@@ -123,15 +132,20 @@ const Benchmarking = ({ history }) => {
       const company = countriesHasCompany[0]?.company[0];
       setDefCountry(country);
       setDefCompany(company);
-      generateChartData(country, company);
+      generateChartData(country, company, compare);
       setLoading(false);
     }
   }, [loading, countries, generateChartData]);
 
+  const handleOnChangeCompare = (e) => {
+    setCompare(e.target.value);
+    generateChartData(defCountry, defCompany, e.target.value);
+  };
+
   const handleOnChangeCompany = (value) => {
     const company = defCountry.company.find((x) => x.id === value);
     setDefCompany(company);
-    setLoading(true);
+    generateChartData(defCountry, company, compare);
   };
 
   const handleOnChangeCountry = (value) => {
@@ -279,7 +293,7 @@ const Benchmarking = ({ history }) => {
         <Col span={5} className="compare-options-body">
           <span className="text">Compare with</span>
           <Radio.Group
-            onChange={(e) => setCompare(e.target.value)}
+            onChange={(e) => handleOnChangeCompare(e)}
             defaultValue={compare}
             buttonStyle="solid"
           >

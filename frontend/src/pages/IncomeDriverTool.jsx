@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Row, Col, Select } from "antd";
 
 import "./incomedrivertool.scss";
@@ -59,6 +59,31 @@ const IncomeDriverTool = ({ history }) => {
   const [data, setData] = useState(null);
   const [chart, setChart] = useState(null);
 
+  const generateChartData = useCallback(
+    (country, company) => {
+      setLoading(true);
+      const filter = data.filter(
+        (x) => x.country === country?.id && x.crop === company?.crop
+      );
+      const chartData = chartTmp.map((d) => {
+        const tmp = filter.map((x) => {
+          return {
+            group: d.axis.yAxis,
+            name: x[d.name],
+            value: x[d.key],
+          };
+        });
+        return {
+          ...d,
+          data: tmp,
+        };
+      });
+      setChart(chartData);
+      setLoading(false);
+    },
+    [data]
+  );
+
   useEffect(() => {
     if (loading) {
       const countriesHasCompany = countries.filter((x) => x.company.length > 0);
@@ -75,31 +100,9 @@ const IncomeDriverTool = ({ history }) => {
     }
 
     if (data && defCompany) {
-      generateData(defCountry, defCompany);
+      generateChartData(defCountry, defCompany);
     }
-  }, [loading, countries, data, defCompany]);
-
-  const generateData = (country, company) => {
-    setLoading(true);
-    const filter = data.filter(
-      (x) => x.country === country?.id && x.crop === company?.crop
-    );
-    const chartData = chartTmp.map((d) => {
-      const tmp = filter.map((x) => {
-        return {
-          group: d.axis.yAxis,
-          name: x[d.name],
-          value: [x[d.key]],
-        };
-      });
-      return {
-        ...d,
-        data: tmp,
-      };
-    });
-    setChart(chartData);
-    setLoading(false);
-  };
+  }, [loading, countries, data, defCountry, defCompany, generateChartData]);
 
   const handleOnChangeCompany = (value) => {
     const company = defCountry.company.find((x) => x.id === value);
