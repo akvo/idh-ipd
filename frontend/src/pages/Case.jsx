@@ -102,7 +102,7 @@ const Case = ({ history }) => {
       return {
         group: group,
         name: x,
-        value: [data.company[x]],
+        value: data.company[x],
       };
     });
   };
@@ -261,8 +261,8 @@ const Case = ({ history }) => {
                   type="BARSTACK"
                   height={350}
                   data={generateChartData(
-                    ["revenue", "prod_cost"],
-                    "net_income"
+                    ["revenue", "prod_cost", "net_income"],
+                    data.name
                   )}
                   wrapper={false}
                 />
@@ -303,7 +303,7 @@ const Case = ({ history }) => {
                 title="Other income"
                 height={350}
                 type="BARSTACK"
-                data={generateChartData(["other_income"], "other_income")}
+                data={generateChartData(["other_income"], data.name)}
                 wrapper={false}
               />
             </Col>
@@ -321,7 +321,7 @@ const Case = ({ history }) => {
                     "living_income_gap",
                     "hh_income",
                   ],
-                  "living_income_gap"
+                  data.name
                 )}
                 wrapper={false}
               />

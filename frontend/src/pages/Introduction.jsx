@@ -6,16 +6,15 @@ import "./introduction.scss";
 import Loading from "../components/Loading";
 
 import { UIStore } from "../data/store";
-import api from "../lib/api";
 
 const Introduction = ({ history }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (loading) {
-      // UIStore.update((s) => {
-      //   s.page = "introduction";
-      // });
+      UIStore.update((s) => {
+        s.page = "introduction";
+      });
       setTimeout(() => {
         setLoading(false);
       }, 500);

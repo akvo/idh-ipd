@@ -1,6 +1,6 @@
 import { Easing, Color, TextStyle, backgroundColor } from "./chart-style.js";
 import uniq from "lodash/uniq";
-import groupBy from "lodash/groupBy";
+import _ from "lodash";
 import sortBy from "lodash/sortBy";
 
 const BarStack = (data, extra) => {
@@ -18,20 +18,22 @@ const BarStack = (data, extra) => {
 
   let xAxis = uniq(data.map((x) => x.group));
   let legends = uniq(data.map((x) => x.name));
-  let series = data.map((x, i) => {
-    return {
-      name: x.name,
-      label: {
-        show: true,
-        position: "inside",
-      },
-      barWidth:
-        Object.keys(groupBy(data, (x) => x.group)).length === 1 ? 200 : 50,
-      stack: x.group,
-      type: "bar",
-      data: x.value,
-    };
-  });
+  let series = _.chain(data)
+    .groupBy("name")
+    .map((x, i) => {
+      return {
+        name: i,
+        label: {
+          show: true,
+          position: "inside",
+        },
+        barWidth: 50,
+        stack: "t",
+        type: "bar",
+        data: x.map((v) => v.value),
+      };
+    })
+    .value();
   series = sortBy(series, "name");
   let option = {
     ...Color,
@@ -63,7 +65,7 @@ const BarStack = (data, extra) => {
     },
     tooltip: {
       trigger: "item",
-      formatter: "{a}: {c}",
+      formatter: "{b}: {c}",
       backgroundColor: "#ffffff",
       ...TextStyle,
     },

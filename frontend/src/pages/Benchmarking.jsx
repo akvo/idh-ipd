@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Row, Col, Select, Radio, Card } from "antd";
 import CountUp from "react-countup";
 
@@ -9,6 +9,7 @@ import Loading from "../components/Loading";
 
 import { UIStore } from "../data/store";
 import sortBy from "lodash/sortBy";
+import sumBy from "lodash/sumBy";
 
 const { Option } = Select;
 
@@ -18,14 +19,51 @@ const chartTmp = [
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam libero dolor, pellentesque et luctus et, finibus ac elit. Curabitur vehicula lacus placerat diam eleifend, nec ultrices neque interdum. Sed varius, libero nec sagittis aliquet, diam eros ultricies tellus, quis convallis nibh neque sed dui. In ut neque eget dui faucibus.",
     hasTable: false,
-    chart: [],
+    chart: [
+      {
+        section: "comparing-net-income",
+        name: "net_income",
+        key: "net_income",
+      },
+      {
+        section: "comparing-net-income",
+        name: "revenue",
+        key: "revenue",
+      },
+      {
+        section: "comparing-net-income",
+        name: "prod_cost",
+        key: "prod_cost",
+      },
+    ],
   },
   {
     title: "Comparing the Living Income gap",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam libero dolor, pellentesque et luctus et, finibus ac elit. Curabitur vehicula lacus placerat diam eleifend, nec ultrices neque interdum. Sed varius, libero nec sagittis aliquet, diam eros ultricies tellus, quis convallis nibh neque sed dui. In ut neque eget dui faucibus.",
     hasTable: true,
-    chart: [],
+    chart: [
+      {
+        section: "comparing-the-living-income-gap",
+        name: "other_income",
+        key: "other_income",
+      },
+      {
+        section: "comparing-the-living-income-gap",
+        name: "living_income",
+        key: "living_income",
+      },
+      {
+        section: "comparing-the-living-income-gap",
+        name: "living_income_gap",
+        key: "living_income_gap",
+      },
+      {
+        section: "comparing-the-living-income-gap",
+        name: "hh_income",
+        key: "hh_income",
+      },
+    ],
   },
 ];
 
@@ -35,8 +73,48 @@ const Benchmarking = ({ history }) => {
   const [defCountry, setDefCountry] = useState(null);
   const [defCompany, setDefCompany] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState(null);
   const [chart, setChart] = useState(null);
+
+  const generateChartData = useCallback(
+    (country, company) => {
+      const otherInCountry = country.company.filter(
+        (x) => x.company !== company.id
+      );
+      const otherInSector = countries
+        .map((x) => x.company)
+        .flat()
+        .filter((x) => x.crop === company.crop);
+      const tmp = chartTmp.map((x) => {
+        const companyChart = x.chart.map((c) => {
+          return {
+            ...c,
+            group: company.name,
+            value: company[c.key],
+          };
+        });
+        const countryChart = x.chart.map((c) => {
+          return {
+            ...c,
+            group: "Others in Country",
+            value: sumBy(otherInCountry, (v) => v[c.key]),
+          };
+        });
+        const sectorChart = x.chart.map((c) => {
+          return {
+            ...c,
+            group: "Others in Sector",
+            value: sumBy(otherInSector, (v) => v[c.key]),
+          };
+        });
+        return {
+          ...x,
+          chart: [...companyChart, ...countryChart, ...sectorChart],
+        };
+      });
+      setChart(tmp);
+    },
+    [countries]
+  );
 
   useEffect(() => {
     if (loading) {
@@ -45,21 +123,15 @@ const Benchmarking = ({ history }) => {
       const company = countriesHasCompany[0]?.company[0];
       setDefCountry(country);
       setDefCompany(company);
-      setTimeout(() => {
-        setLoading(false);
-      }, 500);
+      generateChartData(country, company);
+      setLoading(false);
     }
-
-    if (defCompany) {
-      setChart(chartTmp);
-      console.log(defCountry);
-      // generateData(defCountry, defCompany);
-    }
-  }, [loading, countries, data, defCompany]);
+  }, [loading, countries, generateChartData]);
 
   const handleOnChangeCompany = (value) => {
     const company = defCountry.company.find((x) => x.id === value);
     setDefCompany(company);
+    setLoading(true);
   };
 
   const handleOnChangeCountry = (value) => {
@@ -143,11 +215,17 @@ const Benchmarking = ({ history }) => {
       chart.map((c, i) => {
         if (i % 2 === 0) {
           return (
-            <Row className="compare-wrapper" data-aos="fade-up">
+            <Row
+              key={`${c.title}-${i}-wrapper`}
+              className="compare-wrapper"
+              data-aos="fade-up"
+              gutter={[50, 50]}
+            >
               <Col span="12">
                 <Chart
                   key={`${c.title}-${i}`}
                   type="BARSTACK"
+                  data={c.chart}
                   wrapper={false}
                 />
               </Col>
@@ -160,14 +238,24 @@ const Benchmarking = ({ history }) => {
           );
         }
         return (
-          <Row className="compare-wrapper" data-aos="fade-up">
+          <Row
+            key={`${c.title}-${i}-wrapper`}
+            className="compare-wrapper"
+            data-aos="fade-up"
+            gutter={[50, 50]}
+          >
             <Col span="12" className="compare-body">
               <h3>{c.title}</h3>
               <p>{c.description}</p>
               {c.hasTable && renderTable()}
             </Col>
             <Col span="12">
-              <Chart key={`${c.title}-${i}`} type="BARSTACK" wrapper={false} />
+              <Chart
+                key={`${c.title}-${i}`}
+                type="BARSTACK"
+                data={c.chart}
+                wrapper={false}
+              />
             </Col>
           </Row>
         );
@@ -182,7 +270,12 @@ const Benchmarking = ({ history }) => {
   return (
     <div className="container">
       {/* // Option */}
-      <Row justify="end" className="compare-options-wrapper" data-aos="fade-up">
+      <Row
+        justify="end"
+        className="compare-options-wrapper"
+        data-aos="fade-up"
+        gutter={[14, 12]}
+      >
         <Col span={5} className="compare-options-body">
           <span className="text">Compare with</span>
           <Radio.Group

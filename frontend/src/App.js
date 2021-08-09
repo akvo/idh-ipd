@@ -9,7 +9,6 @@ import "aos/dist/aos.css";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import Nav from "./components/Nav";
-import Register from "./pages/Register";
 import Introduction from "./pages/Introduction";
 import DataMap from "./pages/DataMap";
 import Case from "./pages/Case";
@@ -33,7 +32,6 @@ function App() {
     logout,
     user,
   } = useAuth0();
-  const userData = UIStore.useState((s) => s.user);
   const page = UIStore.useState((s) => s.page);
 
   useEffect(() => {
@@ -94,11 +92,6 @@ function App() {
             component={IncomeDriverTool}
           />
           <Route exact path="/docs" component={Doc} />
-          {/* <Route
-            exact
-            path="/register"
-            render={(props) => <Register {...props} />}
-          /> */}
         </Content>
         <Footer className={`footer ${!user && "fixed"}`}>
           IDH - IPD ©2021 Created by Akvo |{" "}
