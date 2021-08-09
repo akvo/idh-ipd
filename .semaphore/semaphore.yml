@@ -11,6 +11,7 @@ blocks:
       secrets:
         - name: GCP
         - name: docker-hub-credentials
+        - name: idh-ipd
       prologue:
         commands:
           - echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin

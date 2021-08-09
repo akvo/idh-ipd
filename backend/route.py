@@ -1,6 +1,7 @@
+from pydantic import Field
 from typing import List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Security
 from sqlalchemy.orm import Session
 
 from db import crud_user, crud_country, crud_crop
@@ -14,9 +15,46 @@ from db.schema import CropCompanyBase
 from db.models import Company, DriverIncome
 from db.models import UserRole, DriverIncomeStatus
 import util.params as params
+import requests as r
+from fastapi_auth0 import Auth0, Auth0User
+from os import environ
+
+AUTH0_DOMAIN = environ['AUTH0_DOMAIN']
+AUTH0_CLIENT_ID = environ['AUTH0_CLIENT_ID']
+AUTH0_SECRET = environ['AUTH0_SECRET']
+AUTH0_AUDIENCE = environ['AUTH0_AUDIENCE']
+
+
+class CustomAuth0User(Auth0User):
+    email: Optional[str] = Field(None, alias='grand-type')
+
+
+auth = Auth0(domain=AUTH0_DOMAIN,
+             api_audience="ipd-backend",
+             auth0user_model=CustomAuth0User,
+             scopes={"read:users": "OK"})
 
 models.Base.metadata.create_all(bind=engine)
 routes = APIRouter()
+
+
+def validate_user_by_id(USER_ID, refresh=True):
+    access_token = None
+    if refresh:
+        data = {
+            "client_id": AUTH0_CLIENT_ID,
+            "client_secret": AUTH0_SECRET,
+            "audience": AUTH0_AUDIENCE,
+            "grant_type": "client_credentials"
+        }
+        access_token = r.post(f"https://{AUTH0_DOMAIN}/oauth/token", data=data)
+        access_token = access_token.json()
+        access_token = access_token['access_token']
+        with open('./tmp/token.txt', 'w') as access:
+            access.write(access_token)
+    user = r.get(f"https://idh-ipd.eu.auth0.com/api/v2/users/{USER_ID}",
+                 headers={"Authorization": "Bearer {}".format(access_token)})
+    return user.json()
 
 
 def get_session():
@@ -25,6 +63,12 @@ def get_session():
         yield session
     finally:
         session.close()
+
+
+@routes.get("/secure", dependencies=[Depends(auth.implicit_scheme)])
+async def get_secure(user: CustomAuth0User = Security(auth.get_user)):
+    data = validate_user_by_id(user.id)
+    return data
 
 
 @routes.post("/user/",
@@ -274,5 +318,3 @@ def read_main():
 @routes.get("/health-check", tags=["Dev"])
 def health_check():
     return "OK"
-
-

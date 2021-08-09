@@ -44,6 +44,26 @@ spec:
                 secretKeyRef:
                   name: idh-ipd
                   key: database-url
+            - name: AUTH0_AUDIENCE
+              valueFrom:
+                secretKeyRef:
+                  name: idh-ipd
+                  key: auth0-audience
+            - name: AUTH0_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: idh-ipd
+                  key: auth0-secret
+            - name: AUTH0_DOMAIN
+              valueFrom:
+                secretKeyRef:
+                  name: idh-ipd
+                  key: auth0-domain
+            - name: AUTH0_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: idh-ipd
+                  key: auth0-client-id
           readinessProbe:
             httpGet:
               path: /health-check
