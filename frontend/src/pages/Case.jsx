@@ -46,7 +46,7 @@ const Case = ({ history }) => {
       }
       setTimeout(() => {
         setLoading(false);
-      }, 3000);
+      }, 500);
     }
   }, [loading, countries, selectedCountry]);
 
@@ -107,7 +107,6 @@ const Case = ({ history }) => {
     });
   };
 
-  data && console.log(data);
   if (loading) {
     return <Loading />;
   }

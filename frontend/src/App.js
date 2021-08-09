@@ -20,6 +20,7 @@ import Doc from "./pages/Doc";
 
 import { UIStore } from "./data/store";
 import { titleCase } from "./lib/util";
+import api from "./lib/api";
 
 const history = createBrowserHistory();
 const { Header, Content, Footer } = Layout;
@@ -29,6 +30,17 @@ function App() {
   const page = UIStore.useState((s) => s.page);
 
   useEffect(() => {
+    // load data
+    api.get("/country-company").then((res) => {
+      UIStore.update((s) => {
+        s.countries = res.data;
+      });
+    });
+    api.get("/crop/?skip=0&limit=100").then((res) => {
+      UIStore.update((s) => {
+        s.crops = res.data;
+      });
+    });
     document.title = titleCase(page, "-");
     page !== "case" &&
       UIStore.update((s) => {

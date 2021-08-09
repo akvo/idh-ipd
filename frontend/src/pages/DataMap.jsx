@@ -74,7 +74,7 @@ const DataMap = ({ history }) => {
     if (loading) {
       setTimeout(() => {
         setLoading(false);
-      }, 3000);
+      }, 500);
     }
   }, [loading]);
 

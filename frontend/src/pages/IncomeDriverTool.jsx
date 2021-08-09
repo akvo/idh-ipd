@@ -4,7 +4,6 @@ import { Row, Col, Select } from "antd";
 import "./incomedrivertool.scss";
 
 import Chart from "../lib/chart";
-
 import Loading from "../components/Loading";
 
 import { UIStore } from "../data/store";
@@ -69,7 +68,9 @@ const IncomeDriverTool = ({ history }) => {
       setDefCompany(company);
       api.get("/driver-income?skip=0&limit=100").then((res) => {
         setData(res.data);
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 500);
       });
     }
 
@@ -79,6 +80,7 @@ const IncomeDriverTool = ({ history }) => {
   }, [loading, countries, data, defCompany]);
 
   const generateData = (country, company) => {
+    setLoading(true);
     const filter = data.filter(
       (x) => x.country === country?.id && x.crop === company?.crop
     );
@@ -96,6 +98,7 @@ const IncomeDriverTool = ({ history }) => {
       };
     });
     setChart(chartData);
+    setLoading(false);
   };
 
   const handleOnChangeCompany = (value) => {
