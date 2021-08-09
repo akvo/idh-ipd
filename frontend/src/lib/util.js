@@ -28,3 +28,25 @@ export const titleCase = (str, delimiter = " ") => {
 export const roundNumber = (num) => {
   return Math.round((num + Number.EPSILON) * 100) / 100;
 };
+
+export const objectNames = {
+  hh_income: "Actual household income",
+  land_size: "Land Size",
+  living_income: "Living income bechmark",
+  living_income_gap: "Living income gap",
+  net_income: "Net income focus crop",
+  other_income: "Other income",
+  price: "Price",
+  prod_cost: "Production Cost/ha",
+  revenue: "Revenues from main crop",
+  share_income: "Share of income coming from focus crop",
+  yields: "Yield",
+  status: "Current/Feasible",
+  area: "Area (ha)",
+  cop_pha: "CoP (USD/ha)",
+  cop_pkg: "Cop (USD/kg)",
+  cop_efficiency: "G",
+  diversification: "Diversification",
+  total_revenue: "Total Revenues",
+  source: "Principal source",
+};

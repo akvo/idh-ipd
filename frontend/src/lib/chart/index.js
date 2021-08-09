@@ -7,7 +7,7 @@ import BarStack from "./BarStack";
 import BarGroup from "./BarGroup";
 import LineStack from "./LineStack";
 import Line from "./Line";
-import { titleCase } from "../util";
+import { titleCase, objectNames } from "../util";
 
 export const generateOptions = ({ type, data }, extra, axis) => {
   switch (type) {
@@ -38,6 +38,7 @@ const Chart = ({
   wrapper = true,
   axis = null,
 }) => {
+  data = data.map((x) => ({ ...x, name: objectNames?.[x.name] || x.name }));
   const option = generateOptions({ type: type, data: data }, extra, axis);
   if (wrapper) {
     return (
