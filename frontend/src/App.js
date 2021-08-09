@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Router, Route, Link } from "react-router-dom";
 import { createBrowserHistory } from "history";
-import { Layout } from "antd";
+import { Layout, Image } from "antd";
 import AOS from "aos";
 
 import "./App.scss";
@@ -55,7 +55,7 @@ function App() {
                 });
               });
           });
-        api.setToken(response.__raw);
+        api.setToken(response?.__raw);
       }
     })();
   }, [getIdTokenClaims, isAuthenticated, loginWithPopup, user, page]);
@@ -69,10 +69,16 @@ function App() {
             style={{
               display: "flex",
               justifyContent: "space-between",
+              alignContent: "center",
             }}
           >
             <Link to="/">
-              <div className="logo" />
+              <Image
+                className="logo"
+                preview={false}
+                height={30}
+                src="/icons/logo-white.png"
+              />
             </Link>
             <Nav
               loginWithPopup={loginWithPopup}
