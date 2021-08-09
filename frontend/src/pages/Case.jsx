@@ -161,15 +161,15 @@ const Case = ({ history }) => {
             gutter={[24, 24]}
             data-aos="fade-up"
           >
-            <Col span={6} className="case-title">
+            <Col span={10} className="case-title">
               <h2>{data.name}</h2>
               <span>Country</span>
             </Col>
-            <Col span={6} className="case-title">
+            <Col span={5} className="case-title">
               <h2>{crops.find((x) => x.id === data.company.crop).name}</h2>
               <span>Commodity</span>
             </Col>
-            <Col span={6} className="case-title">
+            <Col span={4} className="case-title">
               <Image height={75} src="/icons/coffee.png" />
             </Col>
           </Row>
