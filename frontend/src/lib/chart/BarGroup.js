@@ -1,9 +1,8 @@
 import { Easing, Color, TextStyle, backgroundColor } from "./chart-style.js";
 import uniq from "lodash/uniq";
-import chain from "lodash/chain";
 import sortBy from "lodash/sortBy";
 
-const BarGroup = (data, extra) => {
+const BarGroup = (data, extra, axis) => {
   if (!data) {
     return {
       title: {
@@ -15,23 +14,20 @@ const BarGroup = (data, extra) => {
       },
     };
   }
-  let xAxis = uniq(data.map((x) => x.group));
+  let yAxis = uniq(data.map((x) => x.group));
   let legends = uniq(data.map((x) => x.name));
-  let series = chain(data)
-    .groupBy("name")
-    .map((x, i) => {
-      return {
-        name: i,
-        label: {
-          show: true,
-          position: "top",
-        },
-        type: "bar",
-        barWidth: 200 / x.length,
-        data: x.map((v) => v.value),
-      };
-    })
-    .value();
+  let series = data.map((x, i) => {
+    return {
+      name: x.name,
+      label: {
+        show: true,
+        position: "inside",
+      },
+      type: "bar",
+      barWidth: 100,
+      data: x.value,
+    };
+  });
   series = sortBy(series, "name");
   let option = {
     ...Color,
@@ -51,8 +47,8 @@ const BarGroup = (data, extra) => {
     grid: {
       top: "50px",
       left: "100px",
-      right: "auto",
-      bottom: "25px",
+      right: axis ? "25px" : "auto",
+      bottom: axis ? "75px" : "25px",
       borderColor: "#ddd",
       borderWidth: 0.5,
       show: true,
@@ -70,30 +66,34 @@ const BarGroup = (data, extra) => {
     toolbox: { show: false },
     yAxis: [
       {
-        type: "value",
+        data: yAxis,
+        type: "category",
+        nameLocation: "center",
+        axisLine: {
+          lineStyle: {
+            color: "#ddd",
+          },
+        },
         axisLabel: {
-          inside: false,
-          backgroundColor: "#f2f2f2",
-          padding: 5,
           fontFamily: "Roboto",
           fontSize: 12,
+          color: "#222",
         },
-        axisLine: { show: false },
       },
     ],
     xAxis: {
-      data: xAxis,
-      type: "category",
-      axisLine: {
-        lineStyle: {
-          color: "#ddd",
-        },
-      },
+      name: axis ? axis?.xAxis : "",
+      nameLocation: "center",
+      nameGap: axis ? 50 : 0,
+      type: "value",
       axisLabel: {
+        inside: false,
+        backgroundColor: "#f2f2f2",
+        padding: 5,
         fontFamily: "Roboto",
         fontSize: 12,
-        color: "#222",
       },
+      axisLine: { show: false },
     },
     series: series,
     ...Color,

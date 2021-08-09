@@ -13,38 +13,102 @@ import sortBy from "lodash/sortBy";
 
 const { Option } = Select;
 
+const chartTmp = [
+  {
+    title: "Price of Coffee",
+    name: "status",
+    key: "price",
+    axis: {
+      xAxis: "Price (USD/kg)",
+      yAxis: "Average\nprice\nCoffee",
+    },
+  },
+  {
+    title: "Land size Coffee",
+    name: "status",
+    key: "area",
+    axis: {
+      xAxis: "Land size Coffee (ha)",
+      yAxis: "Average\nland size\nCoffee",
+    },
+  },
+  {
+    title: "Yield fee",
+    name: "status",
+    key: "yields",
+    axis: {
+      xAxis: "Yield Coffee (kg/ha)",
+      yAxis: "Average\nyield\nCoffee",
+    },
+  },
+  {
+    title: "Production costs",
+    name: "status",
+    key: "cop_pha",
+    axis: {
+      xAxis: "Production costs Coffee (USD/ha)",
+      yAxis: "Average\nproduction costs\nCoffee",
+    },
+  },
+];
+
 const IncomeDriverTool = ({ history }) => {
   const { countries } = UIStore.useState();
   const [defCountry, setDefCountry] = useState(null);
   const [defCompany, setDefCompany] = useState(null);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
+  const [chart, setChart] = useState(null);
 
   useEffect(() => {
     if (loading) {
       const countriesHasCompany = countries.filter((x) => x.company.length > 0);
-      setDefCountry(countriesHasCompany[0]?.id);
-      setDefCompany(countriesHasCompany[0]?.company[0]?.id);
-      api
-        .get(
-          `/driver-income/${countriesHasCompany[0]?.company[0]?.crop}/${countriesHasCompany[0]?.id}`
-        )
-        .then((res) => {
-          setData(res.data);
-          setLoading(false);
-        });
+      const country = countriesHasCompany[0];
+      const company = countriesHasCompany[0]?.company[0];
+      setDefCountry(country);
+      setDefCompany(company);
+      api.get("/driver-income?skip=0&limit=100").then((res) => {
+        setData(res.data);
+        setLoading(false);
+      });
     }
-  }, [loading, countries]);
+
+    if (data && defCompany) {
+      generateData(defCountry, defCompany);
+    }
+  }, [loading, countries, data, defCompany]);
+
+  const generateData = (country, company) => {
+    const filter = data.filter(
+      (x) => x.country === country?.id && x.crop === company?.crop
+    );
+    const chartData = chartTmp.map((d) => {
+      const tmp = filter.map((x) => {
+        return {
+          group: d.axis.yAxis,
+          name: x[d.name],
+          value: [x[d.key]],
+        };
+      });
+      return {
+        ...d,
+        data: tmp,
+      };
+    });
+    setChart(chartData);
+  };
 
   const handleOnChangeCompany = (value) => {
-    setDefCompany(value);
+    const company = defCountry.company.find((x) => x.id === value);
+    setDefCompany(company);
   };
 
   const handleOnChangeCountry = (value) => {
     UIStore.update((s) => {
       s.selectedCountry = null;
     });
-    setDefCountry(value);
+    const country = countries.find((x) => x.id === value);
+    setDefCountry(country);
     setDefCompany(null);
     renderOptions("company");
   };
@@ -56,7 +120,7 @@ const IncomeDriverTool = ({ history }) => {
     }
     if (type === "company") {
       const companies = countries
-        .filter((x) => x.id === defCountry)
+        .filter((x) => x.id === defCountry?.id)
         .map((x) => x.company)
         .flat();
       options = sortBy(companies, (x) => x.name);
@@ -78,8 +142,6 @@ const IncomeDriverTool = ({ history }) => {
     return <Loading />;
   }
 
-  // Feasible data was not there
-  console.log(data);
   return (
     <>
       <Row className="hero-wrapper" data-aos="fade-up">
@@ -109,7 +171,7 @@ const IncomeDriverTool = ({ history }) => {
               placeholder="Select Country"
               optionFilterProp="children"
               onChange={handleOnChangeCountry}
-              value={defCountry}
+              value={defCountry?.id}
               filterOption={(input, option) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
@@ -124,7 +186,7 @@ const IncomeDriverTool = ({ history }) => {
               placeholder="Select Company"
               optionFilterProp="children"
               onChange={handleOnChangeCompany}
-              value={defCompany}
+              value={defCompany?.id}
               filterOption={(input, option) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
@@ -137,12 +199,21 @@ const IncomeDriverTool = ({ history }) => {
         <Row
           className="idt-wrapper"
           justify="space-between"
-          gutter={[10, 10]}
+          gutter={[50, 100]}
           data-aos="fade-up"
         >
-          {["price", "land", "yield", "production"].map((d, i) => (
-            <Chart key={d} title={d} type="BAR" height={500} span={6} />
-          ))}
+          {chart &&
+            chart.map((d, i) => (
+              <Chart
+                key={`${d.title}-${i}`}
+                title={d.title}
+                type="BARGROUP"
+                height={500}
+                span={12}
+                data={d.data}
+                axis={d.axis}
+              />
+            ))}
         </Row>
       </div>
     </>
