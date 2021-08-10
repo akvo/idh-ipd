@@ -11,8 +11,8 @@ services:
     environment:
       - POSTGRES_PASSWORD=password
     volumes:
-      - pg-data:/var/lib/postgresql/data
       - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - pg-data:/var/lib/postgresql/data
       - ./db/script:/script:ro
   frontend:
     network_mode: service:mainnetwork
