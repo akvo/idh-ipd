@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Select, Image } from "antd";
+import { Row, Col, Select, Image, Menu } from "antd";
+import StickyBox from "react-sticky-box";
 
 import "./case.scss";
 
@@ -121,7 +122,7 @@ const renderHeroCard = (data) => {
       <Row
         key={x.section}
         className="case-body"
-        justify="space-between"
+        justify={`${i % 2 === 0 ? "space-between" : "space-around"}`}
         data-aos="fade-up"
       >
         {x.cards.map((c, j) => (
@@ -138,6 +139,7 @@ const Case = ({ history }) => {
   const [defCompany, setDefCompany] = useState(null);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
+  const [sideMenu, setSideMenu] = useState("net-income");
 
   useEffect(() => {
     if (loading) {
@@ -230,181 +232,206 @@ const Case = ({ history }) => {
 
   return (
     <>
-      <div className="container">
-        {/* // Dropdown */}
-        <Row justify="end" data-aos="fade-up" gutter={[14, 12]}>
-          <Col span={4}>
-            <Select
-              showSearch
-              style={{ width: "100%" }}
-              placeholder="Select Country"
-              optionFilterProp="children"
-              onChange={handleOnChangeCountry}
-              value={defCountry}
-              filterOption={(input, option) =>
-                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-            >
-              {renderOptions("country")}
-            </Select>
-          </Col>
-          <Col span={4}>
-            <Select
-              showSearch
-              style={{ width: "100%" }}
-              placeholder="Select Company"
-              optionFilterProp="children"
-              onChange={handleOnChangeCompany}
-              value={defCompany}
-              filterOption={(input, option) =>
-                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-            >
-              {renderOptions("company")}
-            </Select>
-          </Col>
-        </Row>
-      </div>
+      {/* // Dropdown */}
 
       {/* // Detail */}
-      <Row className="case-wrapper hero" data-aos="fade-up">
-        <Col span={8}>
+      <Row className="hero" data-aos="fade-up">
+        <div
+          className="container"
+          style={{
+            position: "absolute",
+            zIndex: 2,
+            marginTop: "50px",
+            width: "100%",
+          }}
+        >
+          <Row justify="end" data-aos="fade-up" gutter={[14, 12]}>
+            <Col span={4}>
+              <Select
+                showSearch
+                style={{ width: "100%" }}
+                placeholder="Select Country"
+                optionFilterProp="children"
+                onChange={handleOnChangeCountry}
+                value={defCountry}
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                  0
+                }
+              >
+                {renderOptions("country")}
+              </Select>
+            </Col>
+            <Col span={4}>
+              <Select
+                showSearch
+                style={{ width: "100%" }}
+                placeholder="Select Company"
+                optionFilterProp="children"
+                onChange={handleOnChangeCompany}
+                value={defCompany}
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                  0
+                }
+              >
+                {renderOptions("company")}
+              </Select>
+            </Col>
+          </Row>
+        </div>
+        <Col span={8} className="hero-map">
           <CaseMap projects={[]} markers={[]} name={data.name} />
         </Col>
-        <Col span={16}>
+        <Col span={16} className="hero-content">
           {renderHeroTitle(data, crops)}
           {renderHeroCard(data)}
         </Col>
       </Row>
       {/* // Charts */}
-      <Row className="case-wrapper">
-        {/* <Col span={4}>
-          <Menu
-            onClick={(e) => console.log(e)}
-            style={{ width: "85%" }}
-            mode="vertical"
-          >
-            <Menu.Item key="1">Net Income Focus Crop</Menu.Item>
-            <Menu.Item key="2">Other income</Menu.Item>
-            <Menu.Item key="3">The living income gap</Menu.Item>
-          </Menu>
-        </Col> */}
-        <Col span={24}>
-          <Row
-            className="container case-body odd"
-            data-aos="fade-up"
-            gutter={[50, 50]}
-            style={{ marginLeft: 0, marginRight: 0 }}
-          >
-            <Col span={14}>
-              {data && (
+      <Row className="container case-wrapper" data-aos="fade-up">
+        <Col span={4}>
+          <StickyBox offsetTop={100} offsetBottom={20}>
+            <Menu
+              onClick={(e) => setSideMenu(e.key)}
+              selectedKeys={[sideMenu]}
+              // style={{ width: "85%" }}
+              mode="vertical"
+            >
+              <Menu.Item key="net-income">
+                <a href="#net-income">Net Income Focus Crop</a>
+              </Menu.Item>
+              <Menu.Item key="other-income">
+                <a href="#other-income">Other income</a>
+              </Menu.Item>
+              <Menu.Item key="living-income">
+                <a href="#living-income">The living income gap</a>{" "}
+              </Menu.Item>
+            </Menu>
+          </StickyBox>
+        </Col>
+        <Col span={20}>
+          <section id="net-income">
+            <Row
+              className="case-body odd"
+              data-aos="fade-up"
+              gutter={[50, 50]}
+              style={{ marginLeft: 0, marginRight: 0 }}
+            >
+              <Col span={14}>
+                {data && (
+                  <Chart
+                    key="Net Income Focus Crop"
+                    title="Net Income Focus Crop"
+                    type="BARSTACK"
+                    height={350}
+                    data={generateChartData(
+                      ["revenue", "prod_cost", "net_income"],
+                      data?.name
+                    )}
+                    wrapper={false}
+                  />
+                )}
+              </Col>
+              <Col span={10} className="case-detail">
+                <h3>Net Income {getCrop(data, crops)}</h3>
+                <p>
+                  On the left we present the net-income from the{" "}
+                  {getCrop(data, crops)}.
+                </p>
+                <p>
+                  Net-income from the {getCrop(data, crops)} ={" "}
+                  {getCrop(data, crops)} revenues - {getCrop(data, crops)}{" "}
+                  production costs
+                </p>
+              </Col>
+            </Row>
+          </section>
+          <section id="other-income">
+            <Row
+              className="case-body even"
+              data-aos="fade-up"
+              gutter={[50, 50]}
+              style={{ marginLeft: 0, marginRight: 0 }}
+            >
+              <Col span={10} className="case-detail">
+                <h3>Other Income</h3>
+                <p>
+                  On the right we present the value of the average other income
+                  generated by the farmer households. This can be income
+                  generated from working off-farm, producing other crops,
+                  running a household enterprise or other sources of income.
+                  Also, this can be income generated by the farmers as well as
+                  his or her household members.
+                </p>
+              </Col>
+              <Col span={14}>
                 <Chart
-                  key="Net Income Focus Crop"
-                  title="Net Income Focus Crop"
-                  type="BARSTACK"
+                  key="Other income"
+                  title="Other income"
                   height={350}
+                  type="BARSTACK"
+                  data={generateChartData(["other_income"], data?.name)}
+                  wrapper={false}
+                />
+              </Col>
+            </Row>
+          </section>
+          <section id="living-income">
+            <Row
+              className="case-body odd"
+              data-aos="fade-up"
+              gutter={[50, 50]}
+              style={{ marginLeft: 0, marginRight: 0 }}
+            >
+              <Col span={14}>
+                <Chart
+                  key="The living income gap"
+                  title="The living income gap"
+                  type="BARSTACK"
                   data={generateChartData(
-                    ["revenue", "prod_cost", "net_income"],
+                    [
+                      "other_income",
+                      "living_income",
+                      "living_income_gap",
+                      "hh_income",
+                    ],
                     data?.name
                   )}
                   wrapper={false}
                 />
-              )}
-            </Col>
-            <Col span={10} className="case-detail">
-              <h3>Net Income {getCrop(data, crops)}</h3>
-              <p>
-                On the left we present the net-income from the{" "}
-                {getCrop(data, crops)}.
-              </p>
-              <p>
-                Net-income from the {getCrop(data, crops)} ={" "}
-                {getCrop(data, crops)} revenues - {getCrop(data, crops)}{" "}
-                production costs
-              </p>
-            </Col>
-          </Row>
-          <Row
-            className="container case-body even"
-            data-aos="fade-up"
-            gutter={[50, 50]}
-            style={{ marginLeft: 0, marginRight: 0 }}
-          >
-            <Col span={10} className="case-detail">
-              <h3>Other Income</h3>
-              <p>
-                On the right we present the value of the average other income
-                generated by the farmer households. This can be income generated
-                from working off-farm, producing other crops, running a
-                household enterprise or other sources of income. Also, this can
-                be income generated by the farmers as well as his or her
-                household members.
-              </p>
-            </Col>
-            <Col span={14}>
-              <Chart
-                key="Other income"
-                title="Other income"
-                height={350}
-                type="BARSTACK"
-                data={generateChartData(["other_income"], data?.name)}
-                wrapper={false}
-              />
-            </Col>
-          </Row>
-          <Row
-            className="container case-body odd"
-            data-aos="fade-up"
-            gutter={[50, 50]}
-            style={{ marginLeft: 0, marginRight: 0 }}
-          >
-            <Col span={14}>
-              <Chart
-                key="The living income gap"
-                title="The living income gap"
-                type="BARSTACK"
-                data={generateChartData(
-                  [
-                    "other_income",
-                    "living_income",
-                    "living_income_gap",
-                    "hh_income",
-                  ],
-                  data?.name
-                )}
-                wrapper={false}
-              />
-            </Col>
-            <Col span={10} className="case-detail">
-              <h3>The living income gap</h3>
-              <p>
-                The living income gap is the difference between the actual
-                income of smallholder farmers and the living income benchmark
-                level for the country where the farmers are from. Etc,
-              </p>
-              <Row justify="space-between">
-                <CountUpCard
-                  span={11}
-                  type="reverse"
-                  percent={true}
-                  data={{
-                    value: data?.company?.living_income_gap,
-                    text: "% of total HH income from focus crop",
-                  }}
-                />
-                <CountUpCard
-                  span={11}
-                  type="reverse"
-                  percent={true}
-                  data={{
-                    value: data?.company?.share_income,
-                    text:
-                      "Share of households earning an income above the LI benchmark",
-                  }}
-                />
-              </Row>
-            </Col>
-          </Row>
+              </Col>
+              <Col span={10} className="case-detail">
+                <h3>The living income gap</h3>
+                <p>
+                  The living income gap is the difference between the actual
+                  income of smallholder farmers and the living income benchmark
+                  level for the country where the farmers are from. Etc,
+                </p>
+                <Row justify="space-between">
+                  <CountUpCard
+                    span={11}
+                    type="reverse"
+                    percent={true}
+                    data={{
+                      value: data?.company?.living_income_gap,
+                      text: "% of total HH income from focus crop",
+                    }}
+                  />
+                  <CountUpCard
+                    span={11}
+                    type="reverse"
+                    percent={true}
+                    data={{
+                      value: data?.company?.share_income,
+                      text:
+                        "Share of households earning an income above the LI benchmark",
+                    }}
+                  />
+                </Row>
+              </Col>
+            </Row>
+          </section>
         </Col>
       </Row>
     </>

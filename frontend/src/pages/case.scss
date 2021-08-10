@@ -1,13 +1,21 @@
+.hero {
+  margin-top: -50px;
+  background: #f2f5fc;
+  .hero-content {
+    padding-top: 125px;
+    padding-bottom: 75px;
+  }
+  .case-body {
+    padding-right: 4rem;
+    margin-top: 25px;
+    width: 100%;
+  }
+}
 .case-wrapper {
   margin-top: 25px;
   margin-bottom: 40px;
-  &.hero {
-    background: #f2f5fc;
-    .case-body {
-      padding-right: 4rem;
-      margin-top: 25px;
-      width: 100%;
-    }
+  section {
+    padding: 60px 0;
   }
   .case-body {
     margin-top: 25px;
@@ -22,22 +30,22 @@
       padding-bottom: 40px;
       background: #f2f5fc;
     }
-    .case-title {
-      text-align: center;
-      h2 {
-        font-size: 29px;
-        font-weight: 400;
-        margin-bottom: 0;
-      }
-      span {
-        font-size: 26px;
-        font-weight: 600;
-      }
-    }
     .case-detail {
       h3 {
         font-weight: 600;
       }
     }
+  }
+}
+.case-title {
+  text-align: center;
+  h2 {
+    font-size: 29px;
+    font-weight: 400;
+    margin-bottom: 0;
+  }
+  span {
+    font-size: 26px;
+    font-weight: 600;
   }
 }

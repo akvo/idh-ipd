@@ -25,6 +25,7 @@ const CountUpCard = ({
     };
   }
 
+  let redStyle = value ? "" : "red-card";
   let countUp = value ? <CountUp {...props} /> : "N.A.";
   let percentMark = value && percent && "%";
 
@@ -58,7 +59,7 @@ const CountUpCard = ({
 
   return (
     <Col span={span}>
-      <Card className={`count-up-card ${extraStyle}`}>{body}</Card>
+      <Card className={`count-up-card ${extraStyle} ${redStyle}`}>{body}</Card>
     </Col>
   );
 };

@@ -65,7 +65,7 @@ const ToolTipContent = ({ data, geo }) => {
 };
 
 const DataMap = ({ history }) => {
-  const { companies, countries } = UIStore.useState();
+  const { countries } = UIStore.useState();
   const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1 });
   const [toolTipContent, setTooltipContent] = useState("");
   const [loading, setLoading] = useState(true);
@@ -78,9 +78,9 @@ const DataMap = ({ history }) => {
     }
   }, [loading]);
 
-  const domain = companies.reduce(
+  const domain = countries.reduce(
     (acc, curr) => {
-      const v = curr;
+      const v = curr.company.length;
       const [min, max] = acc;
       return [min, v > max ? v : max];
     },
@@ -166,13 +166,7 @@ const DataMap = ({ history }) => {
                       c.name.toLowerCase() ===
                       geo.properties.MAP_LABEL.toLowerCase()
                   );
-                  curr =
-                    country?.company && country.company.length
-                      ? roundNumber(
-                          sumBy(country.company, (x) => x.hh_income) /
-                            country.company.length
-                        )
-                      : 0;
+                  curr = country?.company ? country.company.length : 0;
                 }
                 return (
                   <Geography
