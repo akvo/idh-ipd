@@ -37,35 +37,39 @@ function App() {
   useEffect(() => {
     document.title = titleCase(page, "-");
     (async function () {
-      const response = await getAccessTokenSilently({
-        audience: "ipd-backend",
-        scope: "read:users",
-      });
-      if (isAuthenticated) {
-        api
-          .get("/country-company")
-          .then((res) => res.data)
-          .then((country) => {
-            api
-              .get("/crop/?skip=0&limit=100")
-              .then((res) => res.data)
-              .then((crop) => {
-                UIStore.update((c) => {
-                  c.countries = country;
-                  c.crops = crop;
-                  c.selectedCountry = page === "case" ? null : page;
-                  c.user = user;
+      try {
+        const response = await getAccessTokenSilently({
+          audience: "ipd-backend",
+          scope: "read:users",
+        });
+        if (isAuthenticated) {
+          await api.setToken(response);
+          api
+            .get("/country-company")
+            .then((res) => res.data)
+            .then((country) => {
+              api
+                .get("/crop/?skip=0&limit=100")
+                .then((res) => res.data)
+                .then((crop) => {
+                  console.log(country);
+                  UIStore.update((c) => {
+                    c.countries = country;
+                    c.crops = crop;
+                    c.user = user;
+                  });
                 });
-              });
-          });
-        api.setToken(response);
-        /*
-        setTimeout(() => {
-          api.get("/secure").then((x) => {
-            console.log(x.email);
-          });
-        }, 1000);
-        */
+            });
+          /*
+          setTimeout(() => {
+            api.get("/secure").then((x) => {
+              console.log(x.email);
+            });
+          }, 1000);
+          */
+        }
+      } catch (error) {
+        console.error(error);
       }
     })();
   }, [getAccessTokenSilently, isAuthenticated, loginWithPopup, user, page]);

@@ -13,6 +13,125 @@ import sortBy from "lodash/sortBy";
 
 const { Option } = Select;
 
+const getCrop = (data, crops) => {
+  return crops.find((x) => x.id === data?.company?.crop)?.name;
+};
+
+const renderHeroTitle = (data, crops) => {
+  const country = data?.name;
+  const crop = getCrop(data, crops);
+
+  return (
+    <Row
+      justify="center"
+      className="case-body"
+      gutter={[24, 24]}
+      data-aos="fade-up"
+    >
+      <Col span={10} className="case-title">
+        <h2>{country}</h2>
+        <span>Country</span>
+      </Col>
+      <Col span={5} className="case-title">
+        <h2>{crop}</h2>
+        <span>Commodity</span>
+      </Col>
+      <Col span={4} className="case-title">
+        <Image height={75} src={`/icons/${crop?.toLowerCase()}.png`} />
+      </Col>
+    </Row>
+  );
+};
+
+const renderHeroCard = (data) => {
+  const {
+    land_size,
+    price,
+    yields,
+    prod_cost,
+    other_income,
+    net_income,
+    hh_income,
+    living_income_gap,
+  } = data?.company;
+
+  const tmp = [
+    {
+      section: "hero-1",
+      cards: [
+        {
+          span: 4,
+          value: land_size,
+          text: "Farm size",
+          unit: "(ha)",
+        },
+        {
+          span: 4,
+          value: price,
+          text: "Price",
+          unit: "(USD/kg)",
+        },
+        {
+          span: 4,
+          value: yields,
+          text: "Production",
+          unit: "(kg/ha)",
+        },
+        {
+          span: 4,
+          value: prod_cost,
+          text: "Production Costs",
+          unit: "(USD/ha)",
+        },
+        {
+          span: 4,
+          value: other_income,
+          text: "Other income",
+          unit: "(USD/year)",
+        },
+      ],
+    },
+    {
+      section: "hero-2",
+      cards: [
+        {
+          span: 7,
+          value: net_income,
+          text: "Net-income focus crop",
+          unit: "(USD/year)",
+        },
+        {
+          span: 7,
+          value: hh_income,
+          text: "Actual income",
+          unit: "(USD/year)",
+        },
+        {
+          span: 7,
+          value: living_income_gap,
+          text: "Living income gap",
+          unit: "(USD/year)",
+        },
+      ],
+    },
+  ];
+
+  return tmp.map((x, i) => {
+    return (
+      <Row
+        key={x.section}
+        className="case-body"
+        justify="space-between"
+        data-aos="fade-up"
+      >
+        {x.cards.map((c, j) => (
+          <CountUpCard key={`${c.text}-${j}`} span={c.span} data={c} />
+        ))}
+      </Row>
+    );
+  });
+};
+
 const Case = ({ history }) => {
   const { countries, selectedCountry, crops } = UIStore.useState();
   const [defCountry, setDefCountry] = useState(null);
@@ -44,9 +163,7 @@ const Case = ({ history }) => {
         };
         setData(tmp);
       }
-      setTimeout(() => {
-        setLoading(false);
-      }, 500);
+      setLoading(false);
     }
   }, [loading, countries, selectedCountry]);
 
@@ -81,8 +198,8 @@ const Case = ({ history }) => {
         .map((x) => x.company)
         .flat();
       options = selectedCountry
-        ? countries.find((x) => x.id === country_id).company
-        : sortBy(companies, (x) => x.name);
+        ? countries.find((x) => x.id === country_id)?.company
+        : sortBy(companies, (x) => x.id);
     }
     return (
       options &&
@@ -155,92 +272,8 @@ const Case = ({ history }) => {
           <CaseMap projects={[]} markers={[]} name={data.name} />
         </Col>
         <Col span={16}>
-          <Row
-            justify="center"
-            className="case-body"
-            gutter={[24, 24]}
-            data-aos="fade-up"
-          >
-            <Col span={10} className="case-title">
-              <h2>{data.name}</h2>
-              <span>Country</span>
-            </Col>
-            <Col span={5} className="case-title">
-              <h2>{crops.find((x) => x.id === data.company.crop).name}</h2>
-              <span>Commodity</span>
-            </Col>
-            <Col span={4} className="case-title">
-              <Image
-                height={75}
-                src={`/icons/${crops
-                  .find((x) => x.id === data.company.crop)
-                  .name.toLowerCase()}.png`}
-              />
-            </Col>
-          </Row>
-          <Row className="case-body" justify="space-between" data-aos="fade-up">
-            <CountUpCard
-              data={{
-                value: data.company.land_size,
-                text: "Farm size",
-                unit: "(ha)",
-              }}
-            />
-            <CountUpCard
-              data={{
-                value: data.company.price,
-                text: "Price",
-                unit: "(USD/kg)",
-              }}
-            />
-            <CountUpCard
-              data={{
-                value: data.company.yields,
-                text: "Production",
-                unit: "(kg/ha)",
-              }}
-            />
-            <CountUpCard
-              data={{
-                value: data.company.prod_cost,
-                text: "Production Costs",
-                unit: "(USD/ha)",
-              }}
-            />
-            <CountUpCard
-              data={{
-                value: data.company.other_income,
-                text: "Other income",
-                unit: "(USD/year)",
-              }}
-            />
-          </Row>
-          <Row className="case-body" justify="center" gutter={[24, 24]}>
-            <CountUpCard
-              span={7}
-              data={{
-                value: data.company.net_income,
-                text: "Net-income focus crop",
-                unit: "(USD/year)",
-              }}
-            />
-            <CountUpCard
-              span={7}
-              data={{
-                value: data.company.hh_income,
-                text: "Actual income",
-                unit: "(USD/year)",
-              }}
-            />
-            <CountUpCard
-              span={7}
-              data={{
-                value: data.company.living_income_gap,
-                text: "Living income gap",
-                unit: "(USD/year)",
-              }}
-            />
-          </Row>
+          {renderHeroTitle(data, crops)}
+          {renderHeroCard(data)}
         </Col>
       </Row>
       {/* // Charts */}
@@ -272,26 +305,22 @@ const Case = ({ history }) => {
                   height={350}
                   data={generateChartData(
                     ["revenue", "prod_cost", "net_income"],
-                    data.name
+                    data?.name
                   )}
                   wrapper={false}
                 />
               )}
             </Col>
             <Col span={10} className="case-detail">
-              <h3>
-                Net Income {crops.find((x) => x.id === data.company.crop).name}
-              </h3>
+              <h3>Net Income {getCrop(data, crops)}</h3>
               <p>
                 On the left we present the net-income from the{" "}
-                {crops.find((x) => x.id === data.company.crop).name}.
+                {getCrop(data, crops)}.
               </p>
               <p>
-                Net-income from the{" "}
-                {crops.find((x) => x.id === data.company.crop).name} ={" "}
-                {crops.find((x) => x.id === data.company.crop).name} revenues -{" "}
-                {crops.find((x) => x.id === data.company.crop).name} production
-                costs
+                Net-income from the {getCrop(data, crops)} ={" "}
+                {getCrop(data, crops)} revenues - {getCrop(data, crops)}{" "}
+                production costs
               </p>
             </Col>
           </Row>
@@ -318,7 +347,7 @@ const Case = ({ history }) => {
                 title="Other income"
                 height={350}
                 type="BARSTACK"
-                data={generateChartData(["other_income"], data.name)}
+                data={generateChartData(["other_income"], data?.name)}
                 wrapper={false}
               />
             </Col>
@@ -341,7 +370,7 @@ const Case = ({ history }) => {
                     "living_income_gap",
                     "hh_income",
                   ],
-                  data.name
+                  data?.name
                 )}
                 wrapper={false}
               />
@@ -359,7 +388,7 @@ const Case = ({ history }) => {
                   type="reverse"
                   percent={true}
                   data={{
-                    value: data.company.living_income_gap,
+                    value: data?.company?.living_income_gap,
                     text: "% of total HH income from focus crop",
                   }}
                 />
@@ -368,7 +397,7 @@ const Case = ({ history }) => {
                   type="reverse"
                   percent={true}
                   data={{
-                    value: data.company.share_income,
+                    value: data?.company?.share_income,
                     text:
                       "Share of households earning an income above the LI benchmark",
                   }}

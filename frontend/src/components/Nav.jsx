@@ -10,7 +10,7 @@ const Nav = ({ logout, loginWithPopup, isAuthenticated }) => {
   const handleOnClickMenu = ({ key }) => {
     UIStore.update((s) => {
       s.page = key === "auth" ? "introduction" : key;
-      s.seletedCountry = null;
+      s.selectedCountry = null;
     });
   };
 

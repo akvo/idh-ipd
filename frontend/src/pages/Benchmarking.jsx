@@ -354,7 +354,7 @@ const Benchmarking = ({ history }) => {
         data-aos="fade-up"
         gutter={[14, 12]}
       >
-        <Col span={5} className="compare-options-body">
+        <Col span={6} className="compare-options-body">
           <span className="text">Compare with</span>
           <Radio.Group
             onChange={(e) => handleOnChangeCompare(e)}
