@@ -101,14 +101,17 @@ const Benchmarking = ({ history }) => {
 
   const generateChartData = useCallback(
     (country, company, type) => {
+      //* filter data to get others in country
       const otherInCountry = country.company.filter(
-        (x) => x.company !== company.id
+        (x) => x.id !== company.id && x.crop === company.crop
       );
+      //* filter data to get others in sector
       const otherInSector = countries
         .map((x) => x.company)
         .flat()
         .filter((x) => x.crop === company.crop);
 
+      //* generate chart & table data
       const tmp = chartTmp.map((x) => {
         const companyChart = x.chart.map((c) => {
           return {
@@ -269,6 +272,7 @@ const Benchmarking = ({ history }) => {
                 key={`${c.group}-${i}`}
                 hoverable={false}
                 style={{ width: "50%" }}
+                className={`${c.value ? "" : "red-card"}`}
               >
                 <h4>{c.group}</h4>
                 <h3>

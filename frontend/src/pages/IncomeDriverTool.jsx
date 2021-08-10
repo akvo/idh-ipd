@@ -14,21 +14,21 @@ const { Option } = Select;
 
 const chartTmp = [
   {
-    title: "Price of Coffee",
+    title: "Price of ##crop##",
     name: "status",
     key: "price",
     axis: {
       xAxis: "Price (USD/kg)",
-      yAxis: "Average\nprice\nCoffee",
+      yAxis: "Average\nprice\n##crop##",
     },
   },
   {
-    title: "Land size Coffee",
+    title: "Land size ##crop##",
     name: "status",
     key: "area",
     axis: {
-      xAxis: "Land size Coffee (ha)",
-      yAxis: "Average\nland size\nCoffee",
+      xAxis: "Land size ##crop## (ha)",
+      yAxis: "Average\nland size\n##crop##",
     },
   },
   {
@@ -36,8 +36,8 @@ const chartTmp = [
     name: "status",
     key: "yields",
     axis: {
-      xAxis: "Yield Coffee (kg/ha)",
-      yAxis: "Average\nyield\nCoffee",
+      xAxis: "Yield ##crop## (kg/ha)",
+      yAxis: "Average\nyield\n##crop##",
     },
   },
   {
@@ -45,14 +45,21 @@ const chartTmp = [
     name: "status",
     key: "cop_pha",
     axis: {
-      xAxis: "Production costs Coffee (USD/ha)",
-      yAxis: "Average\nproduction costs\nCoffee",
+      xAxis: "Production costs ##crop## (USD/ha)",
+      yAxis: "Average\nproduction costs\n##crop##",
     },
   },
 ];
 
+const replaceCrop = (crop, text) => {
+  const replacedTitle = text.includes("##crop##")
+    ? text.replace("##crop##", crop)
+    : text;
+  return replacedTitle;
+};
+
 const IncomeDriverTool = ({ history }) => {
-  const { countries } = UIStore.useState();
+  const { crops, countries } = UIStore.useState();
   const [defCountry, setDefCountry] = useState(null);
   const [defCompany, setDefCompany] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -65,23 +72,32 @@ const IncomeDriverTool = ({ history }) => {
       const filter = data.filter(
         (x) => x.country === country?.id && x.crop === company?.crop
       );
+      const crop = crops.find((x) => x.id === company.crop)?.name;
+
+      //* generate chart data
       const chartData = chartTmp.map((d) => {
         const tmp = filter.map((x) => {
           return {
-            group: d.axis.yAxis,
+            group: replaceCrop(crop, d.axis.yAxis),
             name: x[d.name],
             value: x[d.key],
           };
         });
         return {
           ...d,
+          title: replaceCrop(crop, d.title),
+          axis: {
+            ...d.axis,
+            xAxis: replaceCrop(crop, d.axis.xAxis),
+            yAxis: replaceCrop(crop, d.axis.yAxis),
+          },
           data: tmp,
         };
       });
       setChart(chartData);
       setLoading(false);
     },
-    [data]
+    [data, crops]
   );
 
   useEffect(() => {
