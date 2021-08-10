@@ -38,12 +38,12 @@ function App() {
     document.title = titleCase(page, "-");
     (async function () {
       try {
-        const response = await getAccessTokenSilently({
-          audience: "ipd-backend",
-          scope: "read:users",
-        });
         if (isAuthenticated) {
-          await api.setToken(response);
+          const response = await getAccessTokenSilently({
+            audience: "ipd-backend",
+            scope: "read:users",
+          });
+          api.setToken(response);
           api
             .get("/country-company")
             .then((res) => res.data)
@@ -52,7 +52,6 @@ function App() {
                 .get("/crop/?skip=0&limit=100")
                 .then((res) => res.data)
                 .then((crop) => {
-                  console.log(country);
                   UIStore.update((c) => {
                     c.countries = country;
                     c.crops = crop;
@@ -67,6 +66,8 @@ function App() {
             });
           }, 1000);
           */
+        } else {
+          api.setToken(null);
         }
       } catch (error) {
         console.error(error);
