@@ -80,6 +80,41 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: access; Type: TABLE; Schema: public; Owner: ipd
+--
+
+CREATE TABLE public.access (
+    id integer NOT NULL,
+    "user" integer,
+    company integer
+);
+
+
+ALTER TABLE public.access OWNER TO ipd;
+
+--
+-- Name: access_id_seq; Type: SEQUENCE; Schema: public; Owner: ipd
+--
+
+CREATE SEQUENCE public.access_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.access_id_seq OWNER TO ipd;
+
+--
+-- Name: access_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: ipd
+--
+
+ALTER SEQUENCE public.access_id_seq OWNED BY public.access.id;
+
+
+--
 -- Name: alembic_version; Type: TABLE; Schema: public; Owner: ipd
 --
 
@@ -288,6 +323,13 @@ ALTER SEQUENCE public.user_id_seq OWNED BY public."user".id;
 
 
 --
+-- Name: access id; Type: DEFAULT; Schema: public; Owner: ipd
+--
+
+ALTER TABLE ONLY public.access ALTER COLUMN id SET DEFAULT nextval('public.access_id_seq'::regclass);
+
+
+--
 -- Name: company id; Type: DEFAULT; Schema: public; Owner: ipd
 --
 
@@ -323,11 +365,19 @@ ALTER TABLE ONLY public."user" ALTER COLUMN id SET DEFAULT nextval('public.user_
 
 
 --
+-- Data for Name: access; Type: TABLE DATA; Schema: public; Owner: ipd
+--
+
+COPY public.access (id, "user", company) FROM stdin;
+\.
+
+
+--
 -- Data for Name: alembic_version; Type: TABLE DATA; Schema: public; Owner: ipd
 --
 
 COPY public.alembic_version (version_num) FROM stdin;
-975efe9e6a7a
+113a4b4b1aef
 \.
 
 
@@ -651,6 +701,13 @@ COPY public."user" (id, email, role, created) FROM stdin;
 
 
 --
+-- Name: access_id_seq; Type: SEQUENCE SET; Schema: public; Owner: ipd
+--
+
+SELECT pg_catalog.setval('public.access_id_seq', 1, false);
+
+
+--
 -- Name: company_id_seq; Type: SEQUENCE SET; Schema: public; Owner: ipd
 --
 
@@ -683,6 +740,22 @@ SELECT pg_catalog.setval('public.driver_income_id_seq', 1, false);
 --
 
 SELECT pg_catalog.setval('public.user_id_seq', 1, false);
+
+
+--
+-- Name: access access_pkey; Type: CONSTRAINT; Schema: public; Owner: ipd
+--
+
+ALTER TABLE ONLY public.access
+    ADD CONSTRAINT access_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: access access_user_company_key; Type: CONSTRAINT; Schema: public; Owner: ipd
+--
+
+ALTER TABLE ONLY public.access
+    ADD CONSTRAINT access_user_company_key UNIQUE ("user", company);
 
 
 --
@@ -774,6 +847,13 @@ ALTER TABLE ONLY public."user"
 
 
 --
+-- Name: ix_access_id; Type: INDEX; Schema: public; Owner: ipd
+--
+
+CREATE UNIQUE INDEX ix_access_id ON public.access USING btree (id);
+
+
+--
 -- Name: ix_company_id; Type: INDEX; Schema: public; Owner: ipd
 --
 
@@ -806,6 +886,22 @@ CREATE UNIQUE INDEX ix_driver_income_id ON public.driver_income USING btree (id)
 --
 
 CREATE UNIQUE INDEX ix_user_id ON public."user" USING btree (id);
+
+
+--
+-- Name: access access_company_fkey; Type: FK CONSTRAINT; Schema: public; Owner: ipd
+--
+
+ALTER TABLE ONLY public.access
+    ADD CONSTRAINT access_company_fkey FOREIGN KEY (company) REFERENCES public.company(id);
+
+
+--
+-- Name: access access_user_fkey; Type: FK CONSTRAINT; Schema: public; Owner: ipd
+--
+
+ALTER TABLE ONLY public.access
+    ADD CONSTRAINT access_user_fkey FOREIGN KEY ("user") REFERENCES public."user"(id);
 
 
 --

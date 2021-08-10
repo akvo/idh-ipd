@@ -244,6 +244,33 @@ class Crop(Base):
         return {"id": self.id, "name": self.name, "company": self.company}
 
 
+# BEGIN ACCESS
+
+
+class AccessDict(TypedDict):
+    id: int
+    user: int
+    company: int
+
+
+class Access(Base):
+    __tablename__ = "access"
+    id = Column(Integer, primary_key=True, index=True, nullable=True)
+    user = Column(Integer, ForeignKey('user.id'))
+    company = Column(Integer, ForeignKey('company.id'))
+
+    def __init__(self, user: int, company: int):
+        self.user = user
+        self.company = company
+
+    def __repr__(self) -> int:
+        return f"<Access {self.id}>"
+
+    @property
+    def serialize(self) -> AccessDict:
+        return {"id": self.id, "user": self.user, "company": self.company}
+
+
 # BEGIN USER
 
 
@@ -256,6 +283,7 @@ class UserDict(TypedDict):
     id: int
     email: str
     role: UserRole
+    access: List[AccessDict]
 
 
 class User(Base):
@@ -264,6 +292,10 @@ class User(Base):
     email = Column(String, unique=True)
     role = Column(Enum(UserRole))
     created = Column(DateTime, default=datetime.utcnow)
+    access = relationship("Access",
+                          cascade="all, delete",
+                          passive_deletes=True,
+                          backref="access")
 
     def __init__(self, email: str, role: UserRole):
         self.email = email
@@ -274,4 +306,9 @@ class User(Base):
 
     @property
     def serialize(self) -> UserDict:
-        return {"id": self.id, "email": self.email, "role": self.role}
+        return {
+            "id": self.id,
+            "email": self.email,
+            "role": self.role,
+            "access": self.access
+        }

@@ -12,6 +12,7 @@ from db.schema import UserBase, CountryBase, CropBase
 from db.schema import CompanyBase, DriverIncomeBase
 from db.schema import CountryCompanyBase
 from db.schema import CropCompanyBase
+from db.schema import UserAccessBase
 from db.models import Company, DriverIncome
 from db.models import UserRole, DriverIncomeStatus
 import util.params as params
@@ -104,7 +105,7 @@ def get_user(skip: int = 0,
 
 
 @routes.get("/user/{id:path}",
-            response_model=UserBase,
+            response_model=UserAccessBase,
             summary="get user detail",
             tags=["User"])
 def get_user_by_id(id: int, session: Session = Depends(get_session)):

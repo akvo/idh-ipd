@@ -12,6 +12,23 @@ class UserBase(BaseModel):
         orm_mode = True
 
 
+class AccessBase(BaseModel):
+    id: int
+    user: int
+    company: int
+
+    class Config:
+        orm_mode = True
+
+
+class UserAccessBase(BaseModel):
+    id: int
+    company: int
+
+    class Config:
+        orm_mode = True
+
+
 class CountryBase(BaseModel):
     id: int
     name: Optional[str] = None
@@ -83,3 +100,10 @@ class CropCompanyBase(BaseModel):
     id: int
     name: str
     company: List[CompanyBase]
+
+
+class UserAccessBase(BaseModel):
+    id: int
+    email: str
+    role: UserRole
+    access: List[UserAccessBase]
