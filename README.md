@@ -49,3 +49,8 @@ docker-compose exec backend python -m seeder.company
 ```
 docker-compose exec backend python -m seeder.driver_income
 ```
+
+- Add new admin
+```
+docker-compose exec backend python -m seeder.admin youremail@akvo.org
+```
