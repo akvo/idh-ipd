@@ -165,7 +165,7 @@ const DataMap = ({ history }) => {
                     geography={geo}
                     cursor={curr ? "pointer" : ""}
                     onMouseEnter={() => {
-                      geo.properties.MAP_LABEL &&
+                      country &&
                         setTooltipContent(
                           <ToolTipContent data={country} geo={geo.properties} />
                         );
@@ -200,7 +200,12 @@ const DataMap = ({ history }) => {
           </Geographies>
         </ZoomableGroup>
       </ComposableMap>
-      <ReactTooltip type="light" className="opaque">
+      <ReactTooltip
+        type="dark"
+        className="opaque"
+        backgroundColor="#2872c6"
+        className="react-tooltip"
+      >
         {toolTipContent}
       </ReactTooltip>
     </div>
