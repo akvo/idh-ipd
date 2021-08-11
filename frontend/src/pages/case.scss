@@ -1,40 +1,67 @@
+@mixin gradient($from, $to) {
+  background: linear-gradient(to left, $from, $to);
+
+  /* Firefox 3.6+ */
+  background: -moz-linear-gradient(to left, $from, $to);
+
+  /* Safari 4+, Chrome 1+ */
+  background: -webkit-gradient(linear, to left, from($from), to($to));
+
+  /* Safari 5.1+, Chrome 10+ */
+  background: -webkit-linear-gradient(to left, $from, $to);
+
+  /* Opera 11.10+ */
+  background: -o-linear-gradient(to left, $from, $to);
+}
+
 .hero {
   margin-top: -50px;
   background: #f2f5fc;
   min-height: 700px;
+
   .hero-content {
     padding-top: 125px;
     padding-bottom: 75px;
+
+    @include gradient(white, transparent);
+
     h1.no-data {
       text-align: right;
       padding-right: 4rem;
     }
   }
+
   .case-body {
     padding-right: 4rem;
     margin-top: 25px;
     width: 100%;
   }
 }
+
 .case-wrapper {
   margin-top: 25px;
   margin-bottom: 40px;
+
   section {
     padding: 60px 0;
   }
+
   .case-body {
     margin-top: 25px;
     margin-bottom: 50px;
     width: 100%;
+
     &.odd {
       padding-bottom: 40px;
       padding-top: 40px;
     }
+
     &.even {
       padding-top: 40px;
       padding-bottom: 40px;
       background: #f2f5fc;
     }
+
     .case-detail {
       h3 {
         font-weight: 600;
@@ -42,17 +69,21 @@
     }
   }
 }
+
 .case-title {
   text-align: center;
+
   h2 {
     font-size: 29px;
     font-weight: 400;
     margin-bottom: 0;
   }
+
   span {
     font-size: 26px;
     font-weight: 600;
   }
+
   .crop-img {
     max-height: 85px;
     width: auto;
