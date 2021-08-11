@@ -40,29 +40,39 @@ models.Base.metadata.create_all(bind=engine)
 routes = APIRouter()
 
 
-def validate_user_by_id(USER_ID, refresh=False):
+def get_new_token():
+    data = {
+        "client_id": AUTH0_CLIENT_ID,
+        "client_secret": AUTH0_SECRET,
+        "audience": AUTH0_AUDIENCE,
+        "grant_type": "client_credentials"
+    }
+    res = r.post(f"https://{AUTH0_DOMAIN}/oauth/token", data=data)
+    res = res.json()
+    return res['access_token']
+
+
+def validate_user_by_id(USER_ID, session):
     access_token = None
-    if path.exists(TOKEN_TMP) and not refresh:
+    if path.exists(TOKEN_TMP):
         with open(TOKEN_TMP, 'r') as access:
             access_token = access.read()
-    if refresh:
-        data = {
-            "client_id": AUTH0_CLIENT_ID,
-            "client_secret": AUTH0_SECRET,
-            "audience": AUTH0_AUDIENCE,
-            "grant_type": "client_credentials"
-        }
-        access_token = r.post(f"https://{AUTH0_DOMAIN}/oauth/token", data=data)
-        access_token = access_token.json()
-        access_token = access_token['access_token']
+    if not access_token:
+        access_token = get_new_token()
         with open(TOKEN_TMP, 'w') as access:
             access.write(access_token)
     user = r.get(f"https://idh-ipd.eu.auth0.com/api/v2/users/{USER_ID}",
                  headers={"Authorization": "Bearer {}".format(access_token)})
     if user.status_code == 200:
-        return user.json()
+        user = user.json()
+        user = crud_user.get_user_by_email(session=session,
+                                           email=user["email"])
+        return user
     if user.status_code == 401:
-        validate_user_by_id(USER_ID, True)
+        access_token = get_new_token()
+        with open(TOKEN_TMP, 'w') as access:
+            access.write(access_token)
+        return validate_user_by_id(USER_ID, session)
     return False
 
 
@@ -74,21 +84,20 @@ def get_session():
         session.close()
 
 
-@routes.get("/secure", dependencies=[Depends(auth.implicit_scheme)], tags=["Secure"])
-async def get_secure(user: CustomAuth0User = Security(auth.get_user)):
-    data = validate_user_by_id(user.id)
-    if not data:
-        raise HTTPException(status_code=404, detail="User not found")
-    return data
-
-
 @routes.post("/user/",
              response_model=UserBase,
              summary="add new user",
-             tags=["User"])
+             tags=["User"],
+             dependencies=[Depends(auth.implicit_scheme)])
 def add_user(email: str,
              role: UserRole,
-             session: Session = Depends(get_session)):
+             session: Session = Depends(get_session),
+             user: CustomAuth0User = Security(auth.get_user)):
+    user = validate_user_by_id(user.id, session)
+    if not user:
+        raise HTTPException(status_code=403, detail="Forbidden")
+    if user.role != UserRole.admin:
+        raise HTTPException(status_code=403, detail="Forbidden")
     user = crud_user.add_user(session=session, email=email, role=role)
     return user
 
@@ -96,10 +105,17 @@ def add_user(email: str,
 @routes.get("/user/",
             response_model=List[UserBase],
             summary="get all users",
-            tags=["User"])
+            tags=["User"],
+            dependencies=[Depends(auth.implicit_scheme)])
 def get_user(skip: int = 0,
              limit: int = 100,
-             session: Session = Depends(get_session)):
+             session: Session = Depends(get_session),
+             user: CustomAuth0User = Security(auth.get_user)):
+    user = validate_user_by_id(user.id, session)
+    if not user:
+        raise HTTPException(status_code=404, detail="Not Found")
+    if user.role != UserRole.admin:
+        raise HTTPException(status_code=404, detail="Not Found")
     user = crud_user.get_user(session=session, skip=skip, limit=limit)
     return [i.serialize for i in user]
 
@@ -107,23 +123,20 @@ def get_user(skip: int = 0,
 @routes.get("/user/{id:path}",
             response_model=UserAccessBase,
             summary="get user detail",
-            tags=["User"])
-def get_user_by_id(id: int, session: Session = Depends(get_session)):
+            tags=["User"],
+            dependencies=[Depends(auth.implicit_scheme)])
+def get_user_by_id(id: int,
+                   session: Session = Depends(get_session),
+                   user: CustomAuth0User = Security(auth.get_user)):
+    user = validate_user_by_id(user.id, session)
+    if not user:
+        raise HTTPException(status_code=404, detail="Not Found")
+    if user.role != UserRole.admin:
+        raise HTTPException(status_code=404, detail="Not Found")
     user = crud_user.get_user_by_id(session=session, id=id)
     if user is None:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="Not Found")
     return user.serialize
-
-
-@routes.post("/country/",
-             response_model=CountryBase,
-             summary="add new country",
-             tags=["Country"])
-def add_country(name: str,
-                code: Optional[str] = None,
-                session: Session = Depends(get_session)):
-    country = crud_country.add_country(session=session, name=name, code=code)
-    return country
 
 
 @routes.get("/country/",
@@ -144,15 +157,23 @@ def get_country(skip: int = 0,
 def get_country_by_id(id: int, session: Session = Depends(get_session)):
     country = crud_country.get_country_by_id(session=session, id=id)
     if country is None:
-        raise HTTPException(status_code=404, detail="country not found")
+        raise HTTPException(status_code=404, detail="Not Found")
     return country.serialize
 
 
 @routes.post("/crop/",
              response_model=CropBase,
              summary="add new crop",
+             dependencies=[Depends(auth.implicit_scheme)],
              tags=["Crop"])
-def add_crop(name: str, session: Session = Depends(get_session)):
+def add_crop(name: str,
+             session: Session = Depends(get_session),
+             user: CustomAuth0User = Security(auth.get_user)):
+    user = validate_user_by_id(user.id, session)
+    if not user:
+        raise HTTPException(status_code=403, detail="Forbidden")
+    if user.role != UserRole.admin:
+        raise HTTPException(status_code=403, detail="Forbidden")
     crop = crud_crop.add_crop(session=session, name=name)
     return crop
 
@@ -172,16 +193,20 @@ def get_crop(skip: int = 0,
             response_model=CropBase,
             summary="get crop detail",
             tags=["Crop"])
-def get_crop_by_id(id: int, session: Session = Depends(get_session)):
+def get_crop_by_id(
+        id: int,
+        session: Session = Depends(get_session),
+):
     crop = crud_crop.get_crop_by_id(session=session, id=id)
     if crop is None:
-        raise HTTPException(status_code=404, detail="crop not found")
+        raise HTTPException(status_code=404, detail="Not Found")
     return crop.serialize
 
 
 @routes.post("/company/",
              response_model=CompanyBase,
              summary="add new company",
+             dependencies=[Depends(auth.implicit_scheme)],
              tags=["Company"])
 def add_company(name: str,
                 country: int,
@@ -194,7 +219,13 @@ def add_company(name: str,
                 living_income: int = None,
                 hh_income: int = None,
                 net_income: int = None,
-                session: Session = Depends(get_session)):
+                session: Session = Depends(get_session),
+                user: CustomAuth0User = Security(auth.get_user)):
+    user = validate_user_by_id(user.id, session)
+    if not user:
+        raise HTTPException(status_code=403, detail="Forbidden")
+    if user.role != UserRole.admin:
+        raise HTTPException(status_code=403, detail="Forbidden")
     company = crud_company.add_company(session=session,
                                        data=Company(
                                            name=name,
@@ -214,10 +245,17 @@ def add_company(name: str,
 @routes.get("/company/",
             response_model=List[CompanyBase],
             summary="get all companies",
+            dependencies=[Depends(auth.implicit_scheme)],
             tags=["Company"])
 def get_company(skip: int = 0,
                 limit: int = 100,
-                session: Session = Depends(get_session)):
+                session: Session = Depends(get_session),
+                user: CustomAuth0User = Security(auth.get_user)):
+    user = validate_user_by_id(user.id, session)
+    if not user:
+        raise HTTPException(status_code=404, detail="Not Found")
+    if user.role != UserRole.admin:
+        raise HTTPException(status_code=404, detail="Not Found")
     company = crud_company.get_company(session=session, skip=skip, limit=limit)
     return [params.with_extra_data(i.serialize) for i in company]
 
@@ -225,18 +263,27 @@ def get_company(skip: int = 0,
 @routes.get("/company/{id:path}",
             response_model=CompanyBase,
             summary="get company detail",
-            tags=["Company"])
-def get_company_by_id(id: int, session: Session = Depends(get_session)):
+            tags=["Company"],
+            dependencies=[Depends(auth.implicit_scheme)])
+def get_company_by_id(id: int,
+                      session: Session = Depends(get_session),
+                      user: CustomAuth0User = Security(auth.get_user)):
+    user = validate_user_by_id(user.id, session)
+    if not user:
+        raise HTTPException(status_code=404, detail="Not Found")
+    if user.role != UserRole.admin:
+        raise HTTPException(status_code=404, detail="Not Found")
     company = crud_company.get_company_by_id(session=session, id=id)
     if company is None:
-        raise HTTPException(status_code=404, detail="company not found")
+        raise HTTPException(status_code=404, detail="Not Found")
     return params.with_extra_data(company.serialize)
 
 
 @routes.post("/driver-income/",
              response_model=DriverIncomeBase,
              summary="add new driver income",
-             tags=["Driver Income"])
+             tags=["Driver Income"],
+             dependencies=[Depends(auth.implicit_scheme)])
 def add_driver_income(country: int,
                       crop: int,
                       status: DriverIncomeStatus,
@@ -252,7 +299,13 @@ def add_driver_income(country: int,
                       net_income: int = None,
                       living_income: int = None,
                       source: str = None,
-                      session: Session = Depends(get_session)):
+                      session: Session = Depends(get_session),
+                      user: CustomAuth0User = Security(auth.get_user)):
+    user = validate_user_by_id(user.id, session)
+    if not user:
+        raise HTTPException(status_code=403, detail="Forbidden")
+    if user.role != UserRole.admin:
+        raise HTTPException(status_code=403, detail="Forbidden")
     driver_income = crud_driver_income.add_driver_income(
         session=session,
         data=DriverIncome(country=country,
@@ -276,10 +329,17 @@ def add_driver_income(country: int,
 @routes.get("/driver-income",
             response_model=List[DriverIncomeBase],
             summary="get all driver income",
-            tags=["Driver Income"])
+            tags=["Driver Income"],
+            dependencies=[Depends(auth.implicit_scheme)])
 def get_driver_income(skip: int = 0,
                       limit: int = 100,
-                      session: Session = Depends(get_session)):
+                      session: Session = Depends(get_session),
+                      user: CustomAuth0User = Security(auth.get_user)):
+    user = validate_user_by_id(user.id, session)
+    if not user:
+        raise HTTPException(status_code=404, detail="Not Found")
+    if user.role != UserRole.admin:
+        raise HTTPException(status_code=404, detail="Not Found")
     driver_income = crud_driver_income.get_driver_income(session=session,
                                                          skip=skip,
                                                          limit=limit)
@@ -289,25 +349,39 @@ def get_driver_income(skip: int = 0,
 @routes.get("/driver-income/{crop:path}/{country:path}",
             response_model=DriverIncomeBase,
             summary="get driver income",
-            tags=["Driver Income"])
+            tags=["Driver Income"],
+            dependencies=[Depends(auth.implicit_scheme)])
 def get_driver_income_detail(crop: int,
                              country: int,
-                             session: Session = Depends(get_session)):
-    driver_income = crud_driver_income.get_driver_income_by_crop_and_country(
+                             session: Session = Depends(get_session),
+                             user: CustomAuth0User = Security(auth.get_user)):
+    user = validate_user_by_id(user.id, session)
+    if not user:
+        raise HTTPException(status_code=404, detail="Not Found")
+    if user.role != UserRole.admin:
+        raise HTTPException(status_code=404, detail="Not Found")
+    driver_income = crud_driver_income.get_driver_income_by_crop_country(
         session=session,
         crop=crop,
         country=country,
     )
     if driver_income is None:
-        raise HTTPException(status_code=404, detail="driver income not found")
+        raise HTTPException(status_code=404, detail="Not Found")
     return driver_income.serialize
 
 
 @routes.get("/country-company",
             response_model=List[CountryCompanyBase],
             summary="get country and the company list",
-            tags=["Country", "Company"])
-def get_country_company(session: Session = Depends(get_session)):
+            tags=["Country", "Company"],
+            dependencies=[Depends(auth.implicit_scheme)])
+def get_country_company(session: Session = Depends(get_session),
+                        user: CustomAuth0User = Security(auth.get_user)):
+    user = validate_user_by_id(user.id, session)
+    if not user:
+        raise HTTPException(status_code=404, detail="Not Found")
+    if user.role != UserRole.admin:
+        raise HTTPException(status_code=404, detail="Not Found")
     country = crud_country.get_company(session=session)
     return [i.serialize for i in country]
 
@@ -315,8 +389,15 @@ def get_country_company(session: Session = Depends(get_session)):
 @routes.get("/crop-company",
             response_model=List[CropCompanyBase],
             summary="get crop and the company list",
-            tags=["Crop", "Company"])
-def get_crop_company(session: Session = Depends(get_session)):
+            tags=["Crop", "Company"],
+            dependencies=[Depends(auth.implicit_scheme)])
+def get_crop_company(session: Session = Depends(get_session),
+                     user: CustomAuth0User = Security(auth.get_user)):
+    user = validate_user_by_id(user.id, session)
+    if not user:
+        raise HTTPException(status_code=404, detail="Not Found")
+    if user.role != UserRole.admin:
+        raise HTTPException(status_code=404, detail="Not Found")
     crop = crud_crop.get_company(session=session)
     return [i.serialize for i in crop]
 

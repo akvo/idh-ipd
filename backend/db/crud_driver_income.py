@@ -17,7 +17,7 @@ def get_driver_income(session: Session,
     return session.query(DriverIncome).offset(skip).limit(limit).all()
 
 
-def get_driver_income_by_crop_and_country(session: Session, crop: int,
-                                          country: int) -> DriverIncome:
+def get_driver_income_by_crop_country(session: Session, crop: int,
+                                      country: int) -> DriverIncome:
     return session.query(DriverIncome).filter(
         DriverIncome.crop == crop and DriverIncome.country == country).first()

@@ -3,15 +3,6 @@ from pydantic import BaseModel
 from .models import UserRole, DriverIncomeStatus
 
 
-class UserBase(BaseModel):
-    id: int
-    email: str
-    role: UserRole
-
-    class Config:
-        orm_mode = True
-
-
 class AccessBase(BaseModel):
     id: int
     user: int
@@ -21,9 +12,10 @@ class AccessBase(BaseModel):
         orm_mode = True
 
 
-class UserAccessBase(BaseModel):
+class UserBase(BaseModel):
     id: int
-    company: int
+    email: str
+    role: UserRole
 
     class Config:
         orm_mode = True
@@ -106,4 +98,7 @@ class UserAccessBase(BaseModel):
     id: int
     email: str
     role: UserRole
-    access: List[UserAccessBase]
+    access: List[AccessBase]
+
+    class Config:
+        orm_mode = True

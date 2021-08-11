@@ -5,8 +5,7 @@ from route import routes
 app = FastAPI(
     root_path="/api",
     title="Income Perfomance Dashboard (IPD) - IDH",
-    description=
-    "IDH, The Sustainable Trade Initiative is an organization (Foundation) that works with businesses, financiers, governments and civil society to realize sustainable trade in global value chains. We believe that action-driven coalitions will drive impact on the Sustainable Development Goals and create value for all.",
+    description="Auth Client ID: 99w2F1wVLZq8GqJwZph1kE42GuAZFvlF",
     version="0.0.1",
     contact={
         "name": "Akvo",

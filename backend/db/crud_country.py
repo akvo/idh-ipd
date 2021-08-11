@@ -3,15 +3,6 @@ from sqlalchemy.orm import Session
 from .models import Country, CountryDict
 
 
-def add_country(session: Session, name: str, code: str) -> CountryDict:
-    country = Country(name=name, code=code)
-    session.add(country)
-    session.commit()
-    session.flush()
-    session.refresh(country)
-    return country
-
-
 def get_country(session: Session,
                 skip: int = 0,
                 limit: int = 100) -> List[Country]:
