@@ -1,6 +1,6 @@
 export const center = {
   Kenya: {
-    loc: [42.624, 0.105],
+    loc: [45.624, 0.105],
     scale: 900,
   },
   "Côte d'Ivoire": {
@@ -16,28 +16,28 @@ export const center = {
     scale: 900,
   },
   Uganda: {
-    loc: [36.614, 1.155],
-    scale: 900,
+    loc: [38.614, 1.155],
+    scale: 1200,
   },
   Rwanda: {
-    loc: [31.008, -1.983],
-    scale: 900,
+    loc: [35.008, -3.983],
+    scale: 1500,
   },
-  "United Republic of Tanzania": {
+  Tanzania: {
     loc: [40.49, -6.505],
-    scale: 900,
+    scale: 1200,
   },
   Malawi: {
-    loc: [35.138, -13.195],
-    scale: 900,
+    loc: [43.138, -13.195],
+    scale: 1200,
   },
   Cameroon: {
     loc: [20.349, 6.657],
     scale: 900,
   },
   Ghana: {
-    loc: [3.368, 7.949],
-    scale: 900,
+    loc: [6.368, 8.949],
+    scale: 1100,
   },
   Colombia: {
     loc: [-64.969, 3.474],
@@ -48,7 +48,7 @@ export const center = {
     scale: 500,
   },
   Honduras: {
-    loc: [-81.557, 14.952],
-    scale: 900,
+    loc: [-79.557, 14.952],
+    scale: 1000,
   },
 };

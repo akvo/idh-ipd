@@ -647,7 +647,7 @@ COPY public.country (id, name, code) FROM stdin;
 251	Tunisia	788
 252	Turkey	792
 253	Tuvalu	798
-254	United Republic of Tanzania	834
+254	Tanzania	834
 255	Uganda	800
 256	Ukraine	804
 257	Uruguay	858

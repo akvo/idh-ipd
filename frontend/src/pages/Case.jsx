@@ -33,12 +33,12 @@ const renderHeroTitle = (data, crops) => {
       wrap={true}
     >
       <Col sm={24} md={24} lg={10} className="case-title">
-        <h2>{country}</h2>
-        <span>Country</span>
+        <h2>Country</h2>
+        <span>{country}</span>
       </Col>
       <Col sm={24} md={8} lg={5} className="case-title">
-        <h2>{crop}</h2>
-        <span>Commodity</span>
+        <h2>Commodity</h2>
+        <span>{crop}</span>
       </Col>
       <Col sm={24} md={6} lg={5} className="case-title">
         <img

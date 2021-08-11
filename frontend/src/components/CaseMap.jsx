@@ -33,10 +33,10 @@ const CaseMap = ({ name }) => {
         <Geographies geography={geoUrl}>
           {({ geographies }) =>
             geographies.map((geo, i) => {
-              const { MAP_LABEL } = geo.properties;
+              const { NAME } = geo.properties;
               let isMatch = null;
-              if (MAP_LABEL) {
-                isMatch = MAP_LABEL.toLowerCase() === name.toLowerCase();
+              if (NAME) {
+                isMatch = NAME.toLowerCase() === name.toLowerCase();
               }
               return (
                 <Geography

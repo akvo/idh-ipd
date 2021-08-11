@@ -32,7 +32,7 @@ const mapMaxZoom = 4;
 const ToolTipContent = ({ data, geo }) => {
   return (
     <div className="map-tooltip">
-      <h3>{geo.MAP_LABEL}</h3>
+      <h3>{geo.NAME}</h3>
       {data?.company && data.company.length > 0 && (
         <ul>
           <li key={1}>
@@ -151,11 +151,10 @@ const DataMap = ({ history }) => {
               return geographies.map((geo) => {
                 let curr = 0;
                 let country = null;
-                if (geo.properties.MAP_LABEL) {
+                if (geo.properties.NAME) {
                   country = countries.find(
                     (c) =>
-                      c.name.toLowerCase() ===
-                      geo.properties.MAP_LABEL.toLowerCase()
+                      c.name.toLowerCase() === geo.properties.NAME.toLowerCase()
                   );
                   curr = country?.company ? country.company.length : 0;
                 }
