@@ -15,7 +15,7 @@
 
   p {
     color: #ffffff;
-    font-size: 20px;
+    font-size: 1rem;
   }
 }
 
@@ -97,6 +97,27 @@
 
     h3 {
       color: #000000;
+    }
+  }
+
+  h3 {
+    font-size: 2rem;
+    font-weight: 700;
+  }
+
+  .img-title {
+    position: relative;
+    text-align: center;
+
+    h3 {
+      position: absolute;
+      margin: auto;
+      height: 4rem;
+      width: 90%;
+      height: auto;
+      color: #fff;
+      top: calc(50% - 4rem);
+      bottom: 0;
     }
   }
 }

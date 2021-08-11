@@ -44,11 +44,15 @@ const Introduction = ({ history }) => {
             wrap={true}
             style={{ paddingTop: "2rem", paddingBottom: "2rem" }}
           >
-            <Col sm={24} md={24} lg={10}>
+            <Col sm={24} md={24} lg={10} className="img-title">
               <Image height="90%" src="/introduction/smallholder-farming.png" />
+              <h3 data-aos="fade-up" data-aos-duration="1000">
+                Smallholder
+                <br />
+                Farming
+              </h3>
             </Col>
             <Col sm={24} md={24} lg={14}>
-              <h3>Smallholder Farming</h3>
               <p>
                 Smallholder farmers are crucial in the effort to end hunger and
                 alleviate malnutrition worldwide. They account for 90% of the
@@ -66,7 +70,6 @@ const Introduction = ({ history }) => {
         <div className="content-wrapper even bg-white" data-aos="fade-up">
           <Row align="middle" justify="center" gutter={[24, 24]} wrap={true}>
             <Col sm={24} md={24} lg={14}>
-              <h3>Living Income</h3>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 Suspendisse mollis gravida augue, eu accumsan lectus lacinia
@@ -80,8 +83,13 @@ const Introduction = ({ history }) => {
                 ullamcorper nulla.
               </p>
             </Col>
-            <Col sm={24} md={24} lg={10}>
+            <Col sm={24} md={24} lg={10} className="img-title">
               <Image height="90%" src="/introduction/smallholder-farming.png" />
+              <h3 data-aos="fade-up" data-aos-duration="1000">
+                Living
+                <br />
+                Income
+              </h3>
             </Col>
           </Row>
         </div>
@@ -100,11 +108,13 @@ const Introduction = ({ history }) => {
               paddingBottom: "2rem",
             }}
           >
-            <Col sm={24} md={24} lg={10}>
+            <Col sm={24} md={24} lg={10} className="img-title">
               <Image height="90%" src="/introduction/smallholder-farming.png" />
+              <h3 data-aos="fade-up" data-aos-duration="1000">
+                Measuring the living income gap
+              </h3>
             </Col>
             <Col sm={24} md={24} lg={14}>
-              <h3>Measuring the living income gap</h3>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 Suspendisse mollis gravida augue, eu accumsan lectus lacinia
