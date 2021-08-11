@@ -38,7 +38,11 @@ const renderHeroTitle = (data, crops) => {
         <span>Commodity</span>
       </Col>
       <Col span={4} className="case-title">
-        <Image height={75} src={`/icons/${crop?.toLowerCase()}.png`} />
+        <Image
+          height={75}
+          src={`/icons/${crop?.toLowerCase()}.png`}
+          preview={false}
+        />
       </Col>
     </Row>
   );

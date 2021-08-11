@@ -92,7 +92,7 @@ const chartTmp = [
 ];
 
 const Benchmarking = ({ history }) => {
-  const { countries } = UIStore.useState();
+  const { crops, countries } = UIStore.useState();
   const [compare, setCompare] = useState("country");
   const [defCountry, setDefCountry] = useState(null);
   const [defCompany, setDefCompany] = useState(null);
@@ -101,6 +101,7 @@ const Benchmarking = ({ history }) => {
 
   const generateChartData = useCallback(
     (country, company, type) => {
+      const crop = crops.find((x) => x.id === company.crop)?.name;
       //* filter data to get others in country
       const otherInCountry = country.company.filter(
         (x) => x.id !== company.id && x.crop === company.crop
@@ -109,7 +110,7 @@ const Benchmarking = ({ history }) => {
       const otherInSector = countries
         .map((x) => x.company)
         .flat()
-        .filter((x) => x.crop === company.crop);
+        .filter((x) => x.id !== company.id && x.crop === company.crop);
 
       //* generate chart & table data
       const tmp = chartTmp.map((x) => {
@@ -123,14 +124,14 @@ const Benchmarking = ({ history }) => {
         const countryChart = x.chart.map((c) => {
           return {
             ...c,
-            group: "Others in Country",
+            group: `Others in ${country?.name}`,
             value: sumBy(otherInCountry, (v) => v[c.key]),
           };
         });
         const sectorChart = x.chart.map((c) => {
           return {
             ...c,
-            group: "Others in Sector",
+            group: `Others in ${crop}`,
             value: sumBy(otherInSector, (v) => v[c.key]),
           };
         });
@@ -148,14 +149,14 @@ const Benchmarking = ({ history }) => {
             const countryTable = d.column.map((t) => {
               return {
                 ...t,
-                group: "Others in Country",
+                group: `Others in ${country?.name}`,
                 value: sumBy(otherInCountry, (v) => v[t.key]),
               };
             });
             const sectorTable = d.column.map((t) => {
               return {
                 ...t,
-                group: "Others in Sector",
+                group: `Others in ${crop}`,
                 value: sumBy(otherInSector, (v) => v[t.key]),
               };
             });
@@ -189,7 +190,7 @@ const Benchmarking = ({ history }) => {
       });
       setChart(tmp);
     },
-    [countries]
+    [countries, crops]
   );
 
   useEffect(() => {
@@ -303,7 +304,7 @@ const Benchmarking = ({ history }) => {
               data-aos="fade-up"
               gutter={[50, 50]}
             >
-              <Col span="12">
+              <Col span={12} className="compare-body">
                 <Chart
                   key={`${c.title}-${i}`}
                   type="BARSTACK"
@@ -311,7 +312,7 @@ const Benchmarking = ({ history }) => {
                   wrapper={false}
                 />
               </Col>
-              <Col span="12" className="compare-body">
+              <Col span={12} className="compare-body">
                 <h3>{c.title}</h3>
                 <p>{c.description}</p>
                 {c.hasTable && renderTable(c?.table)}
@@ -326,12 +327,12 @@ const Benchmarking = ({ history }) => {
             data-aos="fade-up"
             gutter={[50, 50]}
           >
-            <Col span="12" className="compare-body">
+            <Col span={12} className="compare-body">
               <h3>{c.title}</h3>
               <p>{c.description}</p>
               {c.hasTable && renderTable(c?.table)}
             </Col>
-            <Col span="12">
+            <Col span={12} className="compare-body">
               <Chart
                 key={`${c.title}-${i}`}
                 type="BARSTACK"
