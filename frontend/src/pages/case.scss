@@ -1,9 +1,14 @@
 .hero {
   margin-top: -50px;
   background: #f2f5fc;
+  min-height: 700px;
   .hero-content {
     padding-top: 125px;
     padding-bottom: 75px;
+    h1.no-data {
+      text-align: right;
+      padding-right: 4rem;
+    }
   }
   .case-body {
     padding-right: 4rem;

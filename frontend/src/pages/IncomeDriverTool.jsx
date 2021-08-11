@@ -106,12 +106,10 @@ const IncomeDriverTool = ({ history }) => {
       const country = countriesHasCompany[0];
       const company = countriesHasCompany[0]?.company[0];
       setDefCountry(country);
-      setDefCompany(company);
+      // setDefCompany(company);
       api.get("/driver-income?skip=0&limit=100").then((res) => {
         setData(res.data);
-        setTimeout(() => {
-          setLoading(false);
-        }, 500);
+        setLoading(false);
       });
     }
 
@@ -219,26 +217,29 @@ const IncomeDriverTool = ({ history }) => {
           </Col>
         </Row>
         {/* // Charts */}
-        <Row
-          className="idt-wrapper"
-          justify="space-between"
-          gutter={[50, 100]}
-          data-aos="fade-up"
-          wrap={true}
-        >
-          {chart &&
-            chart.map((d, i) => (
-              <Chart
-                key={`${d.title}-${i}`}
-                title={d.title}
-                type="BARGROUP"
-                height={500}
-                span={12}
-                data={d.data}
-                axis={d.axis}
-              />
-            ))}
-        </Row>
+        {defCompany && (
+          <Row
+            className="idt-wrapper"
+            justify="space-between"
+            gutter={[50, 100]}
+            data-aos="fade-up"
+            wrap={true}
+          >
+            {chart &&
+              chart.map((d, i) => (
+                <Chart
+                  key={`${d.title}-${i}`}
+                  title={d.title}
+                  type="BARGROUP"
+                  height={500}
+                  span={12}
+                  data={d.data}
+                  axis={d.axis}
+                />
+              ))}
+          </Row>
+        )}
+        {!defCompany && <h1 className="no-data">Please select a Company</h1>}
       </div>
     </>
   );

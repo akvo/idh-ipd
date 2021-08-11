@@ -199,8 +199,8 @@ const Benchmarking = ({ history }) => {
       const country = countriesHasCompany[0];
       const company = countriesHasCompany[0]?.company[0];
       setDefCountry(country);
-      setDefCompany(company);
-      generateChartData(country, company, compare);
+      // setDefCompany(company);
+      // generateChartData(country, company, compare);
       setLoading(false);
     }
   }, [loading, countries, generateChartData, compare]);
@@ -406,7 +406,8 @@ const Benchmarking = ({ history }) => {
         </Col>
       </Row>
       {/* // Chart */}
-      {renderChart()}
+      {defCompany && renderChart()}
+      {!defCompany && <h1 className="no-data">Please select a Company</h1>}
     </div>
   );
 };
