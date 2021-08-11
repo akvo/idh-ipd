@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Router, Route, Link } from "react-router-dom";
 import { createBrowserHistory } from "history";
-import { Layout } from "antd";
+import { Layout, notification } from "antd";
 import AOS from "aos";
 
 import "./App.scss";
@@ -33,6 +33,7 @@ function App() {
     getAccessTokenSilently,
   } = useAuth0();
   const page = UIStore.useState((s) => s.page);
+  const loading = UIStore.useState((s) => s.loading);
 
   useEffect(() => {
     document.title = titleCase(page, "-");
@@ -47,27 +48,40 @@ function App() {
           api
             .get("/country-company")
             .then((res) => res.data)
+            .catch((error) => {
+              const { status, data } = error.response;
+              if (status === 404) {
+                notification.error({
+                  message:
+                    "Your email doesn't have access to other menu. Please contact admin.",
+                });
+                return false;
+              }
+              notification.error({
+                message: data.detail,
+              });
+              return false;
+            })
             .then((country) => {
               api
                 .get("/crop/?skip=0&limit=100")
                 .then((res) => res.data)
                 .then((crop) => {
                   UIStore.update((c) => {
-                    c.countries = country;
+                    c.countries = country ? country : [];
                     c.crops = crop;
-                    c.user = user;
+                    c.user = country ? user : null;
+                    c.loading = false;
                   });
                 });
             });
-          /*
-          setTimeout(() => {\
-            api.get("/secure").then((x) => {
-              console.log(x.email);
-            });
-          }, 1000);
-          */
         } else {
           api.setToken(null);
+          setTimeout(() => {
+            UIStore.update((c) => {
+              c.loading = false;
+            });
+          }, 1000);
         }
       } catch (error) {
         console.error(error);
@@ -90,11 +104,13 @@ function App() {
             <Link to="/">
               <img className="logo" src="/icons/logo-white.png" alt="logo" />
             </Link>
-            <Nav
-              loginWithPopup={loginWithPopup}
-              isAuthenticated={isAuthenticated}
-              logout={logout}
-            />
+            {!loading && (
+              <Nav
+                loginWithPopup={loginWithPopup}
+                isAuthenticated={isAuthenticated}
+                logout={logout}
+              />
+            )}
           </div>
         </Header>
         <Content>

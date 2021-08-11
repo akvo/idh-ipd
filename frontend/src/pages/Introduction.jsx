@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Row, Col, Image } from "antd";
 
 import "./introduction.scss";
@@ -8,16 +8,13 @@ import Loading from "../components/Loading";
 import { UIStore } from "../data/store";
 
 const Introduction = ({ history }) => {
-  const [loading, setLoading] = useState(true);
+  const loading = UIStore.useState((s) => s.loading);
 
   useEffect(() => {
     if (loading) {
       UIStore.update((s) => {
         s.page = "introduction";
       });
-      setTimeout(() => {
-        setLoading(false);
-      }, 500);
     }
   }, [loading]);
 
