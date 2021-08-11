@@ -11,19 +11,25 @@ import "./casemap.scss";
 import { center } from "../data/country-center";
 
 const geoUrl = "/world.topo.json";
+const zoom = 1.5;
 
 const CaseMap = ({ projects, markers, name }) => {
   return (
     <ComposableMap
       projectionConfig={{
         scale: center[name].scale,
-        projection: "geoEqualEarth",
+        projection: "geoEquirectangular",
       }}
       style={{
         height: "100%",
       }}
     >
-      <ZoomableGroup zoom={2} center={center[name].loc} maxZoom={2} minZoom={2}>
+      <ZoomableGroup
+        zoom={zoom}
+        center={center[name].loc}
+        maxZoom={zoom}
+        minZoom={zoom}
+      >
         <Geographies geography={geoUrl}>
           {({ geographies }) =>
             geographies.map((geo, i) => {

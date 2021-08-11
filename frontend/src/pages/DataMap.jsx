@@ -172,6 +172,7 @@ const DataMap = ({ history }) => {
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
+                    cursor={curr ? "pointer" : ""}
                     onMouseEnter={() => {
                       geo.properties.MAP_LABEL &&
                         setTooltipContent(

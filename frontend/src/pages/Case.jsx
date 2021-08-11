@@ -280,10 +280,10 @@ const Case = ({ history }) => {
             </Col>
           </Row>
         </div>
-        <Col span={8} className="hero-map">
+        <Col span={7} className="hero-map">
           <CaseMap projects={[]} markers={[]} name={data.name} />
         </Col>
-        <Col span={16} className="hero-content">
+        <Col span={17} className="hero-content">
           {renderHeroTitle(data, crops)}
           {renderHeroCard(data)}
         </Col>

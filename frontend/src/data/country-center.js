@@ -1,54 +1,54 @@
 export const center = {
   Kenya: {
-    loc: [37.871, 0.569],
+    loc: [42.624, 0.105],
     scale: 900,
   },
   "Côte d'Ivoire": {
-    loc: [-5.566, 7.496],
+    loc: [1.154, 8.549],
     scale: 900,
   },
   India: {
-    loc: [79.284, 23.017],
+    loc: [96.426, 21.885],
     scale: 400,
   },
   Ethiopia: {
-    loc: [39.337, 8.724],
+    loc: [49.603, 8.711],
     scale: 900,
   },
   Uganda: {
-    loc: [32.496, 1.503],
+    loc: [36.614, 1.155],
     scale: 900,
   },
   Rwanda: {
-    loc: [29.8831, -1.975],
+    loc: [31.008, -1.983],
     scale: 900,
   },
   "United Republic of Tanzania": {
-    loc: [34.486, -6.324],
+    loc: [40.49, -6.505],
     scale: 900,
   },
   Malawi: {
-    loc: [34.001, -13.153],
+    loc: [35.138, -13.195],
     scale: 900,
   },
   Cameroon: {
-    loc: [12.591, 7.081],
+    loc: [20.349, 6.657],
     scale: 900,
   },
   Ghana: {
-    loc: [-1.182, 8.073],
+    loc: [3.368, 7.949],
     scale: 900,
   },
   Colombia: {
-    loc: [-73.05, 4.681],
+    loc: [-64.969, 3.474],
     scale: 800,
   },
   Mexico: {
-    loc: [-98.17, 21.38],
+    loc: [-89.713, 22.346],
     scale: 500,
   },
   Honduras: {
-    loc: [-86.4332, 14.8909],
+    loc: [-81.557, 14.952],
     scale: 900,
   },
 };
