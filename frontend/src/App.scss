@@ -41,9 +41,12 @@ code {
   background: #fff;
 }
 .logo {
-  float: left;
-  width: 100%;
+  // float: left;
   margin: 8px 24px 10px 0;
+  width: 100%;
+  max-width: 150px;
+  max-height: 37px;
+  margin-right: 25px;
 }
 .ant-row-rtl .logo {
   float: right;

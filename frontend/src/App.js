@@ -60,7 +60,7 @@ function App() {
                 });
             });
           /*
-          setTimeout(() => {
+          setTimeout(() => {\
             api.get("/secure").then((x) => {
               console.log(x.email);
             });
@@ -88,12 +88,13 @@ function App() {
             }}
           >
             <Link to="/">
-              <Image
+              <img className="logo" src="/icons/logo-white.png" alt="logo" />
+              {/* <Image
                 className="logo"
                 preview={false}
                 height={30}
                 src="/icons/logo-white.png"
-              />
+              /> */}
             </Link>
             <Nav
               loginWithPopup={loginWithPopup}

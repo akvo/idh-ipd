@@ -35,7 +35,7 @@ const Introduction = ({ history }) => {
         <div className="content-wrapper odd" data-aos="fade-up">
           <Row align="middle" justify="center" gutter={[24, 24]}>
             <Col span={7}>
-              <Image height={300} src="/introduction/smallholder-farming.png" />
+              <Image height="90%" src="/introduction/smallholder-farming.png" />
             </Col>
             <Col span={14}>
               <h3>Smallholder Farming</h3>
@@ -71,14 +71,14 @@ const Introduction = ({ history }) => {
               </p>
             </Col>
             <Col span={7}>
-              <Image height={300} src="/introduction/smallholder-farming.png" />
+              <Image height="90%" src="/introduction/smallholder-farming.png" />
             </Col>
           </Row>
         </div>
         <div className="content-wrapper odd" data-aos="fade-up">
           <Row align="middle" justify="center" gutter={[24, 24]}>
             <Col span={7}>
-              <Image height={300} src="/introduction/smallholder-farming.png" />
+              <Image height="90%" src="/introduction/smallholder-farming.png" />
             </Col>
             <Col span={14}>
               <h3>Measuring the living income gap</h3>
@@ -117,7 +117,7 @@ const Introduction = ({ history }) => {
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={75}
+                    height="45%"
                     src="/introduction/revenue.png"
                   />
                   <h4>Revenue ($)</h4>
@@ -129,7 +129,7 @@ const Introduction = ({ history }) => {
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={75}
+                    height="45%"
                     src="/introduction/farm-size.png"
                   />
                   <h4>Farm size (ha)</h4>
@@ -141,7 +141,7 @@ const Introduction = ({ history }) => {
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={75}
+                    height="45%"
                     src="/introduction/yield.png"
                   />
                   <h4>Yield (kg/ha)</h4>
@@ -153,7 +153,7 @@ const Introduction = ({ history }) => {
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={75}
+                    height="45%"
                     src="/introduction/price.png"
                   />
                   <h4>Price ($/kg)</h4>
@@ -173,7 +173,7 @@ const Introduction = ({ history }) => {
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={75}
+                    height="45%"
                     src="/introduction/production.png"
                   />
                   <h4>Production costs ($/ha)</h4>
@@ -185,7 +185,7 @@ const Introduction = ({ history }) => {
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={75}
+                    height="45%"
                     src="/introduction/farm-size.png"
                   />
                   <h4>Farm size (ha)</h4>
@@ -197,7 +197,7 @@ const Introduction = ({ history }) => {
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={75}
+                    height="45%"
                     src="/introduction/cost.png"
                   />
                   <h4>Production cost ($)</h4>
@@ -233,7 +233,7 @@ const Introduction = ({ history }) => {
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={75}
+                    height="45%"
                     src="/introduction/net-income.png"
                   />
                   <h4>Net-income focus crop ($)</h4>
@@ -245,7 +245,7 @@ const Introduction = ({ history }) => {
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={75}
+                    height="45%"
                     src="/introduction/revenue.png"
                   />
                   <h4>Revenues ($)</h4>
@@ -257,7 +257,7 @@ const Introduction = ({ history }) => {
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={75}
+                    height="45%"
                     src="/introduction/production.png"
                   />
                   <h4>Production cost ($)</h4>
@@ -279,7 +279,7 @@ const Introduction = ({ history }) => {
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={75}
+                    height="45%"
                     src="/introduction/net-income-other.png"
                   />
                   <h4>Net-income from other farm sources</h4>
@@ -288,7 +288,7 @@ const Introduction = ({ history }) => {
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={75}
+                    height="45%"
                     src="/introduction/off-farm-labour-income.png"
                   />
                   <h4>Off-farm labour income</h4>
@@ -297,7 +297,7 @@ const Introduction = ({ history }) => {
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={75}
+                    height="45%"
                     src="/introduction/other-income.png"
                   />
                   <h4>Other income</h4>
@@ -338,7 +338,7 @@ const Introduction = ({ history }) => {
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={75}
+                    height="45%"
                     src="/introduction/actual-income.png"
                   />
                   <h4>Actual income</h4>
@@ -350,7 +350,7 @@ const Introduction = ({ history }) => {
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={75}
+                    height="45%"
                     src="/introduction/net-income.png"
                   />
                   <h4>Net-income focus crop</h4>
@@ -362,7 +362,7 @@ const Introduction = ({ history }) => {
                   <Image
                     className="meta-img"
                     preview={false}
-                    height={75}
+                    height="45%"
                     src="/introduction/other-income.png"
                   />
                   <h4>Other income</h4>
