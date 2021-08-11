@@ -39,26 +39,21 @@
 }
 
 .case-wrapper {
-  margin-top: 25px;
+  margin-top: 40px;
   margin-bottom: 40px;
-
-  section {
-    padding: 60px 0;
-  }
-
   .case-body {
     margin-top: 25px;
-    margin-bottom: 50px;
+    margin-bottom: 40px;
     width: 100%;
 
     &.odd {
-      padding-bottom: 40px;
-      padding-top: 40px;
+      padding-bottom: 50px;
+      padding-top: 50px;
     }
 
     &.even {
-      padding-top: 40px;
-      padding-bottom: 40px;
+      padding-top: 50px;
+      padding-bottom: 50px;
       background: #f2f5fc;
     }
 
