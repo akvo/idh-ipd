@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   ZoomableGroup,
   ComposableMap,
@@ -65,18 +65,9 @@ const ToolTipContent = ({ data, geo }) => {
 };
 
 const DataMap = ({ history }) => {
-  const { countries } = UIStore.useState();
+  const { countries, loading } = UIStore.useState();
   const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1 });
   const [toolTipContent, setTooltipContent] = useState("");
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (loading) {
-      setTimeout(() => {
-        setLoading(false);
-      }, 500);
-    }
-  }, [loading]);
 
   const domain = countries.reduce(
     (acc, curr) => {

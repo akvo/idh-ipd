@@ -6,6 +6,7 @@ import { UIStore } from "../data/store";
 
 const Nav = ({ logout, loginWithPopup, isAuthenticated }) => {
   const page = UIStore.useState((s) => s.page);
+  const user = UIStore.useState((s) => s.user);
 
   const handleOnClickMenu = ({ key }) => {
     UIStore.update((s) => {
@@ -21,13 +22,13 @@ const Nav = ({ logout, loginWithPopup, isAuthenticated }) => {
       selectedKeys={[page]}
       onClick={handleOnClickMenu}
       style={{
-        minWidth: isAuthenticated ? "725px" : "100px",
+        minWidth: isAuthenticated && user ? "725px" : "125px",
       }}
     >
       <Menu.Item key="introduction">
         <Link to="/">Introduction</Link>
       </Menu.Item>
-      {isAuthenticated && (
+      {isAuthenticated && user && (
         <>
           <Menu.Item key="data-map">
             <Link to="/data-map">Data Map</Link>
