@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Router, Route, Link } from "react-router-dom";
 import { createBrowserHistory } from "history";
-import { Layout, Image } from "antd";
+import { Layout } from "antd";
 import AOS from "aos";
 
 import "./App.scss";
@@ -89,12 +89,6 @@ function App() {
           >
             <Link to="/">
               <img className="logo" src="/icons/logo-white.png" alt="logo" />
-              {/* <Image
-                className="logo"
-                preview={false}
-                height={30}
-                src="/icons/logo-white.png"
-              /> */}
             </Link>
             <Nav
               loginWithPopup={loginWithPopup}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Select, Image, Menu } from "antd";
+import { Row, Col, Select, Menu } from "antd";
 import StickyBox from "react-sticky-box";
 
 import "./case.scss";
@@ -25,23 +25,25 @@ const renderHeroTitle = (data, crops) => {
   return (
     <Row
       justify="center"
+      align="middle"
       className="case-body"
       gutter={[24, 24]}
       data-aos="fade-up"
+      wrap={true}
     >
-      <Col span={10} className="case-title">
+      <Col sm={24} md={24} lg={10} className="case-title">
         <h2>{country}</h2>
         <span>Country</span>
       </Col>
-      <Col span={5} className="case-title">
+      <Col sm={24} md={8} lg={5} className="case-title">
         <h2>{crop}</h2>
         <span>Commodity</span>
       </Col>
-      <Col span={4} className="case-title">
-        <Image
-          height={75}
+      <Col sm={24} md={6} lg={5} className="case-title">
+        <img
+          className="crop-img"
           src={`/icons/${crop?.toLowerCase()}.png`}
-          preview={false}
+          alt={crop}
         />
       </Col>
     </Row>
@@ -128,6 +130,7 @@ const renderHeroCard = (data) => {
         className="case-body"
         justify={`${i % 2 === 0 ? "space-between" : "space-around"}`}
         data-aos="fade-up"
+        wrap={true}
       >
         {x.cards.map((c, j) => (
           <CountUpCard key={`${c.text}-${j}`} span={c.span} data={c} />
@@ -236,8 +239,6 @@ const Case = ({ history }) => {
 
   return (
     <>
-      {/* // Dropdown */}
-
       {/* // Detail */}
       <Row className="hero" data-aos="fade-up">
         <div
@@ -250,7 +251,7 @@ const Case = ({ history }) => {
           }}
         >
           <Row justify="end" data-aos="fade-up" gutter={[14, 12]}>
-            <Col span={4}>
+            <Col sm={24} md={8} lg={4}>
               <Select
                 showSearch
                 style={{ width: "100%" }}
@@ -266,7 +267,7 @@ const Case = ({ history }) => {
                 {renderOptions("country")}
               </Select>
             </Col>
-            <Col span={4}>
+            <Col sm={24} md={8} lg={4}>
               <Select
                 showSearch
                 style={{ width: "100%" }}
@@ -284,17 +285,17 @@ const Case = ({ history }) => {
             </Col>
           </Row>
         </div>
-        <Col span={7} className="hero-map">
+        <Col sm={24} md={12} lg={7} className="hero-map">
           <CaseMap projects={[]} markers={[]} name={data.name} />
         </Col>
-        <Col span={17} className="hero-content">
+        <Col sm={24} md={12} lg={17} className="hero-content">
           {renderHeroTitle(data, crops)}
           {renderHeroCard(data)}
         </Col>
       </Row>
       {/* // Charts */}
-      <Row className="container case-wrapper" data-aos="fade-up">
-        <Col span={4}>
+      <Row className="container case-wrapper" data-aos="fade-up" wrap={true}>
+        <Col sm={8} md={6} lg={4}>
           <StickyBox offsetTop={100} offsetBottom={20}>
             <Menu
               onClick={(e) => setSideMenu(e.key)}
@@ -314,15 +315,16 @@ const Case = ({ history }) => {
             </Menu>
           </StickyBox>
         </Col>
-        <Col span={20}>
+        <Col sm={16} md={18} lg={20}>
           <section id="net-income">
             <Row
               className="case-body odd"
               data-aos="fade-up"
               gutter={[50, 50]}
               style={{ marginLeft: 0, marginRight: 0 }}
+              wrap={true}
             >
-              <Col span={14}>
+              <Col sm={24} md={24} lg={14}>
                 {data && (
                   <Chart
                     key="Net Income Focus Crop"
@@ -337,7 +339,7 @@ const Case = ({ history }) => {
                   />
                 )}
               </Col>
-              <Col span={10} className="case-detail">
+              <Col sm={24} md={24} lg={10} className="case-detail">
                 <h3>Net Income {getCrop(data, crops)}</h3>
                 <p>
                   On the left we present the net-income from the{" "}
@@ -357,8 +359,9 @@ const Case = ({ history }) => {
               data-aos="fade-up"
               gutter={[50, 50]}
               style={{ marginLeft: 0, marginRight: 0 }}
+              wrap={true}
             >
-              <Col span={10} className="case-detail">
+              <Col sm={24} md={24} lg={10} className="case-detail">
                 <h3>Other Income</h3>
                 <p>
                   On the right we present the value of the average other income
@@ -369,7 +372,7 @@ const Case = ({ history }) => {
                   his or her household members.
                 </p>
               </Col>
-              <Col span={14}>
+              <Col sm={24} md={24} lg={14}>
                 <Chart
                   key="Other income"
                   title="Other income"
@@ -387,8 +390,9 @@ const Case = ({ history }) => {
               data-aos="fade-up"
               gutter={[50, 50]}
               style={{ marginLeft: 0, marginRight: 0 }}
+              wrap={true}
             >
-              <Col span={14}>
+              <Col sm={24} md={24} lg={14}>
                 <Chart
                   key="The living income gap"
                   title="The living income gap"
@@ -405,7 +409,7 @@ const Case = ({ history }) => {
                   wrapper={false}
                 />
               </Col>
-              <Col span={10} className="case-detail">
+              <Col sm={24} md={24} lg={10} className="case-detail">
                 <h3>The living income gap</h3>
                 <p>
                   The living income gap is the difference between the actual

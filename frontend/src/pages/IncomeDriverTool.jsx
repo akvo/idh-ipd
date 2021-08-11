@@ -184,9 +184,10 @@ const IncomeDriverTool = ({ history }) => {
           justify="end"
           className="idt-wrapper"
           data-aos="fade-up"
-          gutter={[14, 12]}
+          gutter={[12, 12]}
+          wrap={true}
         >
-          <Col span={4}>
+          <Col sm={24} md={8} lg={4}>
             <Select
               showSearch
               style={{ width: "100%" }}
@@ -201,7 +202,7 @@ const IncomeDriverTool = ({ history }) => {
               {renderOptions("country")}
             </Select>
           </Col>
-          <Col span={4}>
+          <Col sm={24} md={8} lg={4}>
             <Select
               showSearch
               style={{ width: "100%" }}
@@ -223,6 +224,7 @@ const IncomeDriverTool = ({ history }) => {
           justify="space-between"
           gutter={[50, 100]}
           data-aos="fade-up"
+          wrap={true}
         >
           {chart &&
             chart.map((d, i) => (

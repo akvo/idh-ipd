@@ -58,7 +58,7 @@ const CountUpCard = ({
   }
 
   return (
-    <Col span={span}>
+    <Col sm={12} md={span * 2} lg={span}>
       <Card className={`count-up-card ${extraStyle} ${redStyle}`}>{body}</Card>
     </Col>
   );

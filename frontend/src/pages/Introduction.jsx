@@ -26,18 +26,18 @@ const Introduction = ({ history }) => {
   }
 
   return (
-    <Row justify="center">
+    <Row justify="center" wrap={true}>
       <Col>
         <div className="title-wrapper" data-aos="fade-up">
           <h1>Income Performance Dashboard</h1>
           <p>Improving SmallHolder Farmer Resilience with Living Income</p>
         </div>
         <div className="content-wrapper odd" data-aos="fade-up">
-          <Row align="middle" justify="center" gutter={[24, 24]}>
-            <Col span={7}>
+          <Row align="middle" justify="center" gutter={[24, 24]} wrap={true}>
+            <Col sm={24} md={24} lg={10}>
               <Image height="90%" src="/introduction/smallholder-farming.png" />
             </Col>
-            <Col span={14}>
+            <Col sm={24} md={24} lg={14}>
               <h3>Smallholder Farming</h3>
               <p>
                 Smallholder farmers are crucial in the effort to end hunger and
@@ -54,8 +54,8 @@ const Introduction = ({ history }) => {
           </Row>
         </div>
         <div className="content-wrapper even bg-white" data-aos="fade-up">
-          <Row align="middle" justify="center" gutter={[24, 24]}>
-            <Col span={14}>
+          <Row align="middle" justify="center" gutter={[24, 24]} wrap={true}>
+            <Col sm={24} md={24} lg={14}>
               <h3>Living Income</h3>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -70,17 +70,17 @@ const Introduction = ({ history }) => {
                 ullamcorper nulla.
               </p>
             </Col>
-            <Col span={7}>
+            <Col sm={24} md={24} lg={10}>
               <Image height="90%" src="/introduction/smallholder-farming.png" />
             </Col>
           </Row>
         </div>
         <div className="content-wrapper odd" data-aos="fade-up">
-          <Row align="middle" justify="center" gutter={[24, 24]}>
-            <Col span={7}>
+          <Row align="middle" justify="center" gutter={[24, 24]} wrap={true}>
+            <Col sm={24} md={24} lg={10}>
               <Image height="90%" src="/introduction/smallholder-farming.png" />
             </Col>
-            <Col span={14}>
+            <Col sm={24} md={24} lg={14}>
               <h3>Measuring the living income gap</h3>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -103,17 +103,18 @@ const Introduction = ({ history }) => {
             align="middle"
             justify="center"
             gutter={[24, 24]}
+            wrap={true}
           >
-            <Col span={7}>
+            <Col sm={24} md={24} lg={10}>
               <h3>Focus crop revenues</h3>
               <p>
                 Revenues from the focus crop are calculated by multiplying the
                 price, yield and farm size
               </p>
             </Col>
-            <Col span={14}>
+            <Col sm={24} md={24} lg={14}>
               <Row justify="space-around" align="middle" className="meta-body">
-                <Col span={3}>
+                <Col sm={5} md={4} lg={3}>
                   <Image
                     className="meta-img"
                     preview={false}
@@ -125,7 +126,7 @@ const Introduction = ({ history }) => {
                 <Col span={1} className="meta-symbol">
                   =
                 </Col>
-                <Col span={3}>
+                <Col sm={5} md={4} lg={3}>
                   <Image
                     className="meta-img"
                     preview={false}
@@ -137,7 +138,7 @@ const Introduction = ({ history }) => {
                 <Col span={1} className="meta-symbol">
                   x
                 </Col>
-                <Col span={3}>
+                <Col sm={5} md={4} lg={3}>
                   <Image
                     className="meta-img"
                     preview={false}
@@ -149,7 +150,7 @@ const Introduction = ({ history }) => {
                 <Col span={1} className="meta-symbol">
                   x
                 </Col>
-                <Col span={3}>
+                <Col sm={5} md={4} lg={3}>
                   <Image
                     className="meta-img"
                     preview={false}
@@ -166,10 +167,11 @@ const Introduction = ({ history }) => {
             align="middle"
             justify="center"
             gutter={[24, 24]}
+            wrap={true}
           >
-            <Col span={12}>
+            <Col sm={24} md={24} lg={14}>
               <Row justify="space-around" align="middle" className="meta-body">
-                <Col span={3}>
+                <Col sm={5} md={4} lg={3}>
                   <Image
                     className="meta-img"
                     preview={false}
@@ -181,7 +183,7 @@ const Introduction = ({ history }) => {
                 <Col span={1} className="meta-symbol">
                   x
                 </Col>
-                <Col span={3}>
+                <Col sm={5} md={4} lg={3}>
                   <Image
                     className="meta-img"
                     preview={false}
@@ -193,7 +195,7 @@ const Introduction = ({ history }) => {
                 <Col span={1} className="meta-symbol">
                   =
                 </Col>
-                <Col span={3}>
+                <Col sm={5} md={4} lg={3}>
                   <Image
                     className="meta-img"
                     preview={false}
@@ -204,7 +206,7 @@ const Introduction = ({ history }) => {
                 </Col>
               </Row>
             </Col>
-            <Col span={9}>
+            <Col sm={24} md={24} lg={10}>
               <h3>Focus crop production costs</h3>
               <p>
                 The focus crop production costs are calculated by multiplying
@@ -226,10 +228,11 @@ const Introduction = ({ history }) => {
             align="middle"
             justify="center"
             gutter={[24, 24]}
+            wrap={true}
           >
-            <Col span={12}>
+            <Col sm={24} md={24} lg={14}>
               <Row justify="space-around" align="middle" className="meta-body">
-                <Col span={3}>
+                <Col sm={5} md={4} lg={3}>
                   <Image
                     className="meta-img"
                     preview={false}
@@ -241,7 +244,7 @@ const Introduction = ({ history }) => {
                 <Col span={1} className="meta-symbol">
                   =
                 </Col>
-                <Col span={3}>
+                <Col sm={5} md={4} lg={3}>
                   <Image
                     className="meta-img"
                     preview={false}
@@ -253,7 +256,7 @@ const Introduction = ({ history }) => {
                 <Col span={1} className="meta-symbol">
                   -
                 </Col>
-                <Col span={3}>
+                <Col sm={5} md={4} lg={3}>
                   <Image
                     className="meta-img"
                     preview={false}
@@ -272,10 +275,11 @@ const Introduction = ({ history }) => {
             align="middle"
             justify="center"
             gutter={[24, 24]}
+            wrap={true}
           >
-            <Col span={12}>
+            <Col sm={24} md={24} lg={14}>
               <Row justify="space-around" align="middle" className="meta-body">
-                <Col span={3}>
+                <Col sm={5} md={4} lg={3}>
                   <Image
                     className="meta-img"
                     preview={false}
@@ -284,7 +288,7 @@ const Introduction = ({ history }) => {
                   />
                   <h4>Net-income from other farm sources</h4>
                 </Col>
-                <Col span={3}>
+                <Col sm={5} md={4} lg={3}>
                   <Image
                     className="meta-img"
                     preview={false}
@@ -293,7 +297,7 @@ const Introduction = ({ history }) => {
                   />
                   <h4>Off-farm labour income</h4>
                 </Col>
-                <Col span={3}>
+                <Col sm={5} md={4} lg={3}>
                   <Image
                     className="meta-img"
                     preview={false}
@@ -304,7 +308,7 @@ const Introduction = ({ history }) => {
                 </Col>
               </Row>
             </Col>
-            <Col span={9}>
+            <Col sm={24} md={24} lg={10}>
               <h3>Other income</h3>
               <p>
                 The majority of farmer’ households also earn an income from
@@ -324,17 +328,18 @@ const Introduction = ({ history }) => {
             align="middle"
             justify="center"
             gutter={[24, 24]}
+            wrap={true}
           >
-            <Col span={9}>
+            <Col sm={24} md={24} lg={10}>
               <h3>Actual household income</h3>
               <p>
                 Actual household income is the sum of net-income from the focus
                 crop and other income.
               </p>
             </Col>
-            <Col span={12}>
+            <Col sm={24} md={24} lg={14}>
               <Row justify="space-around" align="middle" className="meta-body">
-                <Col span={3}>
+                <Col sm={5} md={4} lg={3}>
                   <Image
                     className="meta-img"
                     preview={false}
@@ -346,7 +351,7 @@ const Introduction = ({ history }) => {
                 <Col span={1} className="meta-symbol">
                   =
                 </Col>
-                <Col span={3}>
+                <Col sm={5} md={4} lg={3}>
                   <Image
                     className="meta-img"
                     preview={false}
@@ -358,7 +363,7 @@ const Introduction = ({ history }) => {
                 <Col span={1} className="meta-symbol">
                   +
                 </Col>
-                <Col span={3}>
+                <Col sm={5} md={4} lg={3}>
                   <Image
                     className="meta-img"
                     preview={false}

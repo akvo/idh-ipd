@@ -262,6 +262,7 @@ const Benchmarking = ({ history }) => {
         justify="space-between"
         gutter={[12, 12]}
         style={{ marginBottom: "25px" }}
+        wrap={true}
       >
         <Col span={24}>
           <Card className="compare-card">
@@ -303,8 +304,9 @@ const Benchmarking = ({ history }) => {
               className="compare-wrapper"
               data-aos="fade-up"
               gutter={[50, 50]}
+              wrap={true}
             >
-              <Col span={12} className="compare-body">
+              <Col sm={24} md={24} lg={12} className="compare-body">
                 <Chart
                   key={`${c.title}-${i}`}
                   type="BARSTACK"
@@ -312,7 +314,7 @@ const Benchmarking = ({ history }) => {
                   wrapper={false}
                 />
               </Col>
-              <Col span={12} className="compare-body">
+              <Col sm={24} md={24} lg={12} className="compare-body">
                 <h3>{c.title}</h3>
                 <p>{c.description}</p>
                 {c.hasTable && renderTable(c?.table)}
@@ -326,13 +328,14 @@ const Benchmarking = ({ history }) => {
             className="compare-wrapper"
             data-aos="fade-up"
             gutter={[50, 50]}
+            wrap={true}
           >
-            <Col span={12} className="compare-body">
+            <Col sm={24} md={24} lg={12} className="compare-body">
               <h3>{c.title}</h3>
               <p>{c.description}</p>
               {c.hasTable && renderTable(c?.table)}
             </Col>
-            <Col span={12} className="compare-body">
+            <Col sm={24} md={24} lg={12} className="compare-body">
               <Chart
                 key={`${c.title}-${i}`}
                 type="BARSTACK"
@@ -357,9 +360,10 @@ const Benchmarking = ({ history }) => {
         justify="end"
         className="compare-options-wrapper"
         data-aos="fade-up"
-        gutter={[14, 12]}
+        gutter={[12, 12]}
+        wrap={true}
       >
-        <Col span={6} className="compare-options-body">
+        <Col sm={24} md={10} lg={8} className="compare-options-body">
           <span className="text">Compare with</span>
           <Radio.Group
             onChange={(e) => handleOnChangeCompare(e)}
@@ -370,7 +374,7 @@ const Benchmarking = ({ history }) => {
             <Radio.Button value="sector">Sector</Radio.Button>
           </Radio.Group>
         </Col>
-        <Col span={4}>
+        <Col sm={24} md={6} lg={4}>
           <Select
             showSearch
             style={{ width: "100%" }}
@@ -385,7 +389,7 @@ const Benchmarking = ({ history }) => {
             {renderOptions("country")}
           </Select>
         </Col>
-        <Col span={4}>
+        <Col sm={24} md={6} lg={4}>
           <Select
             showSearch
             style={{ width: "100%" }}
