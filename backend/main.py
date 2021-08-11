@@ -1,5 +1,6 @@
 import uvicorn
-from fastapi import FastAPI
+import jwt
+from fastapi import FastAPI, Request
 from route import routes
 
 app = FastAPI(
@@ -17,6 +18,19 @@ app = FastAPI(
         "url": "https://www.gnu.org/licenses/agpl-3.0.en.html",
     },
 )
+
+
+@app.middleware("http")
+async def add_process_time_header(request: Request, call_next):
+    auth = request.headers.get('Authorization')
+    if auth:
+        auth = jwt.decode(auth.replace("Bearer ", ""),
+                          options={"verify_signature": False})
+        request.state.authenticated = auth.get('email')
+    response = await call_next(request)
+    return response
+
+
 app.include_router(routes)
 
 if __name__ == "__main__":

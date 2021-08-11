@@ -30,7 +30,7 @@ function App() {
     loginWithPopup,
     logout,
     user,
-    getAccessTokenSilently,
+    getIdTokenClaims,
   } = useAuth0();
   const page = UIStore.useState((s) => s.page);
   const loading = UIStore.useState((s) => s.loading);
@@ -40,11 +40,8 @@ function App() {
     (async function () {
       try {
         if (isAuthenticated) {
-          const response = await getAccessTokenSilently({
-            audience: "ipd-backend",
-            scope: "read:users",
-          });
-          api.setToken(response);
+          const response = await getIdTokenClaims();
+          api.setToken(response.__raw);
           api
             .get("/country-company")
             .then((res) => res.data)
@@ -87,7 +84,7 @@ function App() {
         console.error(error);
       }
     })();
-  }, [getAccessTokenSilently, isAuthenticated, loginWithPopup, user, page]);
+  }, [getIdTokenClaims, isAuthenticated, loginWithPopup, user, page]);
 
   AOS.init();
   return (
