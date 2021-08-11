@@ -32,8 +32,18 @@ const Introduction = ({ history }) => {
           <h1>Income Performance Dashboard</h1>
           <p>Improving SmallHolder Farmer Resilience with Living Income</p>
         </div>
-        <div className="content-wrapper odd" data-aos="fade-up">
-          <Row align="middle" justify="center" gutter={[24, 24]} wrap={true}>
+        <div
+          className="content-wrapper odd"
+          data-aos="fade-up"
+          style={{ marginTop: 0 }}
+        >
+          <Row
+            align="middle"
+            justify="center"
+            gutter={[24, 24]}
+            wrap={true}
+            style={{ paddingTop: "2rem", paddingBottom: "2rem" }}
+          >
             <Col sm={24} md={24} lg={10}>
               <Image height="90%" src="/introduction/smallholder-farming.png" />
             </Col>
@@ -75,8 +85,21 @@ const Introduction = ({ history }) => {
             </Col>
           </Row>
         </div>
-        <div className="content-wrapper odd" data-aos="fade-up">
-          <Row align="middle" justify="center" gutter={[24, 24]} wrap={true}>
+        <div
+          className="content-wrapper odd"
+          data-aos="fade-up"
+          style={{ marginBottom: 0 }}
+        >
+          <Row
+            align="middle"
+            justify="center"
+            gutter={[24, 24]}
+            wrap={true}
+            style={{
+              paddingTop: "2rem",
+              paddingBottom: "2rem",
+            }}
+          >
             <Col sm={24} md={24} lg={10}>
               <Image height="90%" src="/introduction/smallholder-farming.png" />
             </Col>
@@ -97,7 +120,11 @@ const Introduction = ({ history }) => {
             </Col>
           </Row>
         </div>
-        <div className="content-wrapper even meta-wrapper" data-aos="fade-up">
+        <div
+          className="content-wrapper even meta-wrapper"
+          data-aos="fade-up"
+          style={{ marginTop: 0 }}
+        >
           <Row
             className="meta-right"
             align="middle"
