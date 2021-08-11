@@ -13,13 +13,13 @@ import { center } from "../data/country-center";
 const geoUrl = "/world.topo.json";
 const zoom = 1.5;
 
-const CaseMap = ({ projects, markers, name }) => {
+const CaseMap = ({ name }) => {
   return (
     <ComposableMap
       projectionConfig={{
         scale: center[name].scale,
-        projection: "geoEquirectangular",
       }}
+      projection="geoEquirectangular"
       style={{
         height: "100%",
       }}

@@ -1,11 +1,41 @@
+.hero-wrapper::before {
+  content: "";
+  background-image: url("https://www.idhsustainabletrade.com/uploaded/2020/08/2020_farmland-2_indonesia_Copyright-Pexels-Tom-Fisk_YCU-1440x400-c-default.jpg");
+  background-size: cover;
+  position: absolute;
+  top: 60px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  height: 186px;
+  opacity: 0.5;
+}
+
 .hero-wrapper {
   padding: 25px 0;
-  background-color: #c9daf7;
   width: 100%;
-  .hero-body {
-    h3 {
-      font-size: 22px;
-      font-weight: 500;
+  min-height: 182px;
+  margin-top: -35px;
+  background-color: #000;
+
+  .container {
+    margin: auto;
+
+    .hero-body {
+      color: #fff;
+      text-align: center;
+
+      h3 {
+        font-size: 2rem;
+        color: #fff;
+        font-weight: 700;
+        text-shadow: 0 0 17px black;
+      }
+
+      p {
+        font-weight: 500;
+        text-shadow: 0 0 6px black;
+      }
     }
   }
 }

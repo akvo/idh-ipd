@@ -292,7 +292,7 @@ const Case = ({ history }) => {
           </Row>
         </div>
         <Col sm={24} md={12} lg={7} className="hero-map">
-          <CaseMap projects={[]} markers={[]} name={data.name} />
+          <CaseMap name={data.name} />
         </Col>
         <Col sm={24} md={12} lg={17} className="hero-content">
           {defCompany && renderHeroTitle(data, crops)}

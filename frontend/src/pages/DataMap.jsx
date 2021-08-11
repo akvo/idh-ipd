@@ -202,9 +202,8 @@ const DataMap = ({ history }) => {
       </ComposableMap>
       <ReactTooltip
         type="dark"
-        className="opaque"
         backgroundColor="#2872c6"
-        className="react-tooltip"
+        className="opaque react-tooltip"
       >
         {toolTipContent}
       </ReactTooltip>

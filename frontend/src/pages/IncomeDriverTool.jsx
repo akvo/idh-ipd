@@ -164,14 +164,16 @@ const IncomeDriverTool = ({ history }) => {
 
   return (
     <>
-      <Row className="hero-wrapper" data-aos="fade-up">
+      <Row className="hero-wrapper">
         <div className="container">
           <Col className="hero-body">
-            <h3>Income Drivers</h3>
-            <p>
+            <h3 data-aos="fade-up">Income Drivers</h3>
+            <p data-aos="fade-up">
               Explanation tool Explain, how do the different variable affect
-              income. How should the numbers be interpreted. What does reaching
-              the feasible value mean.
+              income.
+              <br />
+              How should the numbers be interpreted. What does reaching the
+              feasible value mean.
             </p>
           </Col>
         </div>
