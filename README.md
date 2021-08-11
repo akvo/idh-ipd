@@ -38,7 +38,9 @@ see:
 # Database Seeder
 
 Assuming you have `prod-company.csv` and `prod-driver-income.csv` inside `./backend/data` folder
-you will be able to run
+you will be able to run.
+
+## Local / Dev
 
 - Company Seeder
 ```
@@ -54,3 +56,14 @@ docker-compose exec backend python -m seeder.driver_income
 ```
 docker-compose exec backend python -m seeder.admin youremail@akvo.org
 ```
+
+## Prod
+
+Note that you need to have pod access if you want to run seed in production
+
+- Add new admin
+```
+pod=$(kubectl get pods --no-headers -o custom-columns=":metadata.name" | grep idh-ipd)
+kubectl exec ${pod} --container backend -- python -m seeder.admin youremail@akvo.org
+```
+
