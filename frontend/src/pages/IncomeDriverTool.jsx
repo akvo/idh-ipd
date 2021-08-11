@@ -104,7 +104,7 @@ const IncomeDriverTool = ({ history }) => {
     if (loading) {
       const countriesHasCompany = countries.filter((x) => x.company.length > 0);
       const country = countriesHasCompany[0];
-      const company = countriesHasCompany[0]?.company[0];
+      // const company = countriesHasCompany[0]?.company[0];
       setDefCountry(country);
       // setDefCompany(company);
       api.get("/driver-income?skip=0&limit=100").then((res) => {

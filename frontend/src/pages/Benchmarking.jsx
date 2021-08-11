@@ -197,7 +197,7 @@ const Benchmarking = ({ history }) => {
     if (loading) {
       const countriesHasCompany = countries.filter((x) => x.company.length > 0);
       const country = countriesHasCompany[0];
-      const company = countriesHasCompany[0]?.company[0];
+      // const company = countriesHasCompany[0]?.company[0];
       setDefCountry(country);
       // setDefCompany(company);
       // generateChartData(country, company, compare);
