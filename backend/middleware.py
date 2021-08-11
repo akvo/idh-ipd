@@ -6,6 +6,7 @@ from fastapi_auth0 import Auth0, Auth0User
 from os import environ, path
 from db import crud_user
 from db.models import UserRole
+from datetime import datetime
 
 AUTH0_DOMAIN = environ['AUTH0_DOMAIN']
 AUTH0_CLIENT_ID = environ['AUTH0_CLIENT_ID']
@@ -60,8 +61,15 @@ def validate_user_by_id(USER_ID, session):
     return False
 
 
-def verify(email: str, session):
-    user = crud_user.get_user_by_email(session=session, email=email)
+def verify(authenticated, session):
+    if datetime.now().timestamp() > authenticated.get('exp'):
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    if not authenticated.get('email_verified'):
+        raise HTTPException(
+            status_code=401,
+            detail="Please check your email inbox to verify email account")
+    user = crud_user.get_user_by_email(session=session,
+                                       email=authenticated.get('email'))
     if not user:
         raise HTTPException(status_code=404, detail="Forbidden")
     if user.role != UserRole.admin:

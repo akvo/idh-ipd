@@ -21,12 +21,12 @@ app = FastAPI(
 
 
 @app.middleware("http")
-async def add_process_time_header(request: Request, call_next):
+async def route_middleware(request: Request, call_next):
     auth = request.headers.get('Authorization')
     if auth:
         auth = jwt.decode(auth.replace("Bearer ", ""),
                           options={"verify_signature": False})
-        request.state.authenticated = auth.get('email')
+        request.state.authenticated = auth
     response = await call_next(request)
     return response
 
