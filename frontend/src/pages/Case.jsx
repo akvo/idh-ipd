@@ -308,7 +308,7 @@ const Case = ({ history }) => {
             data-aos="fade-up"
             wrap={true}
           >
-            <Col sm={8} md={6} lg={4}>
+            <Col sm={8} md={6} lg={5}>
               <StickyBox offsetTop={100} offsetBottom={20}>
                 <Anchor offsetTop={100} targetOffset={120}>
                   <Link href="#net-income" title="Net Income Focus Crop" />
@@ -317,7 +317,7 @@ const Case = ({ history }) => {
                 </Anchor>
               </StickyBox>
             </Col>
-            <Col sm={16} md={18} lg={20}>
+            <Col sm={16} md={18} lg={19}>
               <Row
                 id="net-income"
                 className="case-body odd anchor"
