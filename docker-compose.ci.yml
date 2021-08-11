@@ -30,6 +30,7 @@ services:
       - AUTH0_AUDIENCE
     depends_on:
       - db
+    restart: always
   ci:
     network_mode: service:mainnetwork
     image: alpine:3.14
