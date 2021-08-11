@@ -47,16 +47,11 @@ function App() {
             .then((res) => res.data)
             .catch((error) => {
               const { status, data } = error.response;
-              if (status === 404) {
+              if (status !== 200) {
                 notification.error({
-                  message:
-                    "Your email doesn't have access to other menu. Please contact admin.",
+                  message: data.detail,
                 });
-                return false;
               }
-              notification.error({
-                message: data.detail,
-              });
               return false;
             })
             .then((country) => {

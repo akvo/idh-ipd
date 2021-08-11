@@ -63,7 +63,9 @@ def validate_user_by_id(USER_ID, session):
 def verify(email: str, session):
     user = crud_user.get_user_by_email(session=session, email=email)
     if not user:
-        raise HTTPException(status_code=403, detail="Forbidden")
+        raise HTTPException(status_code=404, detail="Forbidden")
     if user.role != UserRole.admin:
-        raise HTTPException(status_code=403, detail="Forbidden")
+        raise HTTPException(
+            status_code=403,
+            detail="You don't have data access, please contact admin")
     return user
