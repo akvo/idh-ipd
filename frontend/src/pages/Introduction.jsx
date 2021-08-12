@@ -68,16 +68,22 @@ const Introduction = ({ history }) => {
           <Row align="middle" justify="center" gutter={[24, 24]} wrap={true}>
             <Col sm={24} md={24} lg={14}>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Suspendisse mollis gravida augue, eu accumsan lectus lacinia
-                mattis. Sed malesuada, justo et convallis sagittis, dui felis
-                viverra justo, eget faucibus erat risus vitae metus. Aenean
-                rhoncus libero sed ante rutrum tempus. Morbi ultrices id arcu in
-                porttitor. Cras sodales nibh vitae tristique gravida.
-                Suspendisse potenti. Aenean ultricies erat sed nibh viverra
-                euismod. Integer nec arcu urna. Praesent sed libero nec elit
-                malesuada scelerisque interdum sed purus. Praesent ut
-                ullamcorper nulla.
+                Smallholder farmers earn an income from growing one or more
+                crops. However, income from selling crops may not be sufficient
+                to cover all their basic living costs. Therefore, farmer
+                households diversify their income. In the case of smallholder
+                farmers for example, income can be earned through off farm
+                business and remittances as well as from crop sales.
+              </p>
+              <p>
+                Living income is about households having the ability to afford a
+                decent standard of living. The Living Income Community of
+                Practice defines living income as: "The net annual income
+                required for a household in a particular place to afford a
+                decent standard of living for all members of that household.
+                Elements of a decent standard of living include: food, water,
+                housing, education, healthcare, transport, clothing, and other
+                essential needs including provision for unexpected events".
               </p>
             </Col>
             <Col sm={24} md={24} lg={10} className="img-title">
@@ -113,17 +119,81 @@ const Introduction = ({ history }) => {
             </Col>
             <Col sm={24} md={24} lg={14}>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Suspendisse mollis gravida augue, eu accumsan lectus lacinia
-                mattis. Sed malesuada, justo et convallis sagittis, dui felis
-                viverra justo, eget faucibus erat risus vitae metus. Aenean
-                rhoncus libero sed ante rutrum tempus. Morbi ultrices id arcu in
-                porttitor. Cras sodales nibh vitae tristique gravida.
-                Suspendisse potenti. Aenean ultricies erat sed nibh viverra
-                euismod. Integer nec arcu urna. Praesent sed libero nec elit
-                malesuada scelerisque interdum sed purus. Praesent ut
-                ullamcorper nulla.
+                By measuring the actual household income of the farmers, we can
+                assess whether the households earn a living income. If farmers
+                earn an income below the living income level, we can assess the
+                difference between actual household income level and the living
+                income level. This is what we call the living income gap. Below
+                we explain in more detail how we measure actual household income
+                and the living income gap.
               </p>
+            </Col>
+          </Row>
+        </div>
+        <div
+          className="content-wrapper odd bg-white meta-wrapper"
+          data-aos="fade-up"
+        >
+          <Row
+            className="meta-right"
+            align="middle"
+            justify="center"
+            gutter={[24, 24]}
+            wrap={true}
+          >
+            <Col sm={24} md={24} lg={24} align="middle">
+              <h3>Actual household income</h3>
+              <p>
+                Smallholder farmers can earn an income from one or more crops.
+                The focus crop is the crop that generates the highest income for
+                the household. We define actual household income as the sum of
+                the profit from the focus crop and other income.
+              </p>
+            </Col>
+          </Row>
+          <Row
+            className="meta-right"
+            align="middle"
+            justify="center"
+            gutter={[24, 24]}
+            wrap={true}
+          >
+            <Col sm={24} md={24} lg={24}>
+              <Row justify="space-around" align="middle" className="meta-body">
+                <Col sm={5} md={4} lg={3}>
+                  <Image
+                    className="meta-img"
+                    preview={false}
+                    height="45%"
+                    src="/introduction/actual-income.png"
+                  />
+                  <h4>Actual income</h4>
+                </Col>
+                <Col span={1} className="meta-symbol">
+                  =
+                </Col>
+                <Col sm={5} md={4} lg={3}>
+                  <Image
+                    className="meta-img"
+                    preview={false}
+                    height="45%"
+                    src="/introduction/net-income.png"
+                  />
+                  <h4>Net-income focus crop</h4>
+                </Col>
+                <Col span={1} className="meta-symbol">
+                  +
+                </Col>
+                <Col sm={5} md={4} lg={3}>
+                  <Image
+                    className="meta-img"
+                    preview={false}
+                    height="45%"
+                    src="/introduction/other-income.png"
+                  />
+                  <h4>Other income</h4>
+                </Col>
+              </Row>
             </Col>
           </Row>
         </div>
@@ -139,13 +209,71 @@ const Introduction = ({ history }) => {
             gutter={[24, 24]}
             wrap={true}
           >
-            <Col sm={24} md={24} lg={10}>
-              <h3>Focus crop revenues</h3>
+            <Col sm={24} md={24} lg={24} align="middle">
+              <h3>Net-income Focus Crop</h3>
               <p>
-                Revenues from the focus crop are calculated by multiplying the
-                price, yield and farm size
+                Net-income from the focus crop is calculated by subtracting
+                producing costs from the revenues from the focus crop.
               </p>
             </Col>
+          </Row>
+          <Row
+            className="meta-right"
+            align="middle"
+            justify="center"
+            gutter={[24, 24]}
+            wrap={true}
+          >
+            <Col sm={24} md={24} lg={16}>
+              <Row justify="space-around" align="middle" className="meta-body">
+                <Col sm={5} md={4} lg={3}>
+                  <Image
+                    className="meta-img"
+                    preview={false}
+                    height="45%"
+                    src="/introduction/net-income.png"
+                  />
+                  <h4>Net-income focus crop ($)</h4>
+                </Col>
+                <Col span={1} className="meta-symbol">
+                  =
+                </Col>
+                <Col sm={5} md={4} lg={3}>
+                  <Image
+                    className="meta-img"
+                    preview={false}
+                    height="45%"
+                    src="/introduction/revenue.png"
+                  />
+                  <h4>Revenues ($)</h4>
+                </Col>
+                <Col span={1} className="meta-symbol">
+                  -
+                </Col>
+                <Col sm={5} md={4} lg={3}>
+                  <Image
+                    className="meta-img"
+                    preview={false}
+                    height="45%"
+                    src="/introduction/production.png"
+                  />
+                  <h4>Production cost ($)</h4>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </div>
+        <div
+          className="content-wrapper even meta-wrapper meta-secondary"
+          data-aos="fade-up"
+        >
+          <Row
+            className="meta-left"
+            align="middle"
+            justify="center"
+            gutter={[24, 24]}
+            wrap={true}
+          >
             <Col sm={24} md={24} lg={14}>
               <Row justify="space-around" align="middle" className="meta-body">
                 <Col sm={5} md={4} lg={3}>
@@ -195,14 +323,32 @@ const Introduction = ({ history }) => {
                 </Col>
               </Row>
             </Col>
+            <Col sm={24} md={24} lg={10}>
+              <h3>Focus crop revenues</h3>
+              <p>
+                Revenues from the focus crop are calculated by multiplying the
+                price, yield and farm size
+              </p>
+            </Col>
           </Row>
           <Row
-            className="meta-left"
+            className="meta-right"
             align="middle"
             justify="center"
             gutter={[24, 24]}
             wrap={true}
           >
+            <Col sm={24} md={24} lg={10}>
+              <h3>Focus crop production costs</h3>
+              <p>
+                The focus crop production costs are calculated by multiplying
+                the farm size and production costs ($/ha). Production costs
+                capture at a minimum two types of costs. Other costs that can be
+                considered are equipment costs, interest costs for loans that
+                are used for focus crop-related purposes or processing costs (if
+                applicable).
+              </p>
+            </Col>
             <Col sm={24} md={24} lg={14}>
               <Row justify="space-around" align="middle" className="meta-body">
                 <Col sm={5} md={4} lg={3}>
@@ -240,109 +386,14 @@ const Introduction = ({ history }) => {
                 </Col>
               </Row>
             </Col>
-            <Col sm={24} md={24} lg={10}>
-              <h3>Focus crop production costs</h3>
-              <p>
-                The focus crop production costs are calculated by multiplying
-                the farm size and production costs ($/ha). Production costs
-                capture at a minimum two types of costs. Other costs that can be
-                considered are equipment costs, interest costs for loans that
-                are used for focus crop-related purposes or processing costs (if
-                applicable).
-              </p>
-            </Col>
           </Row>
         </div>
         <div
           className="content-wrapper odd bg-white meta-wrapper"
           data-aos="fade-up"
         >
-          <Row
-            className="meta-right"
-            align="middle"
-            justify="center"
-            gutter={[24, 24]}
-            wrap={true}
-          >
-            <Col sm={24} md={24} lg={14}>
-              <Row justify="space-around" align="middle" className="meta-body">
-                <Col sm={5} md={4} lg={3}>
-                  <Image
-                    className="meta-img"
-                    preview={false}
-                    height="45%"
-                    src="/introduction/net-income.png"
-                  />
-                  <h4>Net-income focus crop ($)</h4>
-                </Col>
-                <Col span={1} className="meta-symbol">
-                  =
-                </Col>
-                <Col sm={5} md={4} lg={3}>
-                  <Image
-                    className="meta-img"
-                    preview={false}
-                    height="45%"
-                    src="/introduction/revenue.png"
-                  />
-                  <h4>Revenues ($)</h4>
-                </Col>
-                <Col span={1} className="meta-symbol">
-                  -
-                </Col>
-                <Col sm={5} md={4} lg={3}>
-                  <Image
-                    className="meta-img"
-                    preview={false}
-                    height="45%"
-                    src="/introduction/production.png"
-                  />
-                  <h4>Production cost ($)</h4>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-        </div>
-        <div className="content-wrapper even meta-wrapper" data-aos="fade-up">
-          <Row
-            className="meta-left"
-            align="middle"
-            justify="center"
-            gutter={[24, 24]}
-            wrap={true}
-          >
-            <Col sm={24} md={24} lg={14}>
-              <Row justify="space-around" align="middle" className="meta-body">
-                <Col sm={5} md={4} lg={3}>
-                  <Image
-                    className="meta-img"
-                    preview={false}
-                    height="45%"
-                    src="/introduction/net-income-other.png"
-                  />
-                  <h4>Net-income from other farm sources</h4>
-                </Col>
-                <Col sm={5} md={4} lg={3}>
-                  <Image
-                    className="meta-img"
-                    preview={false}
-                    height="45%"
-                    src="/introduction/off-farm-labour-income.png"
-                  />
-                  <h4>Off-farm labour income</h4>
-                </Col>
-                <Col sm={5} md={4} lg={3}>
-                  <Image
-                    className="meta-img"
-                    preview={false}
-                    height="45%"
-                    src="/introduction/other-income.png"
-                  />
-                  <h4>Other income</h4>
-                </Col>
-              </Row>
-            </Col>
-            <Col sm={24} md={24} lg={10}>
+          <Row align="middle" justify="center" gutter={[24, 24]} wrap={true}>
+            <Col sm={24} md={24} lg={24} align="middle">
               <h3>Other income</h3>
               <p>
                 The majority of farmer’ households also earn an income from
@@ -352,50 +403,36 @@ const Introduction = ({ history }) => {
               </p>
             </Col>
           </Row>
-        </div>
-        <div
-          className="content-wrapper odd bg-white meta-wrapper"
-          data-aos="fade-up"
-        >
           <Row
-            className="meta-right"
+            className="meta-left"
             align="middle"
             justify="center"
             gutter={[24, 24]}
             wrap={true}
           >
-            <Col sm={24} md={24} lg={10}>
-              <h3>Actual household income</h3>
-              <p>
-                Actual household income is the sum of net-income from the focus
-                crop and other income.
-              </p>
-            </Col>
-            <Col sm={24} md={24} lg={14}>
+            <Col sm={24} md={24} lg={24}>
               <Row justify="space-around" align="middle" className="meta-body">
                 <Col sm={5} md={4} lg={3}>
                   <Image
                     className="meta-img"
                     preview={false}
                     height="45%"
-                    src="/introduction/actual-income.png"
+                    src="/introduction/net-income-other.png"
                   />
-                  <h4>Actual income</h4>
-                </Col>
-                <Col span={1} className="meta-symbol">
-                  =
+                  <h4>
+                    Net-income
+                    <br />
+                    from other farm sources
+                  </h4>
                 </Col>
                 <Col sm={5} md={4} lg={3}>
                   <Image
                     className="meta-img"
                     preview={false}
                     height="45%"
-                    src="/introduction/net-income.png"
+                    src="/introduction/off-farm-labour-income.png"
                   />
-                  <h4>Net-income focus crop</h4>
-                </Col>
-                <Col span={1} className="meta-symbol">
-                  +
+                  <h4>Off-farm labour income</h4>
                 </Col>
                 <Col sm={5} md={4} lg={3}>
                   <Image

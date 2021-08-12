@@ -24,7 +24,8 @@
   margin: 5rem 0;
 
   &.odd {
-    background: #c9daf7;
+    background: #0081e0;
+    color: #ffffff;
 
     &.meta-wrapper {
       padding-top: 30px;
@@ -87,6 +88,11 @@
 
       .meta-img {
         filter: brightness(0) invert(1);
+      }
+
+      &.meta-secondary {
+        margin-top: -80px;
+        background-color: #0081e0;
       }
     }
   }
