@@ -54,7 +54,7 @@ const BarStack = (data, extra) => {
             return a.value;
           },
         },
-        barWidth: 50,
+        barWidth: 150,
         stack: "t",
         type: "bar",
         data: x.map((v) => v.value),
@@ -74,12 +74,18 @@ const BarStack = (data, extra) => {
           symbol: "circle",
           label: {
             show: true,
-            position: i > 0 ? "insideStartTop" : "insideMiddleBottom",
-            formatter: "{b}",
+            position: i > 0 ? "insideMiddleBottom" : "insideStartTop",
+            backgroundColor: "#f2f2f2",
+            formatter: "{custom|{b}}",
+            padding: 5,
+            elipsis: "break",
+            rich: {
+              custom: {
+                align: "center",
+              },
+            },
           },
-          data: [
-            { name: `Living income benchmark @ ${x.group}`, yAxis: x.value },
-          ],
+          data: [{ name: `Living income @ ${x.group}`, yAxis: x.value }],
         },
       };
     });
@@ -89,18 +95,19 @@ const BarStack = (data, extra) => {
     legend: {
       data: legends,
       icon: "circle",
-      top: "0px",
       left: "center",
+      itemGap: 10,
       align: "auto",
       orient: "horizontal",
       textStyle: {
         fontFamily: "Gotham A,Gotham B",
-        fontWeight: "bold",
+        fontWeight: "normal",
         fontSize: 12,
+        marginLeft: 20,
       },
     },
     grid: {
-      top: "50px",
+      top: 50,
       left: "auto",
       right: "auto",
       bottom: "25px",
@@ -140,7 +147,15 @@ const BarStack = (data, extra) => {
           fontFamily: "Gotham A,Gotham B",
           fontSize: 12,
         },
-        axisLine: { show: false },
+        axisLine: {
+          show: true,
+        },
+        minorTick: {
+          show: true,
+        },
+        minorSplitLine: {
+          show: true,
+        },
       },
     ],
     xAxis: {
@@ -148,8 +163,9 @@ const BarStack = (data, extra) => {
       type: "category",
       axisLine: {
         lineStyle: {
-          color: "#ddd",
+          type: "dashed",
         },
+        show: true,
       },
       axisLabel: {
         fontFamily: "Gotham A,Gotham B",

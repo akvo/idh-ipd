@@ -17,7 +17,7 @@ const chartTmp = [
   {
     title: "Comparing Net-Income",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam libero dolor, pellentesque et luctus et, finibus ac elit. Curabitur vehicula lacus placerat diam eleifend, nec ultrices neque interdum. Sed varius, libero nec sagittis aliquet, diam eros ultricies tellus, quis convallis nibh neque sed dui. In ut neque eget dui faucibus.",
+      "On the left we report the net-income of the farmers from your company against the average net-income of other <type> from <the same type>. Net-income from the focus crop is calculated by subtracting producing costs from the revenues from the focus crop.",
     hasTable: false,
     chart: [
       {
@@ -40,7 +40,7 @@ const chartTmp = [
   {
     title: "Comparing the Living Income gap",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam libero dolor, pellentesque et luctus et, finibus ac elit. Curabitur vehicula lacus placerat diam eleifend, nec ultrices neque interdum. Sed varius, libero nec sagittis aliquet, diam eros ultricies tellus, quis convallis nibh neque sed dui. In ut neque eget dui faucibus.",
+      "On the right we report the living income gap of the farmers from your company against the living income gap of <type> from <the same type>. By measuring the actual household income of the farmers, we can assess whether the households earn a living income. If farmers earn an income below the living income level, we can assess the difference between actual household income level and the living income level. This is what we call the living income gap.",
     hasTable: true,
     chart: [
       {
@@ -98,6 +98,14 @@ const Benchmarking = ({ history }) => {
   const [defCompany, setDefCompany] = useState(null);
   const [loading, setLoading] = useState(true);
   const [chart, setChart] = useState(null);
+
+  let compareWith =
+    chart && defCompany
+      ? chart[0].chart.find((x) => x.group !== defCompany.name)
+      : false;
+  if (compareWith) {
+    compareWith = compareWith.group.replace("Others in", "");
+  }
 
   const generateChartData = useCallback(
     (country, company, type) => {
@@ -316,7 +324,14 @@ const Benchmarking = ({ history }) => {
               </Col>
               <Col sm={24} md={24} lg={12} className="compare-body">
                 <h3>{c.title}</h3>
-                <p>{c.description}</p>
+                <p>
+                  {c.description
+                    .replace(
+                      "<type>",
+                      compare === "country" ? "company" : compare
+                    )
+                    .replace("<the same type>", compareWith)}
+                </p>
                 {c.hasTable && renderTable(c?.table)}
               </Col>
             </Row>
@@ -332,11 +347,19 @@ const Benchmarking = ({ history }) => {
           >
             <Col sm={24} md={24} lg={12} className="compare-body">
               <h3>{c.title}</h3>
-              <p>{c.description}</p>
+              <p>
+                {c.description
+                  .replace(
+                    "<type>",
+                    compare === "country" ? "company" : compare
+                  )
+                  .replace("<the same type>", compareWith)}
+              </p>
               {c.hasTable && renderTable(c?.table)}
             </Col>
             <Col sm={24} md={24} lg={12} className="compare-body">
               <Chart
+                height={700}
                 key={`${c.title}-${i}`}
                 type="BARSTACK"
                 data={c.chart}
