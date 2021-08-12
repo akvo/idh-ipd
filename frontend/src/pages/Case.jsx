@@ -418,9 +418,9 @@ const Case = ({ history }) => {
                     type="BARSTACK"
                     data={generateChartData(
                       [
-                        "living_income",
-                        "living_income_gap",
                         "hh_income",
+                        "living_income_gap",
+                        "living_income",
                         "other_income",
                       ],
                       data?.name

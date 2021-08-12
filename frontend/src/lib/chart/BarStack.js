@@ -1,7 +1,6 @@
 import { Easing, Color, TextStyle, backgroundColor } from "./chart-style.js";
 import uniq from "lodash/uniq";
 import _ from "lodash";
-import sortBy from "lodash/sortBy";
 
 const BarStack = (data, extra) => {
   if (!data) {
@@ -33,11 +32,13 @@ const BarStack = (data, extra) => {
       actual_value: x.value,
     };
   });
+  let living_income_benchmark = data.filter((x) => x.var === "living_income");
   /* End Custom Calculation */
 
   let xAxis = uniq(data.map((x) => x.group));
   let legends = uniq(data.map((x) => x.name));
   let series = _.chain(data)
+    .filter((x) => x.var !== "living_income")
     .groupBy("name")
     .map((x, i) => {
       return {
@@ -60,11 +61,33 @@ const BarStack = (data, extra) => {
       };
     })
     .value();
-  series = sortBy(series, "name");
+  let guide = [];
+  if (living_income_benchmark.length) {
+    guide = living_income_benchmark.map((x, i) => {
+      return {
+        type: "line",
+        markLine: {
+          lineStyle: {
+            type: "dashed",
+            color: "red",
+          },
+          symbol: "circle",
+          label: {
+            show: true,
+            position: i > 0 ? "insideStartTop" : "insideMiddleBottom",
+            formatter: "{b}",
+          },
+          data: [
+            { name: `Living income benchmark @ ${x.group}`, yAxis: x.value },
+          ],
+        },
+      };
+    });
+  }
   let option = {
     ...Color,
     legend: {
-      data: sortBy(legends),
+      data: legends,
       icon: "circle",
       top: "0px",
       left: "center",
@@ -98,7 +121,10 @@ const BarStack = (data, extra) => {
           );
           return `${f.name}<br/>${f.seriesName}:<b>${revenue.actual_value}</b>`;
         }
-        return `${f.name}<br/>${f.seriesName}:<b>${f.value}</b>`;
+        if (f?.seriesName) {
+          return `${f.name}<br/>${f.seriesName}:<b>${f.value}</b>`;
+        }
+        return `${f.name}:<b>${f.value}</b>`;
       },
       backgroundColor: "#ffffff",
       ...TextStyle,
@@ -131,7 +157,7 @@ const BarStack = (data, extra) => {
         color: "#222",
       },
     },
-    series: series,
+    series: [...series, ...guide],
     ...Color,
     ...backgroundColor,
     ...Easing,

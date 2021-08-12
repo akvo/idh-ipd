@@ -45,13 +45,13 @@ const chartTmp = [
     chart: [
       {
         section: "comparing-the-living-income-gap",
-        name: "other_income",
-        key: "other_income",
+        name: "living_income",
+        key: "living_income",
       },
       {
         section: "comparing-the-living-income-gap",
-        name: "living_income",
-        key: "living_income",
+        name: "hh_income",
+        key: "hh_income",
       },
       {
         section: "comparing-the-living-income-gap",
@@ -60,8 +60,8 @@ const chartTmp = [
       },
       {
         section: "comparing-the-living-income-gap",
-        name: "hh_income",
-        key: "hh_income",
+        name: "other_income",
+        key: "other_income",
       },
     ],
     table: [
