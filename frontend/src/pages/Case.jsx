@@ -60,6 +60,7 @@ const renderHeroCard = (data) => {
     other_income,
     net_income,
     hh_income,
+    living_income,
     living_income_gap,
   } = data?.company;
 
@@ -82,7 +83,7 @@ const renderHeroCard = (data) => {
         {
           span: 4,
           value: yields,
-          text: "Production",
+          text: "Yield",
           unit: "(kg/ha)",
         },
         {
@@ -90,6 +91,8 @@ const renderHeroCard = (data) => {
           value: prod_cost,
           text: "Production Costs",
           unit: "(USD/ha)",
+          info:
+            "We consider two types of production costs: costs for hired labour and costs for inputs.",
         },
         {
           span: 4,
@@ -103,22 +106,41 @@ const renderHeroCard = (data) => {
       section: "hero-2",
       cards: [
         {
-          span: 7,
+          span: 5,
           value: net_income,
           text: "Net-income focus crop",
           unit: "(USD/year)",
+          info:
+            "Net-income of the focus crop is calculated by subtracting the production costs of the focus crop from the revenues from the focus crop.",
+          nan:
+            "Net-income focus crop could not be calculated because we miss input for one or more of the following variables: farm size, price of the focus crop, yield or production costs.",
         },
         {
-          span: 7,
+          span: 5,
           value: hh_income,
           text: "Actual income",
           unit: "(USD/year)",
+          info:
+            "Actual income is the sum of net-income from the focus crop and other income of the household.",
+          nan: "",
         },
         {
-          span: 7,
+          span: 5,
+          value: living_income,
+          text: "Living income benchmark",
+          unit: "(USD/year)",
+          info:
+            "The net annual income required for a household in a particular place to afford a decent standard of living for all members of that household. Elements of a decent standard of living include: food, water, housing, education, healthcare, transport, clothing, and other essential needs including provision for unexpected events",
+        },
+        {
+          span: 5,
           value: living_income_gap,
           text: "Living income gap",
           unit: "(USD/year)",
+          info:
+            "The living income gap is the difference between the living income benchmark and the actual household income.",
+          nan:
+            "We were not able to calculate the living income gap because the actual income level is unknown or there is no living income benchmark available for the country of interest.",
         },
       ],
     },

@@ -1,4 +1,5 @@
-import { Col, Card } from "antd";
+import { Col, Card, Tooltip } from "antd";
+import { InfoCircleFilled } from "@ant-design/icons";
 import CountUp from "react-countup";
 
 import isInteger from "lodash/isInteger";
@@ -59,7 +60,16 @@ const CountUpCard = ({
 
   return (
     <Col sm={12} md={span * 2} lg={span}>
-      <Card className={`count-up-card ${extraStyle} ${redStyle}`}>{body}</Card>
+      <Card className={`count-up-card ${extraStyle} ${redStyle}`}>
+        {body}
+        {data?.info && (
+          <Tooltip title={data.info} placement="top">
+            <span className="icon-info">
+              <InfoCircleFilled />
+            </span>
+          </Tooltip>
+        )}
+      </Card>
     </Col>
   );
 };
