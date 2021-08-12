@@ -434,7 +434,6 @@ const Case = ({ history }) => {
                     The living income gap is the difference between the actual
                     income of smallholder farmers and the living income
                     benchmark level for the country where the farmers are from.
-                    Etc,
                   </p>
                   <Row justify="space-between">
                     <CountUpCard
