@@ -53,6 +53,12 @@ const BarStack = (data, extra) => {
             }
             return a.value;
           },
+          textStyle: {
+            color: "#FFF",
+            fontFamily: "Gotham A,Gotham B",
+            fontSize: "1rem",
+            fontWeight: "bold",
+          },
         },
         barWidth: 150,
         stack: "t",

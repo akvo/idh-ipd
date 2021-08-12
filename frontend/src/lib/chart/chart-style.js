@@ -24,15 +24,19 @@ export const Easing = {
 
 export const TextStyle = {
   textStyle: {
-    color: "#222",
+    color: "#000",
     fontFamily: "Gotham A,Gotham B",
+    fontSize: "1rem",
+    fontWeight: "bold",
   },
 };
 
 export const Color = {
   color: [
-    "#1890ff",
-    "#609ba7",
+    "#36aa40",
+    "#0081e0",
+    "#2872c6",
+    "#355c7d",
     "#3D588A",
     "#5C616A",
     "#C9CDC0",

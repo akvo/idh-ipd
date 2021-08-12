@@ -20,7 +20,6 @@ const Bar = (data, extra) => {
     values = data.map((x) => x.value);
     labels = data.map((x) => x.name);
   }
-  const text_style = TextStyle;
   let option = {
     ...Color,
     grid: {
@@ -30,7 +29,7 @@ const Bar = (data, extra) => {
       label: {
         color: "#222",
         fontFamily: "Gotham A,Gotham B",
-        ...text_style,
+        ...TextStyle,
       },
     },
     tooltip: {
@@ -39,10 +38,7 @@ const Bar = (data, extra) => {
       formatter: "{b}",
       padding: 5,
       backgroundColor: "#f2f2f2",
-      textStyle: {
-        ...text_style.textStyle,
-        fontSize: 12,
-      },
+      ...TextStyle,
     },
     toolbox: {
       show: true,
@@ -65,7 +61,7 @@ const Bar = (data, extra) => {
       axisLabel: {
         color: "#222",
         fontFamily: "Gotham A,Gotham B",
-        ...text_style,
+        ...TextStyle,
       },
       axisTick: {
         alignWithLabel: true,
@@ -89,7 +85,7 @@ const Bar = (data, extra) => {
           padding: 5,
           backgroundColor: "rgba(0,0,0,.3)",
           textStyle: {
-            ...text_style.textStyle,
+            ...TextStyle.textStyle,
             color: "#fff",
           },
         },

@@ -25,6 +25,7 @@ const BarGroup = (data, extra, axis) => {
         label: {
           show: true,
           position: "inside",
+          textStyle: { ...TextStyle.textStyle, color: "#FFF" },
         },
         type: "bar",
         barWidth: 100 / x.length,

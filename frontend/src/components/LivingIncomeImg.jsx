@@ -1,7 +1,18 @@
 import { Row, Col, Image } from "antd";
 const LivingIncomeImg = () => {
   return (
-    <Row justify="space-around" align="middle" className="meta-body">
+    <Row
+      justify="space-around"
+      align="middle"
+      className="meta-body"
+      style={{ position: "relative" }}
+    >
+      <img
+        alt="actual"
+        className="meta-img"
+        src="/introduction/living-income-benchmark.png"
+        style={{ position: "absolute", top: "-80px", width: "100px", left: 0 }}
+      />
       <Col sm={12}>
         <Row justify="center" align="middle">
           <Col sm={12} md={12} lg={8}>
@@ -42,7 +53,7 @@ const LivingIncomeImg = () => {
           </Col>
         </Row>
       </Col>
-      <Col sm={4} md={4} lg={4}>
+      <Col sm={5} md={5} lg={5}>
         <Row
           justify="center"
           gutter={[0, 0]}
@@ -68,7 +79,7 @@ const LivingIncomeImg = () => {
               preview={false}
               height="100px"
               src="/introduction/actual-income.png"
-              style={{ marginTop: "3rem" }}
+              style={{ marginTop: "4rem" }}
             />
           </Col>
         </Row>
@@ -87,6 +98,27 @@ const LivingIncomeImg = () => {
             className="col-block"
             style={{ backgroundColor: "#2e72c6" }}
           >
+            <Image
+              preview={false}
+              alt="actual"
+              width="100%"
+              style={{
+                position: "absolute",
+                top: "-120px",
+                margin: "auto",
+              }}
+              src="/introduction/triangle.png"
+            />
+            <h4
+              style={{
+                position: "absolute",
+                top: "-70px",
+                margin: "auto",
+                color: "#000",
+              }}
+            >
+              Potential household income
+            </h4>
             <h4>Income Gap</h4>
           </Col>
           <Col
