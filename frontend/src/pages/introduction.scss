@@ -103,7 +103,7 @@
     color: #000000;
 
     h3 {
-      color: #000000;
+      color: #2871c6;
     }
   }
 
@@ -112,9 +112,20 @@
     font-weight: 700;
   }
 
+  h4 {
+    font-size: 14px;
+    line-height: normal;
+  }
+
   .img-title {
     position: relative;
     text-align: center;
+    cursor: pointer;
+
+    img {
+      border-radius: 14px;
+      transition: all 0.25s ease-out;
+    }
 
     h3 {
       position: absolute;
@@ -125,6 +136,24 @@
       color: #fff;
       top: calc(50% - 4rem);
       bottom: 0;
+    }
+
+    &:hover {
+      img {
+        filter: brightness(0.3);
+      }
+    }
+  }
+
+  .col-block {
+    height: 250px;
+
+    h4 {
+      color: #ffffff;
+      margin: auto;
+      top: 50%;
+      position: absolute;
+      width: 100%;
     }
   }
 }

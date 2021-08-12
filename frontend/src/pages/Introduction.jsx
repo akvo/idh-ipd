@@ -4,6 +4,7 @@ import { Row, Col, Image } from "antd";
 import "./introduction.scss";
 
 import Loading from "../components/Loading";
+import LivingIncomeImg from "../components/LivingIncomeImg";
 
 import { UIStore } from "../data/store";
 
@@ -68,9 +69,19 @@ const Introduction = ({ history }) => {
             </Col>
           </Row>
         </div>
-        <div className="content-wrapper even bg-white" data-aos="fade-up">
-          <Row align="middle" justify="center" gutter={[24, 24]} wrap={true}>
-            <Col sm={24} md={24} lg={14}>
+        <div
+          className="content-wrapper odd bg-white meta-wrapper"
+          data-aos="fade-up"
+        >
+          <Row
+            className="meta-right"
+            align="middle"
+            justify="center"
+            gutter={[24, 24]}
+            wrap={true}
+          >
+            <Col sm={24} md={24} lg={10}>
+              <h3>Living Income</h3>
               <p>
                 Smallholder farmers earn an income from growing one or more
                 crops. However, income from selling crops may not be sufficient
@@ -90,17 +101,13 @@ const Introduction = ({ history }) => {
                 essential needs including provision for unexpected events".
               </p>
             </Col>
-            <Col sm={24} md={24} lg={10} className="img-title">
-              <Image
-                height="90%"
-                src="/introduction/smallholder-farming.png"
-                preview={false}
-              />
-              <h3 data-aos="fade-up" data-aos-duration="1000">
-                Living
-                <br />
-                Income
-              </h3>
+            <Col
+              sm={24}
+              md={24}
+              lg={14}
+              style={{ borderTop: "2px dashed #000" }}
+            >
+              <LivingIncomeImg />
             </Col>
           </Row>
         </div>
@@ -126,7 +133,8 @@ const Introduction = ({ history }) => {
                 src="/introduction/measuring-living-income-gap.jpeg"
               />
               <h3 data-aos="fade-up" data-aos-duration="1000">
-                Measuring the living income gap
+                Measuring <br />
+                the living income gap
               </h3>
             </Col>
             <Col sm={24} md={24} lg={14}>
