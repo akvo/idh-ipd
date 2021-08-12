@@ -6,7 +6,7 @@ def get_revenue(x):
 
 def get_total_prod_cost(x):
     if x["land_size"] and x["prod_cost"]:
-        return x["land_size"] * x["prod_cost"]
+        return (x["land_size"] * x["prod_cost"])
     return None
 
 

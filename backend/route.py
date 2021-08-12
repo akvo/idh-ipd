@@ -282,7 +282,12 @@ def get_country_company(req: Request,
                         credentials: HTTPBasicCredentials = Depends(security)):
     verify(req.state.authenticated, session)
     country = crud_country.get_company(session=session)
-    return [i.serialize for i in country]
+    country = [i.serialize for i in country]
+    for c in country:
+        c['company'] = [
+            params.with_extra_data(x.serialize) for x in c['company']
+        ]
+    return country
 
 
 @routes.get("/crop-company",
@@ -294,7 +299,12 @@ def get_crop_company(req: Request,
                      credentials: HTTPBasicCredentials = Depends(security)):
     verify(req.state.authenticated, session)
     crop = crud_crop.get_company(session=session)
-    return [i.serialize for i in crop]
+    crop = [i.serialize for i in crop]
+    for c in crop:
+        c['company'] = [
+            params.with_extra_data(x.serialize) for x in c['company']
+        ]
+    return crop
 
 
 @routes.get("/", tags=["Dev"])

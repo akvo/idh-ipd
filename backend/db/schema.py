@@ -47,6 +47,7 @@ class CompanyBase(BaseModel):
     price: Optional[float] = None
     yields: Optional[int] = None
     prod_cost: Optional[int] = None
+    total_prod_cost: Optional[int] = None
     net_income: Optional[int] = None
     hh_income: Optional[int] = None
     other_income: Optional[int] = None
