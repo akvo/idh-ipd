@@ -121,8 +121,8 @@ const DataMap = ({ history }) => {
       <ComposableMap
         data-tip=""
         projection="geoEquirectangular"
-        projectionConfig={{ scale: 110 }}
-        height={350}
+        projectionConfig={{ scale: 125 }}
+        height={375}
         style={{ outline: "none" }}
       >
         <ZoomableGroup
@@ -171,8 +171,8 @@ const DataMap = ({ history }) => {
                             ? "#fff"
                             : "#79B0CC"
                           : "#79B0CC",
-                        strokeWidth: "0.2",
-                        strokeOpacity: "0.8",
+                        strokeWidth: "0.4",
+                        strokeOpacity: "1",
                       },
                       hover: {
                         fill: country ? highlightColor : "#f6f6f6",
