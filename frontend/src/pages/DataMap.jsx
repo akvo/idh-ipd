@@ -19,14 +19,12 @@ import "./datamap.scss";
 import Loading from "../components/Loading";
 
 import { UIStore } from "../data/store";
-import sumBy from "lodash/sumBy";
 import groupBy from "lodash/groupBy";
 import values from "lodash/values";
-import { roundNumber } from "../lib/util";
 
 const geoUrl = "/world.topo.json";
-const colorRange = ["#bbedda", "#a7e1cb", "#92d5bd", "#7dcaaf", "#67bea1"];
-const higlightColor = "#84b4cc";
+const colorRange = ["#0BC1D9", "#0BBAE3", "#0096CC", "#0B99E3", "#0072C6"];
+const highlightColor = "#36aa40";
 const mapMaxZoom = 4;
 
 const ToolTipContent = ({ data, geo }) => {
@@ -37,26 +35,15 @@ const ToolTipContent = ({ data, geo }) => {
         <ul>
           <li key={1}>
             <b>{data.company.length}</b>
-            <span>
-              {data.company.length > 1 ? "company" : "company"} engaged
-            </span>
+            <span>{data.company.length > 1 ? "Companies" : "Company"}</span>
           </li>
           <li key={2}>
             <b>{values(groupBy(data.company, (x) => x.crop)).length}</b>
             <span>
               {values(groupBy(data.company, (x) => x.crop)).length > 1
-                ? "commodities"
-                : "commodity"}
+                ? "Commodities"
+                : "Commodity"}
             </span>
-          </li>
-          <li key={3}>
-            <span>Average actual income: </span>
-            <b>
-              {roundNumber(
-                sumBy(data.company, (x) => x.hh_income) / data.company.length
-              )}{" "}
-              $/month
-            </b>
           </li>
         </ul>
       )}
@@ -179,12 +166,16 @@ const DataMap = ({ history }) => {
                       default: {
                         fill: fillColor(curr ? curr : 0),
                         outline: "none",
-                        stroke: curr ? "#fff" : "#79B0CC",
+                        stroke: curr
+                          ? country
+                            ? "#fff"
+                            : "#79B0CC"
+                          : "#79B0CC",
                         strokeWidth: "0.2",
                         strokeOpacity: "0.8",
                       },
                       hover: {
-                        fill: higlightColor,
+                        fill: country ? highlightColor : "#f6f6f6",
                         outline: "none",
                       },
                       pressed: {

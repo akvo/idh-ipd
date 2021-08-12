@@ -42,7 +42,11 @@ const Introduction = ({ history }) => {
             style={{ paddingTop: "2rem", paddingBottom: "2rem" }}
           >
             <Col sm={24} md={24} lg={10} className="img-title">
-              <Image height="90%" src="/introduction/smallholder-farming.png" />
+              <Image
+                height="90%"
+                src="/introduction/smallholder-farming.png"
+                preview={false}
+              />
               <h3 data-aos="fade-up" data-aos-duration="1000">
                 Smallholder
                 <br />
@@ -87,7 +91,11 @@ const Introduction = ({ history }) => {
               </p>
             </Col>
             <Col sm={24} md={24} lg={10} className="img-title">
-              <Image height="90%" src="/introduction/smallholder-farming.png" />
+              <Image
+                height="90%"
+                src="/introduction/smallholder-farming.png"
+                preview={false}
+              />
               <h3 data-aos="fade-up" data-aos-duration="1000">
                 Living
                 <br />
@@ -112,7 +120,11 @@ const Introduction = ({ history }) => {
             }}
           >
             <Col sm={24} md={24} lg={10} className="img-title">
-              <Image height="90%" src="/introduction/smallholder-farming.png" />
+              <Image
+                preview={false}
+                height="90%"
+                src="/introduction/measuring-living-income-gap.jpeg"
+              />
               <h3 data-aos="fade-up" data-aos-duration="1000">
                 Measuring the living income gap
               </h3>
