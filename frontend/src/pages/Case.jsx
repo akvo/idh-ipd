@@ -256,7 +256,10 @@ const Case = ({ history }) => {
       return {
         group: group,
         name: x,
-        value: data.company[x],
+        value:
+          x === "total_prod_cost" && data.company[x]
+            ? 0 - data.company[x]
+            : data.company[x],
       };
     });
   };
@@ -355,7 +358,7 @@ const Case = ({ history }) => {
                       type="BARSTACK"
                       height={350}
                       data={generateChartData(
-                        ["revenue", "prod_cost", "net_income"],
+                        ["revenue", "total_prod_cost", "net_income"],
                         data?.name
                       )}
                       wrapper={false}

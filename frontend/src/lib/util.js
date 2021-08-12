@@ -38,6 +38,7 @@ export const objectNames = {
   other_income: "Other income",
   price: "Price",
   prod_cost: "Production Cost/ha",
+  total_prod_cost: "Total Production Cost",
   revenue: "Revenues from main crop",
   share_income: "Share of income coming from focus crop",
   yields: "Yield",

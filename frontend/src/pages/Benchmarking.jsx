@@ -32,8 +32,8 @@ const chartTmp = [
       },
       {
         section: "comparing-net-income",
-        name: "prod_cost",
-        key: "prod_cost",
+        name: "total_prod_cost",
+        key: "total_prod_cost",
       },
     ],
   },

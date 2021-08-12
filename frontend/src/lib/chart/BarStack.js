@@ -65,7 +65,7 @@ const BarStack = (data, extra) => {
     },
     tooltip: {
       trigger: "item",
-      formatter: "{b}: {c}",
+      formatter: "{b}<br/>{a}: {c}",
       backgroundColor: "#ffffff",
       ...TextStyle,
     },
