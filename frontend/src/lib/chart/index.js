@@ -38,7 +38,11 @@ const Chart = ({
   wrapper = true,
   axis = null,
 }) => {
-  data = data.map((x) => ({ ...x, name: objectNames?.[x.name] || x.name }));
+  data = data.map((x) => ({
+    ...x,
+    name: objectNames?.[x.name] || x.name,
+    var: x.name,
+  }));
   const option = generateOptions({ type: type, data: data }, extra, axis);
   if (wrapper) {
     return (

@@ -256,10 +256,7 @@ const Case = ({ history }) => {
       return {
         group: group,
         name: x,
-        value:
-          x === "total_prod_cost" && data.company[x]
-            ? 0 - data.company[x]
-            : data.company[x],
+        value: data.company[x],
       };
     });
   };
@@ -421,10 +418,10 @@ const Case = ({ history }) => {
                     type="BARSTACK"
                     data={generateChartData(
                       [
-                        "other_income",
                         "living_income",
                         "living_income_gap",
                         "hh_income",
+                        "other_income",
                       ],
                       data?.name
                     )}
@@ -445,7 +442,13 @@ const Case = ({ history }) => {
                       type="reverse"
                       percent={true}
                       data={{
-                        value: data?.company?.living_income_gap,
+                        value:
+                          data?.company?.living_income &&
+                          data?.company?.hh_income
+                            ? (data.company.hh_income /
+                                data.company.living_income) *
+                              100
+                            : null,
                         text: "% of total HH income from focus crop",
                       }}
                     />

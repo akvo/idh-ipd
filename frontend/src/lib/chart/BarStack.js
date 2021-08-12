@@ -15,6 +15,25 @@ const BarStack = (data, extra) => {
       },
     };
   }
+  /* Custom Calculation */
+  data = data.map((x) => {
+    let val = x.value;
+    if (val && x.var === "total_prod_cost") {
+      val = 0 - val;
+    }
+    const net_income = data.find(
+      (d) => d.var === "net_income" && d.group === x.group
+    );
+    if (val && x.var === "revenue" && net_income) {
+      val = val - net_income.value;
+    }
+    return {
+      ...x,
+      value: val,
+      actual_value: x.value,
+    };
+  });
+  /* End Custom Calculation */
 
   let xAxis = uniq(data.map((x) => x.group));
   let legends = uniq(data.map((x) => x.name));
@@ -26,6 +45,13 @@ const BarStack = (data, extra) => {
         label: {
           show: true,
           position: "inside",
+          formatter: (a) => {
+            const curr = x.find((g) => g.group === a.name);
+            if (curr.name === "Revenues from main crop" && curr?.actual_value) {
+              return curr.actual_value;
+            }
+            return a.value;
+          },
         },
         barWidth: 50,
         stack: "t",
@@ -65,7 +91,15 @@ const BarStack = (data, extra) => {
     },
     tooltip: {
       trigger: "item",
-      formatter: "{b}<br/>{a}: {c}",
+      formatter: (f) => {
+        if (f.seriesName === "Revenues from main crop") {
+          let revenue = data.find(
+            (x) => x.var === "revenue" && x.group === f.name
+          );
+          return `${f.name}<br/>${f.seriesName}:<b>${revenue.actual_value}</b>`;
+        }
+        return `${f.name}<br/>${f.seriesName}:<b>${f.value}</b>`;
+      },
       backgroundColor: "#ffffff",
       ...TextStyle,
     },
