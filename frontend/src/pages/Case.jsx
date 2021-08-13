@@ -380,7 +380,7 @@ const Case = ({ history }) => {
                       percent={false}
                       data={{
                         value: data?.company?.net_income,
-                        text: `${getCrop(data, crops)} Net Income`,
+                        text: `${getCrop(data, crops)} Net Income (USD/year)`,
                       }}
                     />
                   </Row>

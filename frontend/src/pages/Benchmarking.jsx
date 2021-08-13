@@ -53,11 +53,6 @@ const chartTmp = [
         name: "living_income_gap",
         key: "living_income_gap",
       },
-      {
-        section: "comparing-the-living-income-gap",
-        name: "other_income",
-        key: "other_income",
-      },
     ],
     table: [
       {
@@ -127,15 +122,19 @@ const Benchmarking = ({ history }) => {
         const countryChart = x.chart.map((c) => {
           return {
             ...c,
-            group: `Others in ${country?.name}`,
-            value: sumBy(otherInCountry, (v) => v[c.key]),
+            group: `Others in ${country?.name} (Average)`,
+            value: parseInt(
+              sumBy(otherInCountry, (v) => v[c.key]) / otherInCountry.length
+            ),
           };
         });
         const sectorChart = x.chart.map((c) => {
           return {
             ...c,
-            group: `Others in ${crop}`,
-            value: sumBy(otherInSector, (v) => v[c.key]),
+            group: `Others in ${crop} (Average)`,
+            value: parseInt(
+              sumBy(otherInSector, (v) => v[c.key]) / otherInSector.length
+            ),
           };
         });
 
@@ -152,15 +151,19 @@ const Benchmarking = ({ history }) => {
             const countryTable = d.column.map((t) => {
               return {
                 ...t,
-                group: `Others in ${country?.name}`,
-                value: sumBy(otherInCountry, (v) => v[t.key]),
+                group: `Avg. in ${country?.name}`,
+                value: parseInt(
+                  sumBy(otherInCountry, (v) => v[t.key]) / otherInCountry.length
+                ),
               };
             });
             const sectorTable = d.column.map((t) => {
               return {
                 ...t,
-                group: `Others in ${crop}`,
-                value: sumBy(otherInSector, (v) => v[t.key]),
+                group: `Avg. in ${crop}`,
+                value: parseInt(
+                  sumBy(otherInSector, (v) => v[t.key]) / otherInSector.length
+                ),
               };
             });
 
