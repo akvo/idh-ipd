@@ -355,7 +355,7 @@ const Case = ({ history }) => {
                       type="BARSTACK"
                       height={350}
                       data={generateChartData(
-                        ["revenue", "total_prod_cost", "net_income"],
+                        ["revenue", "total_prod_cost"],
                         data?.name
                       )}
                       wrapper={false}
@@ -373,6 +373,17 @@ const Case = ({ history }) => {
                     {getCrop(data, crops)} revenues - {getCrop(data, crops)}{" "}
                     production costs
                   </p>
+                  <Row justify="space-between">
+                    <CountUpCard
+                      span={11}
+                      type="reverse"
+                      percent={false}
+                      data={{
+                        value: data?.company?.net_income,
+                        text: `${getCrop(data, crops)} Net Income`,
+                      }}
+                    />
+                  </Row>
                 </Col>
               </Row>
               <Row
@@ -417,12 +428,7 @@ const Case = ({ history }) => {
                     title="The living income gap"
                     type="BARSTACK"
                     data={generateChartData(
-                      [
-                        "hh_income",
-                        "living_income_gap",
-                        "living_income",
-                        "other_income",
-                      ],
+                      ["hh_income", "living_income_gap", "living_income"],
                       data?.name
                     )}
                     wrapper={false}
@@ -449,16 +455,6 @@ const Case = ({ history }) => {
                               100
                             : null,
                         text: "% of total HH income from focus crop",
-                      }}
-                    />
-                    <CountUpCard
-                      span={11}
-                      type="reverse"
-                      percent={true}
-                      data={{
-                        value: data?.company?.share_income,
-                        text:
-                          "Share of households earning an income above the LI benchmark",
                       }}
                     />
                   </Row>

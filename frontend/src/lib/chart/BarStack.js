@@ -51,6 +51,9 @@ const BarStack = (data, extra) => {
             if (curr.name === "Revenues from main crop" && curr?.actual_value) {
               return curr.actual_value;
             }
+            if (curr.name === "Total Production Cost") {
+              return -a.value;
+            }
             return a.value;
           },
           textStyle: {
