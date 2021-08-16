@@ -61,8 +61,8 @@ const chartTmp = [
         percent: true,
         column: [
           {
-            name: "living_income_gap",
-            key: "living_income_gap",
+            name: "hh_income",
+            key: "hh_income",
           },
         ],
       },

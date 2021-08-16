@@ -14,6 +14,7 @@ import DataMap from "./pages/DataMap";
 import Case from "./pages/Case";
 import Benchmarking from "./pages/Benchmarking";
 import IncomeDriverTool from "./pages/IncomeDriverTool";
+import Manage from "./pages/Manage";
 import Doc from "./pages/Doc";
 
 import { UIStore } from "./data/store";
@@ -115,6 +116,7 @@ function App() {
             path="/income-driver-tool"
             component={IncomeDriverTool}
           />
+          <ProtectedRoute exact path="/manage" component={Manage} />
           <Route exact path="/docs" component={Doc} />
         </Content>
         <Footer className={`footer ${!user && "fixed"}`}>
