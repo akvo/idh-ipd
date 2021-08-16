@@ -16,7 +16,7 @@ const Nav = ({ logout, loginWithPopup, isAuthenticated }) => {
       s.page = key === "auth" ? "introduction" : key;
       s.selectedCountry = null;
     });
-    history.push(key === "auth" ? "" : key);
+    history.push(key === "auth" ? "/" : `/${key}`);
   };
 
   return (
@@ -29,7 +29,7 @@ const Nav = ({ logout, loginWithPopup, isAuthenticated }) => {
         minWidth: isAuthenticated && user ? "840px" : "225px",
       }}
     >
-      <Menu.Item key="introduction">
+      <Menu.Item key="">
         <Link to="/">Introduction</Link>
       </Menu.Item>
       {isAuthenticated && user && (

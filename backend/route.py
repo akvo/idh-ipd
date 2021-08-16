@@ -15,7 +15,7 @@ from db.schema import UserAccessBase
 from db.models import Company, DriverIncome
 from db.models import UserRole, DriverIncomeStatus
 import util.params as params
-from middleware import verify
+from middleware import verify, get_auth0_user
 
 models.Base.metadata.create_all(bind=engine)
 routes = APIRouter()
@@ -35,10 +35,12 @@ def get_session():
              response_model=UserBase,
              summary="add new user",
              tags=["User"])
-def add_user(email: str,
+def add_user(req: Request,
+             email: str,
              role: UserRole,
              session: Session = Depends(get_session),
              credentials: HTTPBasicCredentials = Depends(security)):
+    verify(req.state.authenticated, session)
     user = crud_user.add_user(session=session, email=email, role=role)
     return user
 
@@ -54,7 +56,12 @@ def get_user(req: Request,
              credentials: HTTPBasicCredentials = Depends(security)):
     verify(req.state.authenticated, session)
     user = crud_user.get_user(session=session, skip=skip, limit=limit)
-    return [i.serialize for i in user]
+    user = [i.serialize for i in user]
+    for u in user:
+        auth0_data = get_auth0_user(u["email"])
+        if len(auth0_data):
+            u.update(auth0_data[0])
+    return user
 
 
 @routes.get("/user/{id:path}",

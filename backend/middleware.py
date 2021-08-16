@@ -25,40 +25,34 @@ auth = Auth0(domain=AUTH0_DOMAIN,
              scopes={'read:email': 'test'})
 
 
-def get_new_token():
-    data = {
-        "client_id": AUTH0_CLIENT_ID,
-        "client_secret": AUTH0_SECRET,
-        "audience": AUTH0_AUDIENCE,
-        "grant_type": "client_credentials"
-    }
-    res = r.post(f"https://{AUTH0_DOMAIN}/oauth/token", data=data)
-    res = res.json()
-    return res['access_token']
-
-
-def validate_user_by_id(USER_ID, session):
-    access_token = None
+def get_token(generate=False):
+    if generate:
+        data = {
+            "client_id": AUTH0_CLIENT_ID,
+            "client_secret": AUTH0_SECRET,
+            "audience": AUTH0_AUDIENCE,
+            "grant_type": "client_credentials"
+        }
+        res = r.post(f"https://{AUTH0_DOMAIN}/oauth/token", data=data)
+        res = res.json()
+        with open(TOKEN_TMP, 'w') as access:
+            access.write(res['access_token'])
+        return res['access_token']
     if path.exists(TOKEN_TMP):
         with open(TOKEN_TMP, 'r') as access:
             access_token = access.read()
-    if not access_token:
-        access_token = get_new_token()
-        with open(TOKEN_TMP, 'w') as access:
-            access.write(access_token)
-    user = r.get(f"https://idh-ipd.eu.auth0.com/api/v2/users/{USER_ID}",
+        return access_token
+    return get_token(True)
+
+
+def get_auth0_user(email):
+    access_token = get_token()
+    user = r.get(f"https://{AUTH0_DOMAIN}/api/v2/users-by-email?email={email}",
                  headers={"Authorization": "Bearer {}".format(access_token)})
-    if user.status_code == 200:
-        user = user.json()
-        user = crud_user.get_user_by_email(session=session,
-                                           email=user["email"])
-        return user
-    if user.status_code == 401:
-        access_token = get_new_token()
-        with open(TOKEN_TMP, 'w') as access:
-            access.write(access_token)
-        return validate_user_by_id(USER_ID, session)
-    return False
+    if user.status_code != 200:
+        access_token = get_token(True)
+        return get_auth0_user(email)
+    return user.json()
 
 
 def verify(authenticated, session):

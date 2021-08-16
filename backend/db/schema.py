@@ -16,6 +16,9 @@ class UserBase(BaseModel):
     id: int
     email: str
     role: UserRole
+    email_verified: Optional[bool] = False
+    picture: Optional[str] = None
+    name: Optional[str] = None
 
     class Config:
         orm_mode = True
