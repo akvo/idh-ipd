@@ -1,111 +1,132 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Collapse, Avatar, Button, Checkbox, Divider } from "antd";
+import {
+  Row,
+  Col,
+  Avatar,
+  Button,
+  Table,
+  Tag,
+  Form,
+  Modal,
+  Input,
+  Select,
+} from "antd";
 import { UIStore } from "../data/store";
 import Loading from "../components/Loading";
-import flatten from "lodash/flatten";
 import api from "../lib/api";
 
-const { Panel } = Collapse;
-
-const PanelHeader = ({ data }) => {
-  return (
-    <span>
-      <Avatar size="small" src={data.picture || "/default-avatar.jpeg"} />{" "}
-      {data.name || data.email}
-    </span>
-  );
-};
-
-const Approve = ({ data }) => {
-  return (
-    <Button disabled={!data?.email_verified}>
-      {data?.email_verified ? "Approve" : "Email not verified"}
-    </Button>
-  );
-};
-
-const CheckBoxes = ({ options, defaultCheckedList }) => {
-  const [checkedList, setCheckedList] = useState(defaultCheckedList);
-
-  const onChange = (list) => {
-    setCheckedList(list);
-  };
-
-  return (
-    <Checkbox.Group
-      value={checkedList}
-      onChange={onChange}
-      style={{ width: "100%" }}
-    >
-      <Row>
-        {options.map((x, i) => (
-          <Col span={12} key={i}>
-            <Checkbox value={x.company}>
-              {x.country} - {x.company}
-            </Checkbox>
-          </Col>
-        ))}
-      </Row>
-    </Checkbox.Group>
-  );
-};
+const { Option, OptGroup } = Select;
 
 const Manage = () => {
   const { countries, loading } = UIStore.useState();
+  const [form] = Form.useForm();
   const [users, setUsers] = useState([]);
+  const [selected, setSelected] = useState({});
+  const [access, showAccess] = useState(false);
+
   useEffect(() => {
-    if (!loading && !users.loading) {
-      api.get("/user/?skip=0&limit=100").then((res) => {
-        setUsers(res.data);
-      });
-    }
-  }, [users, loading]);
+    api.get("/user/?skip=0&limit=100").then((res) => {
+      setUsers(res.data);
+    });
+  }, []);
 
   if (loading) {
     return <Loading />;
   }
-  const options = flatten(
-    countries.map((x) => {
-      return x.company.map((c) => ({
-        country: x.name,
-        company: c.name,
-      }));
-    })
-  );
+
+  const handleAccess = (id) => {
+    api.get(`/user/${id}`).then((res) => {
+      showAccess(true);
+      form.setFieldsValue(res.data);
+      setSelected(res.data);
+    });
+  };
+
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      render: (t, r) => (
+        <div>
+          <Avatar src={r.picture || "/default-avatar.jpeg"} />{" "}
+          <span>
+            {t || r.email}{" "}
+            {!r?.email_verified && <Tag color="red">Not Verified</Tag>}
+          </span>
+        </div>
+      ),
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Role",
+      dataIndex: "role",
+      key: "role",
+    },
+    {
+      title: "Action",
+      dataIndex: "id",
+      key: "id",
+      render: (id) => <Button onClick={(e) => handleAccess(id)}>Edit</Button>,
+    },
+  ];
+
+  const onRoleChange = (value) => {
+    form.setFieldsValue({ role: value });
+  };
+
+  const onFinish = (values) => {
+    console.log(values);
+  };
+
   return (
     <Row justify="center" wrap={true}>
-      <Col sm={12} md={12} lg={12}>
-        <Collapse accordion>
-          {users.map((x, i) => (
-            <Panel
-              header={<PanelHeader data={x} />}
-              key={i}
-              extra={<Approve data={x} />}
-            >
-              <Row>
-                <Col sm={6} md={6} lg={6}>
-                  Name
-                </Col>
-                <Col sm={6} md={6} lg={6}>
-                  : {x.name}
-                </Col>
-              </Row>
-              <Row>
-                <Col sm={6} md={6} lg={6}>
-                  Email
-                </Col>
-                <Col sm={6} md={6} lg={6}>
-                  : {x.email}
-                </Col>
-              </Row>
-              <Divider orientation="left" plain>
-                Access
-              </Divider>
-              <CheckBoxes options={options} />
-            </Panel>
-          ))}
-        </Collapse>
+      <Col sm={20} md={20} lg={20}>
+        <Table columns={columns} dataSource={users} />
       </Col>
+      <Modal
+        title={"Edit"}
+        centered
+        visible={access}
+        onOk={() => showAccess(false)}
+        onCancel={() => showAccess(false)}
+      >
+        <Form
+          form={form}
+          name="basic"
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
+          initialValues={selected}
+          onFinish={onFinish}
+        >
+          <Form.Item label="Email" name="email" valuePropName="email">
+            <Input />
+          </Form.Item>
+
+          <Form.Item label="Role" name="role" valuePropName="role">
+            <Select onChange={onRoleChange}>
+              <Option value="admin">Admin</Option>
+              <Option value="user">User</Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item label="Companies" name="company" valuePropName="company">
+            <Select mode="multiple" placeholder="select one or more company">
+              {countries.map((x) => (
+                <OptGroup label={x.name}>
+                  {x.company.map((c) => (
+                    <Option value={c.name}>{c.name}</Option>
+                  ))}
+                </OptGroup>
+              ))}
+            </Select>
+          </Form.Item>
+        </Form>
+      </Modal>
     </Row>
   );
 };
