@@ -2,7 +2,7 @@ from typing import List
 from typing_extensions import TypedDict
 import enum
 from datetime import datetime
-from sqlalchemy import Column, Integer, Float, String, Text, Enum, DateTime
+from sqlalchemy import Column, Integer, Boolean, Float, String, Text, Enum, DateTime
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 from .connection import Base
@@ -283,6 +283,7 @@ class UserDict(TypedDict):
     id: int
     email: str
     role: UserRole
+    active: bool
     access: List[AccessDict]
 
 
@@ -291,14 +292,16 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True, nullable=True)
     email = Column(String, unique=True)
     role = Column(Enum(UserRole))
+    active = Column(Boolean, nullable=True, default=True)
     created = Column(DateTime, default=datetime.utcnow)
     access = relationship("Access",
                           cascade="all, delete",
                           passive_deletes=True,
                           backref="access")
 
-    def __init__(self, email: str, role: UserRole):
+    def __init__(self, email: str, role: UserRole, active: bool):
         self.email = email
+        self.active = active
         self.role = role
 
     def __repr__(self) -> int:
@@ -310,5 +313,6 @@ class User(Base):
             "id": self.id,
             "email": self.email,
             "role": self.role,
+            "active": self.active,
             "access": self.access
         }

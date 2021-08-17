@@ -13,6 +13,9 @@ if len(sys.argv) == 2:
 
     models.Base.metadata.create_all(bind=engine)
     session = SessionLocal()
-    user = crud_user.add_user(session=session, email=sys.argv[1], role="admin")
+    user = crud_user.add_user(session=session,
+                              email=sys.argv[1],
+                              role="admin",
+                              active=True)
     print(f"{user.email} added")
     session.close()

@@ -294,7 +294,8 @@ CREATE TABLE public."user" (
     id integer NOT NULL,
     email character varying,
     role public.userrole,
-    created timestamp without time zone
+    created timestamp without time zone,
+    active boolean
 );
 
 
@@ -377,7 +378,7 @@ COPY public.access (id, "user", company) FROM stdin;
 --
 
 COPY public.alembic_version (version_num) FROM stdin;
-113a4b4b1aef
+bca3dfc07f2e
 \.
 
 
@@ -696,7 +697,7 @@ COPY public.driver_income (id, country, crop, status, area, price, cop_pha, cop_
 -- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: ipd
 --
 
-COPY public."user" (id, email, role, created) FROM stdin;
+COPY public."user" (id, email, role, created, active) FROM stdin;
 \.
 
 

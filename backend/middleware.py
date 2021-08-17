@@ -55,17 +55,27 @@ def get_auth0_user(email):
     return user.json()
 
 
-def verify(authenticated, session):
+def verify_token(authenticated):
     if datetime.now().timestamp() > authenticated.get('exp'):
         raise HTTPException(status_code=401, detail="Unauthorized")
     if not authenticated.get('email_verified'):
         raise HTTPException(
             status_code=401,
             detail="Please check your email inbox to verify email account")
+    return authenticated
+
+
+def verify_user(authenticated, session):
+    authenticated = verify_token(authenticated)
     user = crud_user.get_user_by_email(session=session,
                                        email=authenticated.get('email'))
     if not user:
         raise HTTPException(status_code=404, detail="Forbidden")
+    return user
+
+
+def verify_admin(authenticated, session):
+    user = verify_user(authenticated, session)
     if user.role != UserRole.admin:
         raise HTTPException(
             status_code=403,

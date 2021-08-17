@@ -3,8 +3,11 @@ from sqlalchemy.orm import Session
 from .models import User, UserRole, UserDict
 
 
-def add_user(session: Session, email: str, role: UserRole) -> UserDict:
-    user = User(role=role, email=email)
+def add_user(session: Session,
+             email: str,
+             role: UserRole,
+             active: bool = False) -> UserDict:
+    user = User(role=role, email=email, active=active)
     session.add(user)
     session.commit()
     session.flush()

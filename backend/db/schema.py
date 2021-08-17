@@ -16,6 +16,7 @@ class UserBase(BaseModel):
     id: int
     email: str
     role: UserRole
+    active: Optional[bool] = False
     email_verified: Optional[bool] = False
     picture: Optional[str] = None
     name: Optional[str] = None
@@ -102,6 +103,7 @@ class UserAccessBase(BaseModel):
     id: int
     email: str
     role: UserRole
+    active: Optional[bool] = False
     access: List[AccessBase]
 
     class Config:

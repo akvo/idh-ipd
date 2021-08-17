@@ -15,7 +15,7 @@ from db.schema import UserAccessBase
 from db.models import Company, DriverIncome
 from db.models import UserRole, DriverIncomeStatus
 import util.params as params
-from middleware import verify, get_auth0_user
+from middleware import verify_token, verify_admin, verify_user, get_auth0_user
 
 models.Base.metadata.create_all(bind=engine)
 routes = APIRouter()
@@ -31,17 +31,28 @@ def get_session():
         session.close()
 
 
+@routes.get("/user/me",
+            response_model=UserAccessBase,
+            summary="get account information",
+            tags=["User"])
+def get_me(req: Request,
+           session: Session = Depends(get_session),
+           credentials: HTTPBasicCredentials = Depends(security)):
+    user = verify_user(req.state.authenticated, session)
+    return user
+
+
 @routes.post("/user/",
              response_model=UserBase,
-             summary="add new user",
+             summary="register new user",
              tags=["User"])
 def add_user(req: Request,
-             email: str,
-             role: UserRole,
              session: Session = Depends(get_session),
              credentials: HTTPBasicCredentials = Depends(security)):
-    verify(req.state.authenticated, session)
-    user = crud_user.add_user(session=session, email=email, role=role)
+    user = verify_token(req.state.authenticated)
+    user = crud_user.add_user(session=session,
+                              email=user.get("email"),
+                              role="user")
     return user
 
 
@@ -54,7 +65,7 @@ def get_user(req: Request,
              limit: int = 100,
              session: Session = Depends(get_session),
              credentials: HTTPBasicCredentials = Depends(security)):
-    verify(req.state.authenticated, session)
+    verify_admin(req.state.authenticated, session)
     user = crud_user.get_user(session=session, skip=skip, limit=limit)
     user = [i.serialize for i in user]
     for u in user:
@@ -72,7 +83,7 @@ def get_user_by_id(req: Request,
                    id: int,
                    session: Session = Depends(get_session),
                    credentials: HTTPBasicCredentials = Depends(security)):
-    verify(req.state.authenticated, session)
+    verify_admin(req.state.authenticated, session)
     user = crud_user.get_user_by_id(session=session, id=id)
     if user is None:
         raise HTTPException(status_code=404, detail="Not Found")
@@ -109,7 +120,7 @@ def add_crop(req: Request,
              name: str,
              session: Session = Depends(get_session),
              credentials: HTTPBasicCredentials = Depends(security)):
-    verify(req.state.authenticated, session)
+    verify_user(req.state.authenticated, session)
     crop = crud_crop.add_crop(session=session, name=name)
     return crop
 
@@ -154,7 +165,7 @@ def add_company(req: Request,
                 net_income: int = None,
                 session: Session = Depends(get_session),
                 credentials: HTTPBasicCredentials = Depends(security)):
-    verify(req.state.authenticated, session)
+    verify_user(req.state.authenticated, session)
     company = crud_company.add_company(session=session,
                                        data=Company(
                                            name=name,
@@ -180,7 +191,7 @@ def get_company(req: Request,
                 limit: int = 100,
                 session: Session = Depends(get_session),
                 credentials: HTTPBasicCredentials = Depends(security)):
-    verify(req.state.authenticated, session)
+    verify_user(req.state.authenticated, session)
     company = crud_company.get_company(session=session, skip=skip, limit=limit)
     return [params.with_extra_data(i.serialize) for i in company]
 
@@ -193,7 +204,7 @@ def get_company_by_id(req: Request,
                       id: int,
                       session: Session = Depends(get_session),
                       credentials: HTTPBasicCredentials = Depends(security)):
-    verify(req.state.authenticated, session)
+    verify_user(req.state.authenticated, session)
     company = crud_company.get_company_by_id(session=session, id=id)
     if company is None:
         raise HTTPException(status_code=404, detail="Not Found")
@@ -222,7 +233,7 @@ def add_driver_income(req: Request,
                       source: str = None,
                       session: Session = Depends(get_session),
                       credentials: HTTPBasicCredentials = Depends(security)):
-    verify(req.state.authenticated, session)
+    verify_user(req.state.authenticated, session)
     driver_income = crud_driver_income.add_driver_income(
         session=session,
         data=DriverIncome(country=country,
@@ -252,7 +263,7 @@ def get_driver_income(req: Request,
                       limit: int = 100,
                       session: Session = Depends(get_session),
                       credentials: HTTPBasicCredentials = Depends(security)):
-    verify(req.state.authenticated, session)
+    verify_user(req.state.authenticated, session)
     driver_income = crud_driver_income.get_driver_income(session=session,
                                                          skip=skip,
                                                          limit=limit)
@@ -264,12 +275,12 @@ def get_driver_income(req: Request,
             summary="get driver income",
             tags=["Driver Income"])
 def get_driver_income_detail(
-        req: Request,
-        crop: int,
-        country: int,
-        session: Session = Depends(get_session),
-        credentials: HTTPBasicCredentials = Depends(security)):
-    verify(req.state.authenticated, session)
+    req: Request,
+    crop: int,
+    country: int,
+    session: Session = Depends(get_session),
+    credentials: HTTPBasicCredentials = Depends(security)):
+    verify_user(req.state.authenticated, session)
     driver_income = crud_driver_income.get_driver_income_by_crop_country(
         session=session,
         crop=crop,
@@ -287,7 +298,7 @@ def get_driver_income_detail(
 def get_country_company(req: Request,
                         session: Session = Depends(get_session),
                         credentials: HTTPBasicCredentials = Depends(security)):
-    verify(req.state.authenticated, session)
+    verify_user(req.state.authenticated, session)
     country = crud_country.get_company(session=session)
     country = [i.serialize for i in country]
     for c in country:
@@ -304,7 +315,7 @@ def get_country_company(req: Request,
 def get_crop_company(req: Request,
                      session: Session = Depends(get_session),
                      credentials: HTTPBasicCredentials = Depends(security)):
-    verify(req.state.authenticated, session)
+    verify_user(req.state.authenticated, session)
     crop = crud_crop.get_company(session=session)
     crop = [i.serialize for i in crop]
     for c in crop:
