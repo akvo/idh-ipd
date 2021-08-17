@@ -33,8 +33,7 @@ function App() {
     user,
     getIdTokenClaims,
   } = useAuth0();
-  const page = UIStore.useState((s) => s.page);
-  const loading = UIStore.useState((s) => s.loading);
+  const { page, loading } = UIStore.useState();
 
   useEffect(() => {
     document.title = titleCase(page, "-");

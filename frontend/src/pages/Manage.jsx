@@ -12,27 +12,26 @@ import {
   Select,
 } from "antd";
 import { UIStore } from "../data/store";
-import Loading from "../components/Loading";
 import api from "../lib/api";
 
 const { Option, OptGroup } = Select;
 
 const Manage = () => {
-  const { countries, loading } = UIStore.useState();
+  const { countries } = UIStore.useState();
   const [form] = Form.useForm();
   const [users, setUsers] = useState([]);
   const [selected, setSelected] = useState({});
   const [access, showAccess] = useState(false);
+  const [pageLoading, setPageLoading] = useState(true);
 
   useEffect(() => {
-    api.get("/user/?skip=0&limit=100").then((res) => {
-      setUsers(res.data);
-    });
-  }, []);
-
-  if (loading) {
-    return <Loading />;
-  }
+    if (pageLoading) {
+      api.get("/user/?skip=0&limit=100").then((res) => {
+        setUsers(res.data);
+        setPageLoading(false);
+      });
+    }
+  }, [pageLoading]);
 
   const handleAccess = (id) => {
     api.get(`/user/${id}`).then((res) => {
@@ -86,7 +85,7 @@ const Manage = () => {
   return (
     <Row justify="center" wrap={true}>
       <Col sm={20} md={20} lg={20}>
-        <Table columns={columns} dataSource={users} />
+        <Table loading={pageLoading} columns={columns} dataSource={users} />
       </Col>
       <Modal
         title={"Edit"}
@@ -116,10 +115,12 @@ const Manage = () => {
 
           <Form.Item label="Companies" name="company" valuePropName="company">
             <Select mode="multiple" placeholder="select one or more company">
-              {countries.map((x) => (
-                <OptGroup label={x.name}>
-                  {x.company.map((c) => (
-                    <Option value={c.name}>{c.name}</Option>
+              {countries.map((x, i) => (
+                <OptGroup key={i} label={x.name}>
+                  {x.company.map((c, ci) => (
+                    <Option key={ci} value={c.name}>
+                      {c.name}
+                    </Option>
                   ))}
                 </OptGroup>
               ))}
