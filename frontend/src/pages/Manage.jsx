@@ -23,11 +23,19 @@ const Manage = () => {
   const [selected, setSelected] = useState({});
   const [access, showAccess] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
+  const [paginate, setPaginate] = useState({
+    total: 1,
+    current: 1
+  })
 
   useEffect(() => {
     if (pageLoading) {
       api.get("/user/?skip=0&limit=100").then((res) => {
         setUsers(res.data);
+        setPaginate({
+          ...paginate,
+          total: res.data.length || 1
+        })
         setPageLoading(false);
       });
     }
@@ -36,8 +44,13 @@ const Manage = () => {
   const handleAccess = (id) => {
     api.get(`/user/${id}`).then((res) => {
       showAccess(true);
-      form.setFieldsValue(res.data);
-      setSelected(res.data);
+      const u = {
+        ...res.data,
+        access: res.data.access.map(it => it.company)
+      };
+      console.log('u', u)
+      form.setFieldsValue(u);
+      setSelected(u);
     });
   };
 
@@ -92,8 +105,18 @@ const Manage = () => {
     setSelected({ ...selected, access: values })
   };
 
+  const onPageChange = page => {
+    setPaginate({
+      ...paginate,
+      current: page
+    })
+  }
+
   const onFinish = (values) => {
-    api.patch(`/user/${selected.id}`, values)
+    api.patch(`/user/${selected.id}`, {
+      ...values,
+      access: values.access.map(value => ({ user: selected.id, company: value }))
+    })
       .then(({ data }) => {
         setUsers([
           ...users.map(user => user.id === data.id ? data : user)
@@ -105,7 +128,15 @@ const Manage = () => {
   return (
     <Row justify="center" wrap={true}>
       <Col sm={20} md={20} lg={20}>
-        <Table loading={pageLoading} columns={columns} dataSource={users} />
+        <Table
+          loading={pageLoading}
+          columns={columns}
+          dataSource={users}
+          pagination={{
+            ...paginate,
+            onChange: onPageChange
+          }}
+        />
       </Col>
       <Modal
         title={"Edit"}
@@ -137,11 +168,11 @@ const Manage = () => {
           </Form.Item>
 
           <Form.Item label="Companies" name="access" valuePropName="company">
-            <Select mode="multiple" placeholder="select one or more company" onChange={onCompanyChange}>
+            <Select mode="multiple" placeholder="select one or more company" onChange={onCompanyChange} value={selected.access || []}>
               {countries.map((x, i) => (
                 <OptGroup key={i} label={x.name}>
                   {x.company.map((c, ci) => (
-                    <Option key={ci} value={c.name}>
+                    <Option key={ci} value={c.id}>
                       {c.name}
                     </Option>
                   ))}
