@@ -1,7 +1,7 @@
 import pandas as pd
 from fastapi import APIRouter, Depends, Request, HTTPException
 from fastapi.security import HTTPBasicCredentials, HTTPBearer
-from typing import List
+from typing import List, Optional
 from math import ceil
 from sqlalchemy.orm import Session
 
@@ -13,7 +13,7 @@ from db.schema import UserBase, CountryBase, CropBase
 from db.schema import CompanyBase, DriverIncomeBase
 from db.schema import CountryCompanyBase
 from db.schema import CropCompanyBase
-from db.schema import UserAccessBase
+from db.schema import UserAccessBase, AccessBase
 from db.schema import UserResponse
 from db.models import Company, DriverIncome
 from db.models import UserRole, DriverIncomeStatus
@@ -98,6 +98,30 @@ def get_user_by_id(req: Request,
     user = crud_user.get_user_by_id(session=session, id=id)
     if user is None:
         raise HTTPException(status_code=404, detail="Not Found")
+    return user.serialize
+
+
+@routes.put("/user/{id:path}",
+            response_model=UserAccessBase,
+            summary="Update user",
+            tags=["User"])
+def update_user_by_id(req: Request,
+                      id: int,
+                      active: bool,
+                      role: UserRole,
+                      access: List[AccessBase] = [],
+                      session: Session = Depends(get_session),
+                      credentials: HTTPBasicCredentials = Depends(security)):
+    verify_admin(req.state.authenticated, session)
+    access = crud_user.add_access(session=session, user=id, access=access)
+    user = crud_user.update_user_by_id(session=session,
+                                       id=id,
+                                       active=active,
+                                       role=role)
+    if user is None:
+        raise HTTPException(status_code=404, detail="Not Found")
+    if user.role == UserRole.admin:
+        crud_user.delete_all_access(session=session, user=user.id)
     return user.serialize
 
 

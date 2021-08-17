@@ -2,7 +2,8 @@ from typing import List
 from typing_extensions import TypedDict
 import enum
 from datetime import datetime
-from sqlalchemy import Column, Integer, Boolean, Float, String, Text, Enum, DateTime
+from sqlalchemy import Column, Integer, Boolean, Float, String
+from sqlalchemy import Text, Enum, DateTime
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 from .connection import Base

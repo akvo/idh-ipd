@@ -124,7 +124,7 @@ const Manage = () => {
 
   const onFinish = (values) => {
     api
-      .patch(`/user/${selected.id}`, {
+      .put(`/user/${selected.id}`, {
         ...values,
         access: values.access.map((value) => ({
           user: selected.id,

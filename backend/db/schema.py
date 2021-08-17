@@ -4,7 +4,7 @@ from .models import UserRole, DriverIncomeStatus
 
 
 class AccessBase(BaseModel):
-    id: int
+    id: Optional[int]
     user: int
     company: int
 
