@@ -1,3 +1,4 @@
+import pandas as pd
 from fastapi import APIRouter, Depends, Request, HTTPException
 from fastapi.security import HTTPBasicCredentials, HTTPBearer
 from typing import List
@@ -68,10 +69,13 @@ def get_user(req: Request,
     verify_admin(req.state.authenticated, session)
     user = crud_user.get_user(session=session, skip=skip, limit=limit)
     user = [i.serialize for i in user]
-    for u in user:
-        auth0_data = get_auth0_user(u["email"])
-        if len(auth0_data):
-            u.update(auth0_data[0])
+    auth0_data = get_auth0_user()
+    auth0_data = pd.DataFrame(auth0_data)
+    user = pd.DataFrame(user)
+    user = user.merge(auth0_data, on='email', how='left')
+    for col in list(user):
+        user[col] = user[col].apply(lambda x: None if x != x else x)
+    user = user.to_dict('records')
     return user
 
 

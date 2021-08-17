@@ -45,13 +45,15 @@ def get_token(generate=False):
     return get_token(True)
 
 
-def get_auth0_user(email):
+def get_auth0_user():
     access_token = get_token()
-    user = r.get(f"https://{AUTH0_DOMAIN}/api/v2/users-by-email?email={email}",
-                 headers={"Authorization": "Bearer {}".format(access_token)})
+    fields = "fields=email%2Cname%2Cemail_verified%2Cpicture&include_fields=true"
+    user = r.get(
+        f"https://{AUTH0_DOMAIN}/api/v2/users?{fields}",
+        headers={"Authorization": "Bearer {}".format(access_token)})
     if user.status_code != 200:
         access_token = get_token(True)
-        return get_auth0_user(email)
+        return get_auth0_user()
     return user.json()
 
 
