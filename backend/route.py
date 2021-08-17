@@ -2,6 +2,7 @@ import pandas as pd
 from fastapi import APIRouter, Depends, Request, HTTPException
 from fastapi.security import HTTPBasicCredentials, HTTPBearer
 from typing import List
+from math import ceil
 from sqlalchemy.orm import Session
 
 from db import crud_user, crud_country, crud_crop
@@ -13,6 +14,7 @@ from db.schema import CompanyBase, DriverIncomeBase
 from db.schema import CountryCompanyBase
 from db.schema import CropCompanyBase
 from db.schema import UserAccessBase
+from db.schema import UserResponse
 from db.models import Company, DriverIncome
 from db.models import UserRole, DriverIncomeStatus
 import util.params as params
@@ -58,16 +60,16 @@ def add_user(req: Request,
 
 
 @routes.get("/user/",
-            response_model=List[UserBase],
+            response_model=UserResponse,
             summary="get all users",
             tags=["User"])
 def get_user(req: Request,
-             skip: int = 0,
-             limit: int = 100,
+             page: int = 1,
              session: Session = Depends(get_session),
              credentials: HTTPBasicCredentials = Depends(security)):
     verify_admin(req.state.authenticated, session)
-    user = crud_user.get_user(session=session, skip=skip, limit=limit)
+    user = crud_user.get_user(session=session, skip=(10 * (page - 1)))
+    total = crud_user.count(session=session)
     user = [i.serialize for i in user]
     auth0_data = get_auth0_user()
     auth0_data = pd.DataFrame(auth0_data)
@@ -76,7 +78,12 @@ def get_user(req: Request,
     for col in list(user):
         user[col] = user[col].apply(lambda x: None if x != x else x)
     user = user.to_dict('records')
-    return user
+    return {
+        'current': page,
+        'data': user,
+        'total': total,
+        'total_page': ceil(total / 10)
+    }
 
 
 @routes.get("/user/{id:path}",

@@ -15,7 +15,11 @@ def add_user(session: Session,
     return user
 
 
-def get_user(session: Session, skip: int = 0, limit: int = 100) -> List[User]:
+def count(session: Session) -> int:
+    return session.query(User).count()
+
+
+def get_user(session: Session, skip: int = 0, limit: int = 10) -> List[User]:
     return session.query(User).offset(skip).limit(limit).all()
 
 

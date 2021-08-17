@@ -25,6 +25,13 @@ class UserBase(BaseModel):
         orm_mode = True
 
 
+class UserResponse(BaseModel):
+    current: int
+    data: List[UserBase]
+    total: int
+    total_page: int
+
+
 class CountryBase(BaseModel):
     id: int
     name: Optional[str] = None

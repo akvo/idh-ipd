@@ -23,32 +23,49 @@ const Manage = () => {
   const [selected, setSelected] = useState({});
   const [access, showAccess] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
+  const [tableLoading, setTableLoading] = useState(false);
   const [paginate, setPaginate] = useState({
     total: 1,
-    current: 1
-  })
+    current: 1,
+    pageSize: 10,
+  });
+
+  const onPageChange = (page) => {
+    setTableLoading(true);
+    api.get(`/user/?page=${page}`).then((res) => {
+      setUsers(res.data.data);
+      setPaginate({
+        ...paginate,
+        current: res.data.current,
+        total: res.data.total,
+      });
+      setTableLoading(false);
+    });
+  };
 
   useEffect(() => {
     if (pageLoading) {
-      api.get("/user/?skip=0&limit=100").then((res) => {
-        setUsers(res.data);
+      console.log("first");
+      api.get("/user/?page=1").then((res) => {
+        setUsers(res.data.data);
         setPaginate({
           ...paginate,
-          total: res.data.length || 1
-        })
+          current: res.data.current,
+          total: res.data.total,
+        });
         setPageLoading(false);
       });
     }
-  }, [pageLoading]);
+  }, [pageLoading, paginate]);
 
   const handleAccess = (id) => {
     api.get(`/user/${id}`).then((res) => {
       showAccess(true);
       const u = {
         ...res.data,
-        access: res.data.access.map(it => it.company)
+        access: res.data.access.map((it) => it.company),
       };
-      console.log('u', u)
+      console.log("u", u);
       form.setFieldsValue(u);
       setSelected(u);
     });
@@ -93,48 +110,43 @@ const Manage = () => {
   };
 
   const onEmailChange = (e) => {
-    form.setFieldsValue({ email: e.target.value })
+    form.setFieldsValue({ email: e.target.value });
     setSelected({
       ...selected,
-      email: e.target.value
-    })
+      email: e.target.value,
+    });
   };
 
   const onCompanyChange = (values) => {
-    form.setFieldsValue({ access: values })
-    setSelected({ ...selected, access: values })
+    form.setFieldsValue({ access: values });
+    setSelected({ ...selected, access: values });
   };
 
-  const onPageChange = page => {
-    setPaginate({
-      ...paginate,
-      current: page
-    })
-  }
-
   const onFinish = (values) => {
-    api.patch(`/user/${selected.id}`, {
-      ...values,
-      access: values.access.map(value => ({ user: selected.id, company: value }))
-    })
-      .then(({ data }) => {
-        setUsers([
-          ...users.map(user => user.id === data.id ? data : user)
-        ])
+    api
+      .patch(`/user/${selected.id}`, {
+        ...values,
+        access: values.access.map((value) => ({
+          user: selected.id,
+          company: value,
+        })),
       })
-      .catch(e => console.log('error', e));
+      .then(({ data }) => {
+        setUsers([...users.map((user) => (user.id === data.id ? data : user))]);
+      })
+      .catch((e) => console.log("error", e));
   };
 
   return (
     <Row justify="center" wrap={true}>
       <Col sm={20} md={20} lg={20}>
         <Table
-          loading={pageLoading}
+          loading={pageLoading ? pageLoading : tableLoading}
           columns={columns}
           dataSource={users}
           pagination={{
             ...paginate,
-            onChange: onPageChange
+            onChange: onPageChange,
           }}
         />
       </Col>
@@ -143,8 +155,8 @@ const Manage = () => {
         centered
         visible={access}
         onOk={() => {
-          form.submit()
-          showAccess(false)
+          form.submit();
+          showAccess(false);
         }}
         onCancel={() => showAccess(false)}
       >
@@ -157,18 +169,23 @@ const Manage = () => {
           onFinish={onFinish}
         >
           <Form.Item label="Email" name="email" valuePropName="email">
-            <Input value={selected.email || ''} onChange={onEmailChange} />
+            <Input value={selected.email || ""} onChange={onEmailChange} />
           </Form.Item>
 
           <Form.Item label="Role" name="role" valuePropName="role">
-            <Select onChange={onRoleChange} value={selected.role || ''}>
+            <Select onChange={onRoleChange} value={selected.role || ""}>
               <Option value="admin">Admin</Option>
               <Option value="user">User</Option>
             </Select>
           </Form.Item>
 
           <Form.Item label="Companies" name="access" valuePropName="company">
-            <Select mode="multiple" placeholder="select one or more company" onChange={onCompanyChange} value={selected.access || []}>
+            <Select
+              mode="multiple"
+              placeholder="select one or more company"
+              onChange={onCompanyChange}
+              value={selected.access || []}
+            >
               {countries.map((x, i) => (
                 <OptGroup key={i} label={x.name}>
                   {x.company.map((c, ci) => (
