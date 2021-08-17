@@ -1,3 +1,5 @@
+import { trim } from "lodash";
+
 const currencyFormatter = require("currency-formatter");
 
 export const formatNumber = (x) => {
@@ -51,3 +53,9 @@ export const objectNames = {
   total_revenue: "Total Revenues",
   source: "Principal source",
 };
+
+export const isAuthCookie = () => {
+  return document.cookie.split(';')
+    .map(item => trim(item))
+    .includes('_legacy_auth0.is.authenticated=true')
+}
