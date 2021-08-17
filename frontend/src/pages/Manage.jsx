@@ -45,7 +45,6 @@ const Manage = () => {
 
   useEffect(() => {
     if (pageLoading) {
-      console.log("first");
       api.get("/user/?page=1").then((res) => {
         setUsers(res.data.data);
         setPaginate({
@@ -65,7 +64,6 @@ const Manage = () => {
         ...res.data,
         access: res.data.access.map((it) => it.company),
       };
-      console.log("u", u);
       form.setFieldsValue(u);
       setSelected(u);
     });
@@ -124,13 +122,13 @@ const Manage = () => {
 
   const onFinish = (values) => {
     api
-      .put(`/user/${selected.id}`, {
-        ...values,
-        access: values.access.map((value) => ({
+      .put(
+        `/user/${selected.id}?role=${values.role}&active=${selected.active}`,
+        values.access.map((value) => ({
           user: selected.id,
           company: value,
-        })),
-      })
+        }))
+      )
       .then(({ data }) => {
         setUsers([...users.map((user) => (user.id === data.id ? data : user))]);
       })

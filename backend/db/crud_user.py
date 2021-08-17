@@ -1,6 +1,7 @@
 import pandas as pd
 from typing import List
 from sqlalchemy.orm import Session
+from sqlalchemy import desc
 from .models import User, UserRole, UserDict, Access, AccessDict
 
 
@@ -21,7 +22,8 @@ def count(session: Session) -> int:
 
 
 def get_user(session: Session, skip: int = 0, limit: int = 10) -> List[User]:
-    return session.query(User).offset(skip).limit(limit).all()
+    return session.query(User).order_by(desc(
+        User.id)).offset(skip).limit(limit).all()
 
 
 def update_user_by_id(session: Session, id: int, role: UserRole,
