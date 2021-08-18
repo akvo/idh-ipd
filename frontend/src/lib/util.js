@@ -59,3 +59,14 @@ export const isAuthCookie = () => {
     .map(item => trim(item))
     .includes('_legacy_auth0.is.authenticated=true')
 }
+
+export const rverifyOptions = {
+  mask: 0.5,
+  title: 'Human Verification',
+  text: '',
+  extra: 'Drag to make angle positive',
+  extraLink: '#',
+  album: [
+    '/images/verify01.png',
+  ]
+}
