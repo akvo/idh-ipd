@@ -64,25 +64,36 @@ def add_user(req: Request,
             summary="get all users",
             tags=["User"])
 def get_user(req: Request,
+             active: int = 0,
              page: int = 1,
              session: Session = Depends(get_session),
              credentials: HTTPBasicCredentials = Depends(security)):
     verify_admin(req.state.authenticated, session)
-    user = crud_user.get_user(session=session, skip=(10 * (page - 1)))
-    total = crud_user.count(session=session)
+    user = crud_user.get_user(session=session,
+                              skip=(10 * (page - 1)),
+                              active=active)
+    if not user:
+        raise HTTPException(status_code=404, detail="Not found")
+    total = crud_user.count(session=session, active=active)
     user = [i.serialize for i in user]
-    auth0_data = get_auth0_user()
-    auth0_data = pd.DataFrame(auth0_data)
-    user = pd.DataFrame(user)
-    user = user.merge(auth0_data, on='email', how='left')
-    for col in list(user):
-        user[col] = user[col].apply(lambda x: None if x != x else x)
-    user = user.to_dict('records')
+    if not active:
+        auth0_data = get_auth0_user()
+        auth0_data = pd.DataFrame(auth0_data)
+        user = pd.DataFrame(user)
+        user = user.merge(auth0_data, on='email', how='left')
+        for col in list(user):
+            user[col] = user[col].apply(lambda x: None if x != x else x)
+        user = user.to_dict('records')
+    total_page = ceil(total / 10) if total > 0 else 0
+    if total_page < page:
+        raise HTTPException(status_code=404, detail="Not found")
+    if active:
+        [u.update({'email_verified': True}) for u in user]
     return {
         'current': page,
         'data': user,
         'total': total,
-        'total_page': ceil(total / 10)
+        'total_page': total_page
     }
 
 
@@ -155,7 +166,7 @@ def add_crop(req: Request,
              name: str,
              session: Session = Depends(get_session),
              credentials: HTTPBasicCredentials = Depends(security)):
-    verify_user(req.state.authenticated, session)
+    verify_admin(req.state.authenticated, session)
     crop = crud_crop.add_crop(session=session, name=name)
     return crop
 
@@ -200,7 +211,7 @@ def add_company(req: Request,
                 net_income: int = None,
                 session: Session = Depends(get_session),
                 credentials: HTTPBasicCredentials = Depends(security)):
-    verify_user(req.state.authenticated, session)
+    verify_admin(req.state.authenticated, session)
     company = crud_company.add_company(session=session,
                                        data=Company(
                                            name=name,
@@ -268,7 +279,7 @@ def add_driver_income(req: Request,
                       source: str = None,
                       session: Session = Depends(get_session),
                       credentials: HTTPBasicCredentials = Depends(security)):
-    verify_user(req.state.authenticated, session)
+    verify_admin(req.state.authenticated, session)
     driver_income = crud_driver_income.add_driver_income(
         session=session,
         data=DriverIncome(country=country,

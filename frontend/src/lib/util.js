@@ -67,6 +67,6 @@ export const rverifyOptions = {
   extra: 'Drag to make angle positive',
   extraLink: '#',
   album: [
-    '/images/verify01.png',
+    '/introduction/house.png',
   ]
 }

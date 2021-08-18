@@ -17,13 +17,16 @@ def add_user(session: Session,
     return user
 
 
-def count(session: Session) -> int:
-    return session.query(User).count()
+def count(session: Session, active: int = 0) -> int:
+    return session.query(User).where(User.active == bool(active)).count()
 
 
-def get_user(session: Session, skip: int = 0, limit: int = 10) -> List[User]:
-    return session.query(User).order_by(desc(
-        User.id)).offset(skip).limit(limit).all()
+def get_user(session: Session,
+             skip: int = 0,
+             limit: int = 10,
+             active: int = 0) -> List[User]:
+    return session.query(User).where(User.active == bool(active)).order_by(
+        desc(User.id)).offset(skip).limit(limit).all()
 
 
 def update_user_by_id(session: Session, id: int, role: UserRole,
