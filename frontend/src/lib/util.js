@@ -1,4 +1,4 @@
-import { trim } from "lodash";
+import { sortBy, trim } from "lodash";
 
 const currencyFormatter = require("currency-formatter");
 
@@ -70,3 +70,27 @@ export const rverifyOptions = {
     '/introduction/house.png',
   ]
 }
+
+export const filterCountry = (access, countries) => {
+  const allows = access.map(item => item?.company)
+  return countries
+    .filter(country => {
+      return country.company.filter(item => allows.includes(item.id)).length > 0
+    })
+    .map(country => ({
+      ...country,
+      company: country.company.filter(item => allows.includes(item.id))
+    }))
+}
+
+export const filterCountryOptions = (countries, country = {}, type = "country") => {
+  let options = countries;
+  if (type === "company") {
+    const companies = countries
+      .filter((x) => x.id === country?.id)
+      .map((x) => x.company)
+      .flat();
+    options = sortBy(companies, (x) => x.name);
+  }
+  return options;
+};

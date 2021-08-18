@@ -62,7 +62,7 @@ const Manage = () => {
   useEffect(() => {
     if (countries.length && crops.length && pageLoading) {
       api
-        .get(`/user/?page=1&active=1`)
+        .get(`/user/?page=1&active=0`)
         .then((res) => {
           setPageLoading(false);
           setUsers(res.data.data);
@@ -206,7 +206,7 @@ const Manage = () => {
           form.submit();
         }}
         onCancel={() => showAccess(false)}
-        okText={selected?.active ? "Confrim Changes" : "Approve"}
+        okText={selected?.active ? "Confirm Changes" : "Approve"}
       >
         <Form
           form={form}

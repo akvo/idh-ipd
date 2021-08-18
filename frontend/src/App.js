@@ -21,6 +21,7 @@ import Doc from "./pages/Doc";
 import { UIStore } from "./data/store";
 import { useAuth0 } from "@auth0/auth0-react";
 import api from "./lib/api";
+import { filterCountry } from "./lib/util";
 
 const history = createBrowserHistory();
 const { Header, Content, Footer } = Layout;
@@ -40,10 +41,9 @@ function App({ btnReff }) {
       if (isAuthenticated) {
         const response = await getIdTokenClaims();
         if (response) api.setToken(response.__raw);
-        api
-          .get("/user/me")
+        api.get('/user/me')
           .then(({ data }) => {
-            const { active } = data || {};
+            const { active, access, role } = data || {}
             UIStore.update((u) => {
               u.user = data;
             });
@@ -66,7 +66,8 @@ function App({ btnReff }) {
                     .then((res) => res.data)
                     .then((crop) => {
                       UIStore.update((c) => {
-                        c.countries = country ? country : [];
+                        c.countries = country ? role === 'user' ? filterCountry(access, country) : country : [];
+                        c.countryMap = country
                         c.crops = crop;
                         c.loading = false;
                       });

@@ -1,11 +1,10 @@
 @mixin gradient($from, $to) {
-  background: linear-gradient(to left, $from 40%, $to);
 
   /* Firefox 3.6+ */
   background: -moz-linear-gradient(to left, $from 40%, $to);
 
   /* Safari 4+, Chrome 1+ */
-  background: -webkit-gradient(linear, to left, from($from) 40%, to($to));
+  background: -webkit-gradient(to left, $from 40%, $to);
 
   /* Safari 5.1+, Chrome 10+ */
   background: -webkit-linear-gradient(to left, $from 40%, $to);
@@ -37,8 +36,9 @@ main.ant-layout-content {
 
   .hero-content {
     padding-top: 125px;
-
-    @include gradient(#f2f5fb, transparent);
+    &.data-exist{
+      @include gradient(#f2f5fb, transparent);
+    }
 
     h1.no-data {
       text-align: right;

@@ -52,11 +52,11 @@ const ToolTipContent = ({ data, geo }) => {
 };
 
 const DataMap = ({ history }) => {
-  const { countries, loading } = UIStore.useState((c) => c);
+  const { countryMap, loading, countries } = UIStore.useState((c) => c);
   const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1 });
   const [toolTipContent, setTooltipContent] = useState("");
 
-  const domain = countries.reduce(
+  const domain = countryMap.reduce(
     (acc, curr) => {
       const v = curr.company.length;
       const [min, max] = acc;
@@ -73,6 +73,8 @@ const DataMap = ({ history }) => {
   };
 
   const handleOnClickCountry = (country) => {
+    const allow = countries.length > 0 && countries.find(c => c.id === country.id)
+    if(!allow) return false;
     UIStore.update((s) => {
       s.page = "case";
       s.selectedCountry = country.id;
@@ -139,7 +141,7 @@ const DataMap = ({ history }) => {
                 let curr = 0;
                 let country = null;
                 if (geo.properties.NAME) {
-                  country = countries.find(
+                  country = countryMap.find(
                     (c) =>
                       c.name.toLowerCase() === geo.properties.NAME.toLowerCase()
                   );

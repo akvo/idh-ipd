@@ -11,6 +11,7 @@ import Loading from "../components/Loading";
 
 import { UIStore } from "../data/store";
 import sortBy from "lodash/sortBy";
+import EmptyText from "../components/EmptyText";
 
 const { Option } = Select;
 const { Link } = Anchor;
@@ -163,8 +164,8 @@ const renderHeroCard = (data) => {
   });
 };
 
-const Case = ({ history }) => {
-  const { countries, selectedCountry, crops } = UIStore.useState((c) => c);
+const Case = () => {
+  const { countries, selectedCountry, crops, user } = UIStore.useState();
   const [defCountry, setDefCountry] = useState(null);
   const [defCompany, setDefCompany] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -175,7 +176,7 @@ const Case = ({ history }) => {
       if (selectedCountry) {
         const filterCountry = countries.find((x) => x.id === selectedCountry);
         setDefCountry(selectedCountry);
-        // setDefCompany(filterCountry?.company[0]?.id);
+        
         const tmp = {
           ...filterCountry,
           company: filterCountry?.company[0],
@@ -187,16 +188,16 @@ const Case = ({ history }) => {
           (x) => x.company.length > 0
         );
         setDefCountry(countriesHasCompany[0]?.id);
-        // setDefCompany(countriesHasCompany[0]?.company[0]?.id);
+        
         const tmp = {
           ...countriesHasCompany[0],
           company: countriesHasCompany[0]?.company[0],
         };
         setData(tmp);
       }
-      setLoading(false);
     }
-  }, [loading, countries, crops, selectedCountry]);
+    if (loading && user) setLoading(false);
+  }, [loading, countries, crops, selectedCountry, user]);
 
   const handleOnChangeCompany = (value) => {
     const country = countries.find((x) => x.id === defCountry);
@@ -288,7 +289,7 @@ const Case = ({ history }) => {
                 onChange={handleOnChangeCountry}
                 value={defCountry}
                 filterOption={(input, option) =>
-                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
                   0
                 }
               >
@@ -304,7 +305,7 @@ const Case = ({ history }) => {
                 onChange={handleOnChangeCompany}
                 value={defCompany}
                 filterOption={(input, option) =>
-                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
                   0
                 }
               >
@@ -312,14 +313,21 @@ const Case = ({ history }) => {
               </Select>
             </Col>
           </Row>
+          {countries.length === 0 && (
+            <Row>
+              <Col style={{ textAlign: 'center', width: '100%' }}>
+                <EmptyText amount={countries.length} />
+              </Col>
+            </Row>
+          )}
         </div>
         <Col sm={24} md={12} lg={7} className="hero-map">
-          <CaseMap name={data.name} />
+          {data?.name && <CaseMap name={data.name} />}
         </Col>
-        <Col sm={24} md={12} lg={17} className="hero-content">
+        <Col sm={24} md={12} lg={17} className={countries.length > 0 ? "hero-content data-exist" : "hero-content"}>
           {defCompany && renderHeroTitle(data, crops)}
           {defCompany && renderHeroCard(data)}
-          {!defCompany && <h1 className="no-data">Please select a Company</h1>}
+          {!defCompany && countries.length > 0 && <h1 className="no-data">Please select a Company</h1>}
         </Col>
       </Row>
       {/* // Charts */}

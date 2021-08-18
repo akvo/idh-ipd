@@ -15,6 +15,7 @@ const Introduction = ({ history }) => {
     if (loading) {
       UIStore.update((s) => {
         s.page = "introduction";
+        s.loading = false
       });
     }
   }, [loading]);
