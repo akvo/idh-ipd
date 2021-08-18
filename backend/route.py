@@ -139,17 +139,17 @@ def update_user_by_id(req: Request,
 @routes.get("/country/",
             response_model=List[CountryBase],
             summary="get all countries",
+            name="country:get-all",
             tags=["Country"])
-def get_country(skip: int = 0,
-                limit: int = 100,
-                session: Session = Depends(get_session)):
-    country = crud_country.get_country(session=session, skip=skip, limit=limit)
+def get_country(session: Session = Depends(get_session)):
+    country = crud_country.get_country(session=session)
     return [i.serialize for i in country]
 
 
 @routes.get("/country/{id:path}",
             response_model=CountryBase,
             summary="get country detail",
+            name="country:get-by-id",
             tags=["Country"])
 def get_country_by_id(id: int, session: Session = Depends(get_session)):
     country = crud_country.get_country_by_id(session=session, id=id)
@@ -161,6 +161,7 @@ def get_country_by_id(id: int, session: Session = Depends(get_session)):
 @routes.post("/crop/",
              response_model=CropBase,
              summary="add new crop",
+             name="crop:new",
              tags=["Crop"])
 def add_crop(req: Request,
              name: str,
@@ -174,6 +175,7 @@ def add_crop(req: Request,
 @routes.get("/crop/",
             response_model=List[CropBase],
             summary="get all crops",
+            name="crop:get-all",
             tags=["Crop"])
 def get_crop(skip: int = 0,
              limit: int = 100,
@@ -185,6 +187,7 @@ def get_crop(skip: int = 0,
 @routes.get("/crop/{id:path}",
             response_model=CropBase,
             summary="get crop detail",
+            name="crop:get-by-id",
             tags=["Crop"])
 def get_crop_by_id(id: int, session: Session = Depends(get_session)):
     crop = crud_crop.get_crop_by_id(session=session, id=id)
@@ -321,11 +324,11 @@ def get_driver_income(req: Request,
             summary="get driver income",
             tags=["Driver Income"])
 def get_driver_income_detail(
-    req: Request,
-    crop: int,
-    country: int,
-    session: Session = Depends(get_session),
-    credentials: HTTPBasicCredentials = Depends(security)):
+        req: Request,
+        crop: int,
+        country: int,
+        session: Session = Depends(get_session),
+        credentials: HTTPBasicCredentials = Depends(security)):
     verify_user(req.state.authenticated, session)
     driver_income = crud_driver_income.get_driver_income_by_crop_country(
         session=session,

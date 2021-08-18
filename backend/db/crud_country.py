@@ -3,10 +3,8 @@ from sqlalchemy.orm import Session
 from .models import Country, CountryDict
 
 
-def get_country(session: Session,
-                skip: int = 0,
-                limit: int = 100) -> List[Country]:
-    return session.query(Country).offset(skip).limit(limit).all()
+def get_country(session: Session) -> List[Country]:
+    return session.query(Country).all()
 
 
 def get_country_by_id(session: Session, id: int) -> Country:

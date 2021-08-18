@@ -42,7 +42,7 @@ class CountryBase(BaseModel):
 
 
 class CropBase(BaseModel):
-    id: int
+    id: Optional[int]
     name: str
 
     class Config:
