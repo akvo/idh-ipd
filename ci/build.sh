@@ -47,7 +47,7 @@ backend_build
 frontend_build
 
 #pytest
-dci exec backend pytest -v
+docker-compose -f docker-compose.yml -f docker-compose.ci.yml run -T backend ./ci.sh
 
 #test-connection
 if ! dci run -T ci ./basic.sh; then
