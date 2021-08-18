@@ -87,6 +87,8 @@ def get_user(req: Request,
     total_page = ceil(total / 10) if total > 0 else 0
     if total_page < page:
         raise HTTPException(status_code=404, detail="Not found")
+    if active:
+        [u.update({'email_verified': True}) for u in user]
     return {
         'current': page,
         'data': user,
