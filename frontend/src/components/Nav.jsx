@@ -50,9 +50,11 @@ const Nav = ({ logout, loginWithPopup, isAuthenticated }) => {
       )}
       {isAuthenticated ? (
         <SubMenu key="account" title="Account">
-          <Menu.Item key="manage">
-            <Link to="/manage">Manage</Link>
-          </Menu.Item>
+          {user && (
+            <Menu.Item key="manage">
+              <Link to="/manage">Manage</Link>
+            </Menu.Item>
+          )}
           <Menu.Item key="auth" onClick={logout}>
             <Link to="/">Logout</Link>
           </Menu.Item>

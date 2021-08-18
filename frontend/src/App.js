@@ -6,6 +6,7 @@ import AOS from "aos";
 
 import "./App.scss";
 import "aos/dist/aos.css";
+import "rverify/dist/RVerify.min.css";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import Nav from "./components/Nav";
@@ -25,7 +26,7 @@ import api from "./lib/api";
 const history = createBrowserHistory();
 const { Header, Content, Footer } = Layout;
 
-function App() {
+function App({ btnReff }) {
   const {
     isAuthenticated,
     loginWithPopup,
@@ -39,48 +40,53 @@ function App() {
   useEffect(() => {
     document.title = titleCase(page, "-");
     (async function () {
-      try {
-        if (isAuthenticated) {
-          const response = await getIdTokenClaims();
-          api.setToken(response.__raw);
-          api
-            .get("/country-company")
-            .then((res) => res.data)
-            .catch((error) => {
-              const { status, data } = error.response;
-              if (status !== 200) {
-                notification.error({
-                  message: data.detail,
-                });
-              }
-              return false;
-            })
-            .then((country) => {
+      if (isAuthenticated) {
+        const response = await getIdTokenClaims();
+        api.setToken(response.__raw);
+        api.get('/user/me')
+          .then(({ data }) => {
+            const { active } = data || {}
+            if (active) {
               api
-                .get("/crop/?skip=0&limit=100")
+                .get("/country-company")
                 .then((res) => res.data)
-                .then((crop) => {
-                  UIStore.update((c) => {
-                    c.countries = country ? country : [];
-                    c.crops = crop;
-                    c.user = country ? user : null;
-                    c.loading = false;
-                  });
+                .catch((error) => {
+                  const { status, data } = error.response;
+                  if (status !== 200) {
+                    notification.error({
+                      message: data.detail,
+                    });
+                  }
+                  return false;
+                })
+                .then((country) => {
+                  api
+                    .get("/crop/?skip=0&limit=100")
+                    .then((res) => res.data)
+                    .then((crop) => {
+                      UIStore.update((c) => {
+                        c.countries = country ? country : [];
+                        c.crops = crop;
+                        c.user = country ? user : null;
+                        c.loading = false;
+                      });
+                    });
                 });
-            });
-        } else {
-          api.setToken(null);
-          setTimeout(() => {
-            UIStore.update((c) => {
-              c.loading = false;
-            });
-          }, 1000);
-        }
-      } catch (error) {
-        console.error(error);
+            }else{
+              btnReff.current.value = JSON.stringify(data)
+              btnReff.current.click()
+            }
+          })
+      } else {
+        api.setToken(null);
+        setTimeout(() => {
+          UIStore.update((c) => {
+            c.loading = false;
+          });
+        }, 1000);
       }
     })();
-  }, [getIdTokenClaims, isAuthenticated, loginWithPopup, user, page]);
+  }, [getIdTokenClaims, isAuthenticated, loginWithPopup, user, page, btnReff]);
 
   AOS.init();
   return (
