@@ -14,7 +14,6 @@ services:
     ports:
       - 5432:5432
   backend:
-    network_mode: service:mainnetwork
     image: eu.gcr.io/akvo-lumen/idh-ipd/backend:latest
     volumes:
       - ./backend:/app:delegated
