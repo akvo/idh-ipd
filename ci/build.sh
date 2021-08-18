@@ -46,6 +46,9 @@ backend_build () {
 backend_build
 frontend_build
 
+#pytest
+dci exec backend pytest -v
+
 #test-connection
 if ! dci run -T ci ./basic.sh; then
   dci logs
