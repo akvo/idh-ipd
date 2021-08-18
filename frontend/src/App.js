@@ -42,7 +42,7 @@ function App({ btnReff }) {
     (async function () {
       if (isAuthenticated) {
         const response = await getIdTokenClaims();
-        api.setToken(response.__raw);
+        if(response) api.setToken(response.__raw);
         api.get('/user/me')
           .then(({ data }) => {
             const { active } = data || {}
@@ -77,9 +77,16 @@ function App({ btnReff }) {
             }
           })
           .catch((e) => {
-            switch(e.response?.status){
+            switch (e.response?.status) {
               case 404:
                 btnReff.current.click()
+                break;
+              case 401:
+                notification.error({
+                  message: e.response?.data?.detail,
+                });
+                break;
+              default:
             }
           })
       } else {
