@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Router, Route, Link } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import { Layout, notification } from "antd";
@@ -19,7 +19,6 @@ import Manage from "./pages/Manage";
 import Doc from "./pages/Doc";
 
 import { UIStore } from "./data/store";
-import { titleCase } from "./lib/util";
 import { useAuth0 } from "@auth0/auth0-react";
 import api from "./lib/api";
 
@@ -34,21 +33,20 @@ function App({ btnReff }) {
     user,
     getIdTokenClaims,
   } = useAuth0();
-  const page = UIStore.useState((s) => s.page);
-  const loading = UIStore.useState((s) => s.loading);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    document.title = titleCase(page, "-");
     (async function () {
       if (isAuthenticated) {
         const response = await getIdTokenClaims();
-        if(response) api.setToken(response.__raw);
-        api.get('/user/me')
+        if (response) api.setToken(response.__raw);
+        api
+          .get("/user/me")
           .then(({ data }) => {
-            const { active } = data || {}
+            const { active } = data || {};
             UIStore.update((u) => {
-              u.user = data
-            })
+              u.user = data;
+            });
             if (active) {
               api
                 .get("/country-company")
@@ -72,6 +70,7 @@ function App({ btnReff }) {
                         c.crops = crop;
                         c.loading = false;
                       });
+                      setLoading(false);
                     });
                 });
             }
@@ -79,7 +78,7 @@ function App({ btnReff }) {
           .catch((e) => {
             switch (e.response?.status) {
               case 404:
-                btnReff.current.click()
+                btnReff.current.click();
                 break;
               case 401:
                 notification.error({
@@ -88,17 +87,18 @@ function App({ btnReff }) {
                 break;
               default:
             }
-          })
+          });
       } else {
         api.setToken(null);
         setTimeout(() => {
+          setLoading(false);
           UIStore.update((c) => {
             c.loading = false;
           });
         }, 1000);
       }
     })();
-  }, [getIdTokenClaims, isAuthenticated, loginWithPopup, user, page, btnReff]);
+  }, [getIdTokenClaims, isAuthenticated, loginWithPopup, user, btnReff]);
 
   AOS.init();
   return (

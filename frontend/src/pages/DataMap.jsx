@@ -52,7 +52,7 @@ const ToolTipContent = ({ data, geo }) => {
 };
 
 const DataMap = ({ history }) => {
-  const { countries, loading } = UIStore.useState();
+  const { countries, loading } = UIStore.useState((c) => c);
   const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1 });
   const [toolTipContent, setTooltipContent] = useState("");
 

@@ -164,14 +164,14 @@ const renderHeroCard = (data) => {
 };
 
 const Case = ({ history }) => {
-  const { countries, selectedCountry, crops } = UIStore.useState();
+  const { countries, selectedCountry, crops } = UIStore.useState((c) => c);
   const [defCountry, setDefCountry] = useState(null);
   const [defCompany, setDefCompany] = useState(null);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    if (loading) {
+    if (loading && countries.length && crops.length) {
       if (selectedCountry) {
         const filterCountry = countries.find((x) => x.id === selectedCountry);
         setDefCountry(selectedCountry);
@@ -196,7 +196,7 @@ const Case = ({ history }) => {
       }
       setLoading(false);
     }
-  }, [loading, countries, selectedCountry]);
+  }, [loading, countries, crops, selectedCountry]);
 
   const handleOnChangeCompany = (value) => {
     const country = countries.find((x) => x.id === defCountry);

@@ -82,7 +82,7 @@ const chartTmp = [
 ];
 
 const Benchmarking = ({ history }) => {
-  const { crops, countries } = UIStore.useState();
+  const { countries, crops } = UIStore.useState((c) => c);
   const [compare, setCompare] = useState("country");
   const [defCountry, setDefCountry] = useState(null);
   const [defCompany, setDefCompany] = useState(null);
@@ -200,7 +200,7 @@ const Benchmarking = ({ history }) => {
   );
 
   useEffect(() => {
-    if (loading) {
+    if (loading && countries.length && crops.length) {
       const countriesHasCompany = countries.filter((x) => x.company.length > 0);
       const country = countriesHasCompany[0];
       // const company = countriesHasCompany[0]?.company[0];
@@ -209,7 +209,7 @@ const Benchmarking = ({ history }) => {
       // generateChartData(country, company, compare);
       setLoading(false);
     }
-  }, [loading, countries, generateChartData, compare]);
+  }, [loading, countries, crops, generateChartData, compare]);
 
   const handleOnChangeCompare = (e) => {
     setCompare(e.target.value);

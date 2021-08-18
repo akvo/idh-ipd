@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Menu } from "antd";
 import { Link, useHistory } from "react-router-dom";
 
 import { UIStore } from "../data/store";
+import { titleCase } from "../lib/util";
 
 const { SubMenu } = Menu;
 
 const Nav = ({ logout, loginWithPopup, isAuthenticated }) => {
-  const page = UIStore.useState((s) => s.page);
-  const user = UIStore.useState((s) => s.user);
+  const { page, user } = UIStore.useState((c) => c);
   let history = useHistory();
+
+  useEffect(() => {
+    document.title = titleCase(page !== "" ? page : "Introduction", "-");
+  }, [page]);
 
   const handleOnClickMenu = ({ key }) => {
     UIStore.update((s) => {
@@ -47,8 +51,8 @@ const Nav = ({ logout, loginWithPopup, isAuthenticated }) => {
           </Menu.Item>
         </>
       )}
-      {isAuthenticated ? user?.role === 'admin'
-        ? (
+      {isAuthenticated ? (
+        user?.role === "admin" ? (
           <SubMenu key="account" title="Admin">
             <Menu.Item key="manage">
               <Link to="/manage">Manage</Link>
@@ -57,17 +61,16 @@ const Nav = ({ logout, loginWithPopup, isAuthenticated }) => {
               <Link to="/">Logout</Link>
             </Menu.Item>
           </SubMenu>
-        )
-        : (
+        ) : (
           <Menu.Item key="auth" onClick={logout}>
             <Link to="/">Logout</Link>
           </Menu.Item>
         )
-        : (
-          <Menu.Item key="auth" onClick={loginWithPopup}>
-            <Link to="/">Login</Link>
-          </Menu.Item>
-        )}
+      ) : (
+        <Menu.Item key="auth" onClick={loginWithPopup}>
+          <Link to="/">Login</Link>
+        </Menu.Item>
+      )}
     </Menu>
   );
 };

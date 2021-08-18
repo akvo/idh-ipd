@@ -5,7 +5,7 @@ import { UIStore } from "../data/store";
 import { isAuthCookie } from "../lib/util";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
-  const user = UIStore.useState((s) => s.user);
+  const { user } = UIStore.currentState;
 
   return (
     <Route

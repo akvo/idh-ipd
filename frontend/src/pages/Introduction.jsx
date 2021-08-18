@@ -9,7 +9,7 @@ import LivingIncomeImg from "../components/LivingIncomeImg";
 import { UIStore } from "../data/store";
 
 const Introduction = ({ history }) => {
-  const loading = UIStore.useState((s) => s.loading);
+  const { loading } = UIStore.currentState;
 
   useEffect(() => {
     if (loading) {

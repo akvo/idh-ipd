@@ -59,7 +59,7 @@ const replaceCrop = (crop, text) => {
 };
 
 const IncomeDriverTool = ({ history }) => {
-  const { crops, countries } = UIStore.useState();
+  const { crops, countries } = UIStore.useState((c) => c);
   const [defCountry, setDefCountry] = useState(null);
   const [defCompany, setDefCompany] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -101,7 +101,7 @@ const IncomeDriverTool = ({ history }) => {
   );
 
   useEffect(() => {
-    if (loading) {
+    if (loading && countries.length && crops.length) {
       const countriesHasCompany = countries.filter((x) => x.company.length > 0);
       const country = countriesHasCompany[0];
       // const company = countriesHasCompany[0]?.company[0];
@@ -112,11 +112,13 @@ const IncomeDriverTool = ({ history }) => {
         setLoading(false);
       });
     }
+  }, [loading, countries, crops]);
 
+  useEffect(() => {
     if (data && defCompany) {
       generateChartData(defCountry, defCompany);
     }
-  }, [loading, countries, data, defCountry, defCompany, generateChartData]);
+  }, [data, defCountry, defCompany, generateChartData]);
 
   const handleOnChangeCompany = (value) => {
     const company = defCountry.company.find((x) => x.id === value);
