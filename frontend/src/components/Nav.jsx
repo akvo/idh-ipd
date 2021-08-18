@@ -18,7 +18,6 @@ const Nav = ({ logout, loginWithPopup, isAuthenticated }) => {
     });
     history.push(key === "auth" ? "/" : `/${key}`);
   };
-
   return (
     <Menu
       theme="dark"
@@ -26,13 +25,13 @@ const Nav = ({ logout, loginWithPopup, isAuthenticated }) => {
       selectedKeys={[page]}
       onClick={handleOnClickMenu}
       style={{
-        minWidth: isAuthenticated && user ? "840px" : "225px",
+        minWidth: isAuthenticated && user?.active ? "840px" : "225px",
       }}
     >
       <Menu.Item key="">
         <Link to="/">Introduction</Link>
       </Menu.Item>
-      {isAuthenticated && user && (
+      {isAuthenticated && user?.active && (
         <>
           <Menu.Item key="data-map">
             <Link to="/data-map">Data Map</Link>
@@ -48,22 +47,27 @@ const Nav = ({ logout, loginWithPopup, isAuthenticated }) => {
           </Menu.Item>
         </>
       )}
-      {isAuthenticated ? (
-        <SubMenu key="account" title="Account">
-          {user && (
+      {isAuthenticated ? user?.role === 'admin'
+        ? (
+          <SubMenu key="account" title="Account">
             <Menu.Item key="manage">
               <Link to="/manage">Manage</Link>
             </Menu.Item>
-          )}
+            <Menu.Item key="auth" onClick={logout}>
+              <Link to="/">Logout</Link>
+            </Menu.Item>
+          </SubMenu>
+        )
+        : (
           <Menu.Item key="auth" onClick={logout}>
             <Link to="/">Logout</Link>
           </Menu.Item>
-        </SubMenu>
-      ) : (
-        <Menu.Item key="auth" onClick={loginWithPopup}>
-          <Link to="/">Login</Link>
-        </Menu.Item>
-      )}
+        )
+        : (
+          <Menu.Item key="auth" onClick={loginWithPopup}>
+            <Link to="/">Login</Link>
+          </Menu.Item>
+        )}
     </Menu>
   );
 };

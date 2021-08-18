@@ -67,14 +67,6 @@ export const rverifyOptions = {
   extra: 'Drag to make angle positive',
   extraLink: '#',
   album: [
-    'https://rverify.vercel.app/assets/2.jpg',
-    'https://rverify.vercel.app/assets/3.jpg',
-    'https://rverify.vercel.app/assets/4.jpg',
-    'https://rverify.vercel.app/assets/5.jpg',
-    'https://rverify.vercel.app/assets/6.jpg',
-    'https://rverify.vercel.app/assets/7.jpg',
-    'https://rverify.vercel.app/assets/8.jpg',
-    'https://rverify.vercel.app/assets/9.jpg',
-    'https://rverify.vercel.app/assets/10.jpg'
+    '/images/verify01.png',
   ]
 }

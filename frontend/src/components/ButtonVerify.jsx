@@ -3,12 +3,12 @@ import RVerify from 'rverify';
 import { Modal, notification } from 'antd';
 import api from '../lib/api';
 
-const handleUserStore = (data) => {
-  api.post('/user/', JSON.parse(data))
+const handleUserStore = () => {
+  api.post('/user/')
   .then(() => {
     Modal.success({
       title: 'Success!',
-      content: 'Please wait for Admin Approval',
+      content: 'Registration process has been completed. Please wait until admin approves your registration.',
       onOk: () => {
         window.location.reload()
       }
@@ -26,14 +26,14 @@ const handleUserStore = (data) => {
   })
 }
 
-const onShow = (e) => {
+const onShow = () => {
   RVerify.action(res => {
-    if(res === 1) handleUserStore(e.target.value)
+    if(res === 1) handleUserStore()
   })
 }
 
 const ButtonVerify = React.forwardRef((props, ref) => {
-  return <button type="button" onClick={(e) => onShow(e)} ref={ref} {...props} style={{ display: 'none' }}></button>
+  return <button type="button" onClick={onShow} ref={ref} {...props} style={{ display: 'none' }}></button>
 })
 
 export default ButtonVerify

@@ -46,6 +46,9 @@ function App({ btnReff }) {
         api.get('/user/me')
           .then(({ data }) => {
             const { active } = data || {}
+            UIStore.update((u) => {
+              u.user = data
+            })
             if (active) {
               api
                 .get("/country-company")
@@ -67,14 +70,16 @@ function App({ btnReff }) {
                       UIStore.update((c) => {
                         c.countries = country ? country : [];
                         c.crops = crop;
-                        c.user = country ? user : null;
                         c.loading = false;
                       });
                     });
                 });
-            }else{
-              btnReff.current.value = JSON.stringify(data)
-              btnReff.current.click()
+            }
+          })
+          .catch((e) => {
+            switch(e.response?.status){
+              case 404:
+                btnReff.current.click()
             }
           })
       } else {
