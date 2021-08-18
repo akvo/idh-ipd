@@ -18,14 +18,14 @@ def add_user(session: Session,
 
 
 def count(session: Session, active: int = 0) -> int:
-    return session.query(User).where(User.active == bool(active)).count()
+    return session.query(User).filter(User.active == bool(active)).count()
 
 
 def get_user(session: Session,
              skip: int = 0,
              limit: int = 10,
              active: int = 0) -> List[User]:
-    return session.query(User).where(User.active == bool(active)).order_by(
+    return session.query(User).filter(User.active == bool(active)).order_by(
         desc(User.id)).offset(skip).limit(limit).all()
 
 
