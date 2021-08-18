@@ -31,7 +31,7 @@ const Manage = () => {
     current: 1,
     pageSize: 10,
   });
-  const [tab, setTab] = useState('1')
+  const [tab, setTab] = useState('0')
 
   const onPageChange = (page, active) => {
     setTableLoading(true);
@@ -113,7 +113,7 @@ const Manage = () => {
       title: "Action",
       dataIndex: "id",
       key: "id",
-      render: (id, r) => <Button disabled={!r?.email_verified} onClick={(e) => handleAccess(id)}>Edit</Button>,
+      render: (id, r) => <Button disabled={!r?.email_verified} onClick={(e) => handleAccess(id)}>{r.active ? 'Edit' : 'Approve'}</Button>,
     },
   ];
 
@@ -144,16 +144,14 @@ const Manage = () => {
   const onFinish = (values) => {
     api
       .put(
-        `/user/${selected.id}?role=${values.role}&active=${selected.active}`,
+        `/user/${selected.id}?role=${values.role}&active=1`,
         values.access.map((value) => ({
           user: selected.id,
           company: value,
         }))
       )
-      .then(({ data }) => {
-        setUsers([...users.map((user) => {
-          return user.id === data.id ? { ...user, role: values.role, access: values.access } : user
-        })]);
+      .then(() => {
+        onPageChange(1, selected.active ? 1 : 0)
         Modal.success({
           title: 'Success!',
           content: 'Update process has been applied'
@@ -171,8 +169,8 @@ const Manage = () => {
             value={tab}
             buttonStyle="solid"
             onChange={(e) => onSwitchTab(e.target.value)}>
+            <Radio.Button value="0">Pending Approval</Radio.Button>
             <Radio.Button value="1">All Users</Radio.Button>
-            <Radio.Button value="0">Pending Approvals</Radio.Button>
           </Radio.Group>
         </PageHeader>
         <Table
@@ -196,6 +194,7 @@ const Manage = () => {
           form.submit();
         }}
         onCancel={() => showAccess(false)}
+        okText={selected?.active ? 'Confrim Changes' : 'Approve'}
       >
         <Form
           form={form}

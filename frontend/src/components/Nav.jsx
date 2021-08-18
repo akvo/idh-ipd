@@ -49,7 +49,7 @@ const Nav = ({ logout, loginWithPopup, isAuthenticated }) => {
       )}
       {isAuthenticated ? user?.role === 'admin'
         ? (
-          <SubMenu key="account" title="Account">
+          <SubMenu key="account" title="Admin">
             <Menu.Item key="manage">
               <Link to="/manage">Manage</Link>
             </Menu.Item>
