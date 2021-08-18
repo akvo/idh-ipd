@@ -28,6 +28,5 @@ services:
       - AUTH0_AUDIENCE
     depends_on:
       - db
-    restart: always
 volumes:
   pg-data:
