@@ -20,7 +20,7 @@ services:
   backend:
     network_mode: service:mainnetwork
     image: eu.gcr.io/akvo-lumen/idh-ipd/backend:latest
-    command: ["pytest"]
+    command: ["sh", "ci.sh"]
     environment:
       - DATABASE_URL=postgresql://ipd:password@db:5432/idh_ipd
       - SKIP_MIGRATION=yes
