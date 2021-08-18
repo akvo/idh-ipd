@@ -72,6 +72,8 @@ def get_user(req: Request,
     user = crud_user.get_user(session=session,
                               skip=(10 * (page - 1)),
                               active=active)
+    if not user:
+        raise HTTPException(status_code=404, detail="Not found")
     total = crud_user.count(session=session, active=active)
     user = [i.serialize for i in user]
     if not active:
@@ -82,11 +84,14 @@ def get_user(req: Request,
         for col in list(user):
             user[col] = user[col].apply(lambda x: None if x != x else x)
         user = user.to_dict('records')
+    total_page = ceil(total / 10) if total > 0 else 0
+    if total_page < page:
+        raise HTTPException(status_code=404, detail="Not found")
     return {
         'current': page,
         'data': user,
         'total': total,
-        'total_page': ceil(total / 10)
+        'total_page': total_page
     }
 
 
