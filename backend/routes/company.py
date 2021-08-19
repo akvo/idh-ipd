@@ -5,7 +5,7 @@ from typing import List
 from sqlalchemy.orm import Session
 
 from db import crud_company
-from db.schema import CompanyBase
+from db.schema import CompanyBase, CompanyBaseDetail
 from db.models import Company
 from db.connection import get_session
 import util.params as params
@@ -65,7 +65,7 @@ def get_company(req: Request,
 
 
 @company_route.get("/company/{id:path}",
-                   response_model=CompanyBase,
+                   response_model=CompanyBaseDetail,
                    summary="get company detail",
                    tags=["Company"])
 def get_company_by_id(req: Request,
@@ -74,6 +74,10 @@ def get_company_by_id(req: Request,
                       credentials: credentials = Depends(security)):
     verify_user(req.state.authenticated, session)
     company = crud_company.get_company_by_id(session=session, id=id)
+    # country = crud_company.get_company_by_country_and_crop(
+    #     session=session, country=company.country, crop=company.crop)
+    # crop = crud_company.get_company_by_crop(session=session, crop=company.crop)
     if company is None:
         raise HTTPException(status_code=404, detail="Not Found")
-    return params.with_extra_data(company.serialize)
+    company = params.with_extra_data(company.serialize)
+    return company
