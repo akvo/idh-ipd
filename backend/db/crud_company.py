@@ -1,4 +1,5 @@
 from typing import List
+from sqlalchemy import and_
 from sqlalchemy.orm import Session
 from .models import Company, CompanyDict
 
@@ -19,3 +20,13 @@ def get_company(session: Session,
 
 def get_company_by_id(session: Session, id: int) -> Company:
     return session.query(Company).filter(Company.id == id).first()
+
+
+def get_company_by_country_and_crop(session: Session, country: int,
+                                    crop: int) -> List[Company]:
+    return session.query(Company).filter(
+        and_(Company.country == country, Company.crop == crop)).all()
+
+
+def get_company_by_crop(session: Session, crop: int) -> List[Company]:
+    return session.query(Company).filter(Company.crop == crop).all()
