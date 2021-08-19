@@ -12,6 +12,7 @@ import Loading from "../components/Loading";
 import { UIStore } from "../data/store";
 import sortBy from "lodash/sortBy";
 import EmptyText from "../components/EmptyText";
+import ErrorPage from "../components/ErrorPage";
 
 const { Option } = Select;
 const { Link } = Anchor;
@@ -165,7 +166,7 @@ const renderHeroCard = (data) => {
 };
 
 const Case = () => {
-  const { countries, selectedCountry, crops, user } = UIStore.useState();
+  const { countries, selectedCountry, crops, user, errorPage } = UIStore.useState();
   const [defCountry, setDefCountry] = useState(null);
   const [defCompany, setDefCompany] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -195,6 +196,9 @@ const Case = () => {
         };
         setData(tmp);
       }
+      UIStore.update((p) => {
+        p.errorPage = false
+      })
     }
     if (loading && user) setLoading(false);
   }, [loading, countries, crops, selectedCountry, user]);
@@ -254,6 +258,11 @@ const Case = () => {
 
   const generateChartData = (config, group) => {
     return config.map((x) => {
+      if (!data.company[x]) {
+        UIStore.update((p) => {
+          p.errorPage = true
+        })
+      }
       return {
         group: group,
         name: x,
@@ -264,6 +273,10 @@ const Case = () => {
 
   if (loading) {
     return <Loading />;
+  }
+
+  if (errorPage) {
+    return <ErrorPage />
   }
 
   return (

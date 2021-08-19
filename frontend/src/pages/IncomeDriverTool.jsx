@@ -10,7 +10,7 @@ import { UIStore } from "../data/store";
 import api from "../lib/api";
 import sortBy from "lodash/sortBy";
 import EmptyText from "../components/EmptyText";
-
+import ErrorPage from "../components/ErrorPage";
 const { Option } = Select;
 
 const chartTmp = [
@@ -60,7 +60,7 @@ const replaceCrop = (crop, text) => {
 };
 
 const IncomeDriverTool = ({ history }) => {
-  const { crops, countries, user } = UIStore.useState((c) => c);
+  const { crops, countries, user, errorPage } = UIStore.useState((c) => c);
   const [defCountry, setDefCountry] = useState(null);
   const [defCompany, setDefCompany] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -111,7 +111,16 @@ const IncomeDriverTool = ({ history }) => {
       api.get("/driver-income?skip=0&limit=100").then((res) => {
         setData(res.data);
         setLoading(false);
-      });
+      })
+      .catch((e) => {
+        const { status } = e.response
+        UIStore.update((p) => {
+          p.errorPage = status
+        })
+      })
+      UIStore.update((p) => {
+        p.errorPage = false
+      })
     }
     if (loading && user) setLoading(false) 
   }, [loading, countries, crops, user]);
@@ -164,6 +173,10 @@ const IncomeDriverTool = ({ history }) => {
 
   if (loading) {
     return <Loading />;
+  }
+
+  if (errorPage) {
+    return <ErrorPage />;
   }
 
   return (

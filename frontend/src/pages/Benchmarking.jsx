@@ -12,7 +12,7 @@ import sumBy from "lodash/sumBy";
 import EmptyText from "../components/EmptyText";
 import { filterCountryOptions } from "../lib/util";
 import DropdownCountry from "../components/DropdownCountry";
-
+import ErrorPage from "../components/ErrorPage";
 
 const chartTmp = [
   {
@@ -83,7 +83,7 @@ const chartTmp = [
 ];
 
 const Benchmarking = () => {
-  const { countries, crops, user } = UIStore.useState((c) => c);
+  const { countries, crops, user, errorPage } = UIStore.useState((c) => c);
   const [compare, setCompare] = useState("country");
   const [defCountry, setDefCountry] = useState(null);
   const [defCompany, setDefCompany] = useState(null);
@@ -115,6 +115,11 @@ const Benchmarking = () => {
       //* generate chart & table data
       const tmp = chartTmp.map((x) => {
         const companyChart = x.chart.map((c) => {
+          if (!company[c.key]) {
+            UIStore.update((p) => {
+              p.errorPage = true
+            })
+          }
           return {
             ...c,
             group: company.name,
@@ -210,6 +215,9 @@ const Benchmarking = () => {
         country: countries,
         company: filterCountryOptions(countries, country, 'company')
       }))
+      UIStore.update((p) => {
+        p.errorPage = false
+      })
     }
     if (loading && user) setLoading(false);
   }, [loading, countries, crops, generateChartData, compare, user]);
@@ -353,6 +361,10 @@ const Benchmarking = () => {
 
   if (loading) {
     return <Loading />;
+  }
+
+  if (errorPage) {
+    return <ErrorPage />
   }
 
   return (
