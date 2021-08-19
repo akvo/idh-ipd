@@ -4,11 +4,13 @@ from fastapi.security import HTTPBearer
 from typing import List
 from sqlalchemy.orm import Session
 
-from db import crud_company
-from db.schema import CompanyBase, CompanyBaseDetail
+from db import crud_company, crud_crop, crud_country
+from db.schema import CompanyBase
+from db.schema import CompanyComparison
 from db.models import Company
 from db.connection import get_session
 import util.params as params
+import util.calc as calc
 from middleware import verify_admin, verify_user
 
 security = HTTPBearer()
@@ -65,7 +67,7 @@ def get_company(req: Request,
 
 
 @company_route.get("/company/{id:path}",
-                   response_model=CompanyBaseDetail,
+                   response_model=CompanyComparison,
                    summary="get company detail",
                    tags=["Company"])
 def get_company_by_id(req: Request,
@@ -74,10 +76,24 @@ def get_company_by_id(req: Request,
                       credentials: credentials = Depends(security)):
     verify_user(req.state.authenticated, session)
     company = crud_company.get_company_by_id(session=session, id=id)
-    # country = crud_company.get_company_by_country_and_crop(
-    #     session=session, country=company.country, crop=company.crop)
-    # crop = crud_company.get_company_by_crop(session=session, crop=company.crop)
+
+    country_name = crud_country.get_name(session=session, id=company.country)
+    this_crop_name = crud_crop.get_name(session=session, id=company.crop)
+    in_country = crud_company.get_company_by_country(session=session,
+                                                     country=company.country)
+    in_country = calc.avg(in_country, 'crop')
+    for c in in_country:
+        crop_name = crud_crop.get_name(session=session, id=c['crop'])
+        c.update({'name': f"{country_name} average in {crop_name}"})
+
+    same_crop = crud_company.get_company_by_crop(
+        session=session, crop=company.crop, exclude_country=company.country)
+    same_crop = calc.avg(same_crop, 'crop')
+    for c in same_crop:
+        c.update({'name': f"Other countries average in {this_crop_name}"})
+
     if company is None:
         raise HTTPException(status_code=404, detail="Not Found")
     company = params.with_extra_data(company.serialize)
+    company['comparison'] = same_crop + in_country
     return company
