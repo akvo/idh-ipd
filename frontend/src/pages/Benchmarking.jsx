@@ -103,8 +103,6 @@ const Benchmarking = () => {
     const tmp = chartTmp.map((x) => {
       const xChart = cl.map((col) => {
         return x.chart.map((c) => {
-          console.log('c', c, 'col', col, 'x', x)
-          console.log('col[c.key]', col[c.key])
           return {
             ...c,
             group: col.name,
@@ -130,7 +128,6 @@ const Benchmarking = () => {
           };
         });
       }
-      console.log('xchart', xChart)
       return {
         ...x,
         chart: xChart.flatMap(val => val),
@@ -189,7 +186,6 @@ const Benchmarking = () => {
       company: filterCountryOptions(countries, country, 'company')
     });
   };
-  console.log('collection', collection)
   const renderTable = (table) => {
     if (!table) {
       return;
