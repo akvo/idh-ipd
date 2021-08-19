@@ -13,7 +13,6 @@ df = pd.DataFrame(df)
 df = df.dropna(subset=['name'])
 df = df.drop_duplicates(subset=['name'])
 df = df.drop_duplicates(subset=['code'])
-print(df)
 
 
 class TestCountryRoutes:
