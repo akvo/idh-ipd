@@ -71,6 +71,15 @@ class CompanyBase(BaseModel):
         orm_mode = True
 
 
+class CompanyBaseSimple(BaseModel):
+    id: int
+    name: str
+    crop: int
+
+    class Config:
+        orm_mode = True
+
+
 class DriverIncomeBase(BaseModel):
     id: int
     country: int
@@ -97,7 +106,7 @@ class CountryCompanyBase(BaseModel):
     id: int
     name: str
     code: str
-    company: List[CompanyBase]
+    company: List[CompanyBaseSimple]
 
 
 class CropCompanyBase(BaseModel):

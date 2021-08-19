@@ -31,7 +31,7 @@ def apply_migrations():
 # Create a new application for testing
 @pytest.fixture
 def app(apply_migrations: None) -> FastAPI:
-    from main import app
+    from core.config import app
     return app
 
 
