@@ -22,11 +22,12 @@ def get_company_by_id(session: Session, id: int) -> Company:
     return session.query(Company).filter(Company.id == id).first()
 
 
-def get_company_by_country_and_crop(session: Session, country: int,
-                                    crop: int) -> List[Company]:
+def get_company_by_country(session: Session, country: int) -> List[Company]:
+    return session.query(Company).filter(Company.country == country).all()
+
+
+def get_company_by_crop(session: Session,
+                        crop: int,
+                        exclude_country: int = 0) -> List[Company]:
     return session.query(Company).filter(
-        and_(Company.country == country, Company.crop == crop)).all()
-
-
-def get_company_by_crop(session: Session, crop: int) -> List[Company]:
-    return session.query(Company).filter(Company.crop == crop).all()
+        and_(Company.country != exclude_country, Company.crop == crop)).all()
