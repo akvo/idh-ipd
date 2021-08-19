@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional, List, Union
 from pydantic import BaseModel
 from .models import UserRole, DriverIncomeStatus
 
@@ -49,86 +49,6 @@ class CropBase(BaseModel):
         orm_mode = True
 
 
-class CompanyBase(BaseModel):
-    id: int
-    name: str
-    country: int
-    crop: int
-    land_size: Optional[float] = None
-    price: Optional[float] = None
-    yields: Optional[int] = None
-    prod_cost: Optional[int] = None
-    total_prod_cost: Optional[int] = None
-    net_income: Optional[int] = None
-    hh_income: Optional[int] = None
-    other_income: Optional[int] = None
-    living_income: Optional[int] = None
-    living_income_gap: Optional[int] = None
-    share_income: Optional[int] = None
-    revenue: Optional[int] = None
-
-    class Config:
-        orm_mode = True
-
-
-class CountryAverage(BaseModel):
-    land_size: Optional[float] = None
-    price: Optional[float] = None
-    yields: Optional[int] = None
-    prod_cost: Optional[int] = None
-    total_prod_cost: Optional[int] = None
-    net_income: Optional[int] = None
-    hh_income: Optional[int] = None
-    other_income: Optional[int] = None
-    living_income: Optional[int] = None
-    living_income_gap: Optional[int] = None
-    share_income: Optional[int] = None
-    revenue: Optional[int] = None
-
-
-class CropAverage(BaseModel):
-    land_size: Optional[float] = None
-    price: Optional[float] = None
-    yields: Optional[int] = None
-    prod_cost: Optional[int] = None
-    total_prod_cost: Optional[int] = None
-    net_income: Optional[int] = None
-    hh_income: Optional[int] = None
-    other_income: Optional[int] = None
-    living_income: Optional[int] = None
-    living_income_gap: Optional[int] = None
-    share_income: Optional[int] = None
-    revenue: Optional[int] = None
-
-
-class Average(BaseModel):
-    country: CountryAverage
-    crop: CropAverage
-
-
-class CompanyBaseDetail(BaseModel):
-    id: int
-    name: str
-    country: int
-    crop: int
-    land_size: Optional[float] = None
-    price: Optional[float] = None
-    yields: Optional[int] = None
-    prod_cost: Optional[int] = None
-    total_prod_cost: Optional[int] = None
-    net_income: Optional[int] = None
-    hh_income: Optional[int] = None
-    other_income: Optional[int] = None
-    living_income: Optional[int] = None
-    living_income_gap: Optional[int] = None
-    share_income: Optional[int] = None
-    revenue: Optional[int] = None
-    average: Average
-
-    class Config:
-        orm_mode = True
-
-
 class CompanyBaseSimple(BaseModel):
     id: int
     name: str
@@ -136,6 +56,44 @@ class CompanyBaseSimple(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class CompanyMixin(BaseModel):
+    land_size: Optional[float] = None
+    price: Optional[float] = None
+    yields: Optional[int] = None
+    prod_cost: Optional[int] = None
+    total_prod_cost: Optional[int] = None
+    net_income: Optional[int] = None
+    hh_income: Optional[int] = None
+    other_income: Optional[int] = None
+    living_income: Optional[int] = None
+    living_income_gap: Optional[int] = None
+    share_income: Optional[int] = None
+    revenue: Optional[int] = None
+
+
+class CountryId(BaseModel):
+    country: int
+
+
+class Name(BaseModel):
+    name: str
+
+
+class CompanyCompare(CompanyMixin, Name):
+    pass
+
+
+class CompanyBase(CompanyMixin, CountryId, CompanyBaseSimple):
+    pass
+
+    class Config:
+        orm_mode = True
+
+
+class CompanyComparison(CompanyBase):
+    comparison: List[CompanyCompare]
 
 
 class DriverIncomeBase(BaseModel):

@@ -52,11 +52,10 @@ def get_crop_by_id(id: int, session: Session = Depends(get_session)):
     return crop.serialize
 
 
-
 @crop_route.get("/crop-company",
-               response_model=List[CropCompanyBase],
-               summary="get crop and the company list",
-               tags=["Crop", "Company"])
+                response_model=List[CropCompanyBase],
+                summary="get crop and the company list",
+                tags=["Crop"])
 def get_crop_company(req: Request,
                      session: Session = Depends(get_session),
                      credentials: credentials = Depends(security)):
