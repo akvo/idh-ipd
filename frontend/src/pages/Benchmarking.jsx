@@ -13,6 +13,7 @@ import EmptyText from "../components/EmptyText";
 import { filterCountryOptions } from "../lib/util";
 import DropdownCountry from "../components/DropdownCountry";
 import ErrorPage from "../components/ErrorPage";
+import api from "../lib/api";
 
 const chartTmp = [
   {
@@ -107,7 +108,7 @@ const Benchmarking = () => {
         (x) => x.id !== company.id && x.crop === company.crop
       );
       //* filter data to get others in sector
-      const otherInSector = countries
+      const otherInSector = options.country
         .map((x) => x.company)
         .flat()
         .filter((x) => x.id !== company.id && x.crop === company.crop);
@@ -198,14 +199,12 @@ const Benchmarking = () => {
       });
       setChart(tmp);
     },
-    [countries, crops]
+    [options.country, crops]
   );
 
   useEffect(() => {    
     if (countries.length && crops.length) {
-      const countriesHasCompany = countries.filter((x) => x.company.length > 0);
-      const country = countriesHasCompany[0];
-      setDefCountry(country);      
+      const country = countries.filter((x) => x.company.length > 0)[0] || {};
       setOptions({
         country: countries,
         company: filterCountryOptions(countries, country, 'company')
@@ -223,9 +222,17 @@ const Benchmarking = () => {
   };
 
   const handleOnChangeCompany = (value) => {
-    const company = defCountry.company.find((x) => x.id === value);
-    setDefCompany(company);
-    generateChartData(defCountry, company, compare);
+    api.get(`/company/${value}`)
+      .then(({ data: company }) => {
+        setDefCompany(company);
+        generateChartData(defCountry, company, compare);
+      })
+      .catch((e) => {
+        const { status } = e.response
+        UIStore.update((p) => {
+          p.errorPage = status
+        })
+      });
   };
 
   const handleOnChangeCountry = (value) => {

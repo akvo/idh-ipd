@@ -13,6 +13,7 @@ import { UIStore } from "../data/store";
 import sortBy from "lodash/sortBy";
 import EmptyText from "../components/EmptyText";
 import ErrorPage from "../components/ErrorPage";
+import api from "../lib/api";
 
 const { Option } = Select;
 const { Link } = Anchor;
@@ -177,7 +178,7 @@ const Case = () => {
       if (selectedCountry) {
         const filterCountry = countries.find((x) => x.id === selectedCountry);
         setDefCountry(selectedCountry);
-        
+
         const tmp = {
           ...filterCountry,
           company: filterCountry?.company[0],
@@ -204,13 +205,22 @@ const Case = () => {
   }, [loading, countries, crops, selectedCountry, user]);
 
   const handleOnChangeCompany = (value) => {
-    const country = countries.find((x) => x.id === defCountry);
-    const tmp = {
-      ...country,
-      company: country?.company.find((x) => x.id === value),
-    };
-    setData(tmp);
-    setDefCompany(value);
+    api.get(`/company/${value}`)
+      .then(({ data: company }) => {
+        const country = countries.find((x) => x.id === defCountry);
+        const tmp = {
+          ...country,
+          company: company,
+        };
+        setData(tmp);
+        setDefCompany(value);
+      })
+      .catch((e) => {
+        const { status } = e.response
+        UIStore.update((p) => {
+          p.errorPage = status
+        })
+      });
   };
 
   const handleOnChangeCountry = (value) => {
