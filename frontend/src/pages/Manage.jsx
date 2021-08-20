@@ -20,11 +20,13 @@ import api from "../lib/api";
 const { Option, OptGroup } = Select;
 
 const Manage = () => {
-  const { countries, errorPage, loading, user } = UIStore.useState((c) => c);
+  const { countries, errorPage } = UIStore.useState((c) => c);
   const [form] = Form.useForm();
   const [users, setUsers] = useState([]);
   const [selected, setSelected] = useState({});
   const [access, showAccess] = useState(false);
+  const [pageLoading, setPageLoading] = useState(true);
+  const [tableLoading, setTableLoading] = useState(true);
   const [paginate, setPaginate] = useState({
     total: 1,
     current: 1,
@@ -33,9 +35,7 @@ const Manage = () => {
   const [tab, setTab] = useState("0");
 
   const onPageChange = (page, active) => {
-    UIStore.update((p) => {
-      p.loading = true
-    })
+    setTableLoading(true);
     api
       .get(`/user/?page=${page}&active=${active}`)
       .then((res) => {
@@ -45,61 +45,55 @@ const Manage = () => {
           current: res.data.current,
           total: res.data.total,
         });
-        UIStore.update((p) => {
-          p.loading = false
-        })
+        setTableLoading(false);
       })
       .catch((e) => {
-        UIStore.update((p) => {
-          p.loading = false
-        })
         if (e.response?.status === 404) {
           setUsers([]);
           setPaginate({
             ...paginate,
             total: 0,
-            current: 1,
+            current: 0,
           });
-        } else {
-          UIStore.update((p) => {
-            p.errorPage = true
-          })
+          setTableLoading(false);
         }
       });
   };
 
   useEffect(() => {
-    if (errorPage) {
-      UIStore.update((p) => {
-        p.errorPage = false
-      })
-    }
-    if (user?.role === 'admin' && loading) {
+    if (countries.length && pageLoading) {
       api
         .get(`/user/?page=1&active=0`)
         .then((res) => {
+          setPageLoading(false);
           setUsers(res.data.data);
           setPaginate({
             pageSize: 10,
             current: res.data.current,
             total: res.data.total,
           });
-          UIStore.update((p) => {
-            p.loading = false
-          })
         })
         .catch((e) => {
-          const { status } = e.response
-          setUsers([])
           UIStore.update((p) => {
             p.loading = false
-            if (status !== 404) {
-              p.errorPage = status
-            }
           })
+          if (e.response?.status === 404) {
+            setUsers([]);
+            setPaginate({
+              ...paginate,
+              total: 0,
+              current: 1,
+            });
+          } else {
+            UIStore.update((p) => {
+              p.errorPage = true;
+            })
+          }
         });
+      setPageLoading(false);
+      setTableLoading(false);
     }
-  }, [loading, errorPage, user?.role, countries]);
+  }, [pageLoading, tableLoading, paginate, countries]);
 
   const handleAccess = (id) => {
     api.get(`/user/${id}`).then((res) => {
@@ -217,7 +211,7 @@ const Manage = () => {
           </Radio.Group>
         </PageHeader>
         <Table
-          loading={loading}
+          loading={tableLoading}
           columns={columns}
           dataSource={users}
           pagination={{

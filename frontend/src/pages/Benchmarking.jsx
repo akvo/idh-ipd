@@ -115,11 +115,6 @@ const Benchmarking = () => {
       //* generate chart & table data
       const tmp = chartTmp.map((x) => {
         const companyChart = x.chart.map((c) => {
-          if (!company[c.key]) {
-            UIStore.update((p) => {
-              p.errorPage = true
-            })
-          }
           return {
             ...c,
             group: company.name,
@@ -206,15 +201,15 @@ const Benchmarking = () => {
     [countries, crops]
   );
 
-  useEffect(() => {
-    if (loading && countries.length && crops.length) {
+  useEffect(() => {    
+    if (countries.length && crops.length) {
       const countriesHasCompany = countries.filter((x) => x.company.length > 0);
       const country = countriesHasCompany[0];
-      setDefCountry(country);
-      setOptions(() => ({
+      setDefCountry(country);      
+      setOptions({
         country: countries,
         company: filterCountryOptions(countries, country, 'company')
-      }))
+      })
       UIStore.update((p) => {
         p.errorPage = false
       })

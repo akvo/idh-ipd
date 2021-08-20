@@ -258,11 +258,6 @@ const Case = () => {
 
   const generateChartData = (config, group) => {
     return config.map((x) => {
-      if (!data.company[x]) {
-        UIStore.update((p) => {
-          p.errorPage = true
-        })
-      }
       return {
         group: group,
         name: x,
