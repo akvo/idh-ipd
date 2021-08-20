@@ -21,6 +21,7 @@ import Doc from "./pages/Doc";
 import { UIStore } from "./data/store";
 import { useAuth0 } from "@auth0/auth0-react";
 import api from "./lib/api";
+import { filterCountry } from "./lib/util";
 
 const history = createBrowserHistory();
 const { Header, Content, Footer } = Layout;
@@ -47,7 +48,7 @@ function App({ btnReff }) {
         api
           .get("/user/me")
           .then(({ data }) => {
-            const { active } = data || {};
+            const { active, access, role } = data || {}
             UIStore.update((u) => {
               u.user = data;
             });
@@ -56,13 +57,10 @@ function App({ btnReff }) {
                 .get("/country-company")
                 .then((res) => res.data)
                 .catch((error) => {
-                  const { status, data } = error.response;
-                  if (status !== 200) {
-                    notification.error({
-                      message: data.detail,
-                    });
-                  }
-                  return false;
+                  const { status } = error.response;
+                  UIStore.update((p) => {
+                    p.errorPage = status
+                  })
                 })
                 .then((country) => {
                   api
@@ -70,12 +68,19 @@ function App({ btnReff }) {
                     .then((res) => res.data)
                     .then((crop) => {
                       UIStore.update((c) => {
-                        c.countries = country ? country : [];
+                        c.countries = country ? role === 'user' ? filterCountry(access, country) : country : [];
+                        c.countryMap = country
                         c.crops = crop;
                         c.loading = false;
                       });
                       setLoading(false);
-                    });
+                    })
+                    .catch((e) => {
+                      const { status } = e.response;
+                      UIStore.update((p) => {
+                        p.errorPage = status
+                      })
+                    })
                 });
             }
           })

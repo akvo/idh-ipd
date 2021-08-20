@@ -9,7 +9,8 @@ import Loading from "../components/Loading";
 import { UIStore } from "../data/store";
 import api from "../lib/api";
 import sortBy from "lodash/sortBy";
-
+import EmptyText from "../components/EmptyText";
+import ErrorPage from "../components/ErrorPage";
 const { Option } = Select;
 
 const chartTmp = [
@@ -59,7 +60,7 @@ const replaceCrop = (crop, text) => {
 };
 
 const IncomeDriverTool = ({ history }) => {
-  const { crops, countries } = UIStore.useState((c) => c);
+  const { crops, countries, user, errorPage } = UIStore.useState((c) => c);
   const [defCountry, setDefCountry] = useState(null);
   const [defCompany, setDefCompany] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -101,7 +102,7 @@ const IncomeDriverTool = ({ history }) => {
   );
 
   useEffect(() => {
-    if (loading && countries.length && crops.length) {
+    if (countries.length && crops.length) {
       const countriesHasCompany = countries.filter((x) => x.company.length > 0);
       const country = countriesHasCompany[0];
       // const company = countriesHasCompany[0]?.company[0];
@@ -110,9 +111,19 @@ const IncomeDriverTool = ({ history }) => {
       api.get("/driver-income?skip=0&limit=100").then((res) => {
         setData(res.data);
         setLoading(false);
-      });
+      })
+      .catch((e) => {
+        const { status } = e.response
+        UIStore.update((p) => {
+          p.errorPage = status
+        })
+      })
+      UIStore.update((p) => {
+        p.errorPage = false
+      })
     }
-  }, [loading, countries, crops]);
+    if (loading && user) setLoading(false) 
+  }, [loading, countries, crops, user]);
 
   useEffect(() => {
     if (data && defCompany) {
@@ -164,6 +175,10 @@ const IncomeDriverTool = ({ history }) => {
     return <Loading />;
   }
 
+  if (errorPage) {
+    return <ErrorPage />;
+  }
+
   return (
     <>
       <Row className="hero-wrapper">
@@ -188,6 +203,7 @@ const IncomeDriverTool = ({ history }) => {
           data-aos="fade-up"
           gutter={[12, 12]}
           wrap={true}
+          style={{ margin: 6 }}
         >
           <Col sm={24} md={8} lg={4}>
             <Select
@@ -198,7 +214,7 @@ const IncomeDriverTool = ({ history }) => {
               onChange={handleOnChangeCountry}
               value={defCountry?.id}
               filterOption={(input, option) =>
-                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
             >
               {renderOptions("country")}
@@ -213,7 +229,7 @@ const IncomeDriverTool = ({ history }) => {
               onChange={handleOnChangeCompany}
               value={defCompany?.id}
               filterOption={(input, option) =>
-                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
             >
               {renderOptions("company")}
@@ -243,7 +259,7 @@ const IncomeDriverTool = ({ history }) => {
               ))}
           </Row>
         )}
-        {!defCompany && <h1 className="no-data">Please select a Company</h1>}
+        {!defCompany && <EmptyText amount={countries.length} />}
       </div>
     </>
   );

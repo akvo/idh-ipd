@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Row, Col, Select, Radio, Card } from "antd";
+import { Row, Col, Radio, Card } from "antd";
 import CountUp from "react-countup";
 
 import "./benchmarking.scss";
@@ -8,10 +8,12 @@ import Chart from "../lib/chart";
 import Loading from "../components/Loading";
 
 import { UIStore } from "../data/store";
-import sortBy from "lodash/sortBy";
 import sumBy from "lodash/sumBy";
-
-const { Option } = Select;
+import EmptyText from "../components/EmptyText";
+import { filterCountryOptions } from "../lib/util";
+import DropdownCountry from "../components/DropdownCountry";
+import ErrorPage from "../components/ErrorPage";
+import api from "../lib/api";
 
 const chartTmp = [
   {
@@ -81,13 +83,14 @@ const chartTmp = [
   },
 ];
 
-const Benchmarking = ({ history }) => {
-  const { countries, crops } = UIStore.useState((c) => c);
+const Benchmarking = () => {
+  const { countries, crops, user, errorPage } = UIStore.useState((c) => c);
   const [compare, setCompare] = useState("country");
   const [defCountry, setDefCountry] = useState(null);
   const [defCompany, setDefCompany] = useState(null);
   const [loading, setLoading] = useState(true);
   const [chart, setChart] = useState(null);
+  const [options, setOptions] = useState({ country: [], company: [] })
 
   let compareWith =
     chart && defCompany
@@ -199,17 +202,21 @@ const Benchmarking = ({ history }) => {
     [countries, crops]
   );
 
-  useEffect(() => {
-    if (loading && countries.length && crops.length) {
+  useEffect(() => {    
+    if (countries.length && crops.length) {
       const countriesHasCompany = countries.filter((x) => x.company.length > 0);
       const country = countriesHasCompany[0];
-      // const company = countriesHasCompany[0]?.company[0];
-      setDefCountry(country);
-      // setDefCompany(company);
-      // generateChartData(country, company, compare);
-      setLoading(false);
+      setDefCountry(country);      
+      setOptions({
+        country: countries,
+        company: filterCountryOptions(countries, country, 'company')
+      })
+      UIStore.update((p) => {
+        p.errorPage = false
+      })
     }
-  }, [loading, countries, crops, generateChartData, compare]);
+    if (loading && user) setLoading(false);
+  }, [loading, countries, crops, generateChartData, compare, user]);
 
   const handleOnChangeCompare = (e) => {
     setCompare(e.target.value);
@@ -217,9 +224,17 @@ const Benchmarking = ({ history }) => {
   };
 
   const handleOnChangeCompany = (value) => {
-    const company = defCountry.company.find((x) => x.id === value);
-    setDefCompany(company);
-    generateChartData(defCountry, company, compare);
+    api.get(`/company/${value}`)
+      .then(({ data: company }) => {
+        setDefCompany(company);
+        generateChartData(defCountry, company, compare);
+      })
+      .catch((e) => {
+        const { status } = e.response
+        UIStore.update((p) => {
+          p.errorPage = status
+        })
+      });
   };
 
   const handleOnChangeCountry = (value) => {
@@ -229,32 +244,10 @@ const Benchmarking = ({ history }) => {
     const country = countries.find((x) => x.id === value);
     setDefCountry(country);
     setDefCompany(null);
-    renderOptions("company");
-  };
-
-  const renderOptions = (type) => {
-    let options = [];
-    if (type === "country") {
-      options = countries;
-    }
-    if (type === "company") {
-      const companies = countries
-        .filter((x) => x.id === defCountry?.id)
-        .map((x) => x.company)
-        .flat();
-      options = sortBy(companies, (x) => x.name);
-    }
-    return (
-      options &&
-      options.map((comp) => {
-        const { id, name } = comp;
-        return (
-          <Option key={`${id}-${name}`} value={id}>
-            {name}
-          </Option>
-        );
-      })
-    );
+    setOptions({
+      ...options,
+      company: filterCountryOptions(countries, country, 'company')
+    });
   };
 
   const renderTable = (table) => {
@@ -374,6 +367,10 @@ const Benchmarking = ({ history }) => {
     return <Loading />;
   }
 
+  if (errorPage) {
+    return <ErrorPage />
+  }
+
   return (
     <div className="container">
       {/* // Option */}
@@ -391,44 +388,30 @@ const Benchmarking = ({ history }) => {
             defaultValue={compare}
             buttonStyle="solid"
           >
-            <Radio.Button value="country">Country</Radio.Button>
-            <Radio.Button value="sector">Sector</Radio.Button>
+            <Radio.Button value="country" disabled={!defCountry || !defCompany}>Country</Radio.Button>
+            <Radio.Button value="sector" disabled={!defCountry || !defCompany}>Sector</Radio.Button>
           </Radio.Group>
         </Col>
         <Col sm={24} md={6} lg={4}>
-          <Select
-            showSearch
-            style={{ width: "100%" }}
+          <DropdownCountry
             placeholder="Select Country"
-            optionFilterProp="children"
             onChange={handleOnChangeCountry}
             value={defCountry?.id}
-            filterOption={(input, option) =>
-              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            }
-          >
-            {renderOptions("country")}
-          </Select>
+            options={options.country}
+          />
         </Col>
         <Col sm={24} md={6} lg={4}>
-          <Select
-            showSearch
-            style={{ width: "100%" }}
+          <DropdownCountry
             placeholder="Select Company"
-            optionFilterProp="children"
             onChange={handleOnChangeCompany}
             value={defCompany?.id}
-            filterOption={(input, option) =>
-              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            }
-          >
-            {renderOptions("company")}
-          </Select>
+            options={options.company}
+          />
         </Col>
       </Row>
       {/* // Chart */}
       {defCompany && renderChart()}
-      {!defCompany && <h1 className="no-data">Please select a Company</h1>}
+      {!defCompany && <EmptyText amount={countries.length} />}
     </div>
   );
 };

@@ -9,6 +9,8 @@ const defaultState = {
   crops: [],
   data: [],
   selectedCountry: null,
+  countryMap: [],
+  errorPage: false
 };
 
 export const UIStore = new Store(defaultState);
