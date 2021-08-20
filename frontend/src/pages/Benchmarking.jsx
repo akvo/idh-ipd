@@ -13,6 +13,7 @@ import EmptyText from "../components/EmptyText";
 import { filterCountryOptions } from "../lib/util";
 import DropdownCountry from "../components/DropdownCountry";
 import ErrorPage from "../components/ErrorPage";
+import api from "../lib/api";
 
 const chartTmp = [
   {
@@ -223,9 +224,17 @@ const Benchmarking = () => {
   };
 
   const handleOnChangeCompany = (value) => {
-    const company = defCountry.company.find((x) => x.id === value);
-    setDefCompany(company);
-    generateChartData(defCountry, company, compare);
+    api.get(`/company/${value}`)
+      .then(({ data: company }) => {
+        setDefCompany(company);
+        generateChartData(defCountry, company, compare);
+      })
+      .catch((e) => {
+        const { status } = e.response
+        UIStore.update((p) => {
+          p.errorPage = status
+        })
+      });
   };
 
   const handleOnChangeCountry = (value) => {
