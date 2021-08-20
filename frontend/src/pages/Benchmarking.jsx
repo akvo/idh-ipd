@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col, Radio, Card } from "antd";
 import CountUp from "react-countup";
 
@@ -8,7 +8,6 @@ import Chart from "../lib/chart";
 import Loading from "../components/Loading";
 
 import { UIStore } from "../data/store";
-import sumBy from "lodash/sumBy";
 import EmptyText from "../components/EmptyText";
 import { filterCountryOptions } from "../lib/util";
 import DropdownCountry from "../components/DropdownCountry";
@@ -90,119 +89,58 @@ const Benchmarking = () => {
   const [defCompany, setDefCompany] = useState(null);
   const [loading, setLoading] = useState(true);
   const [chart, setChart] = useState(null);
-  const [options, setOptions] = useState({ country: [], company: [] })
+  const [options, setOptions] = useState({ country: [], company: [] });
+  const [collection, setCollection] = useState([]);
 
-  let compareWith =
-    chart && defCompany
-      ? chart[0].chart.find((x) => x.group !== defCompany.name)
-      : false;
+  let compareWith = chart && defCompany
+    ? chart[0].chart.find((x) => x.group !== defCompany.name)
+    : false;
   if (compareWith) {
     compareWith = compareWith.group.replace("Others in", "");
   }
 
-  const generateChartData = useCallback(
-    (country, company, type) => {
-      const crop = crops.find((x) => x.id === company.crop)?.name;
-      //* filter data to get others in country
-      const otherInCountry = country.company.filter(
-        (x) => x.id !== company.id && x.crop === company.crop
-      );
-      //* filter data to get others in sector
-      const otherInSector = options.country
-        .map((x) => x.company)
-        .flat()
-        .filter((x) => x.id !== company.id && x.crop === company.crop);
-
-      //* generate chart & table data
-      const tmp = chartTmp.map((x) => {
-        const companyChart = x.chart.map((c) => {
+  const generateChartData = (cl) => {
+    const tmp = chartTmp.map((x) => {
+      const xChart = cl.map((col) => {
+        return x.chart.map((c) => {
+          console.log('c', c, 'col', col, 'x', x)
+          console.log('col[c.key]', col[c.key])
           return {
             ...c,
-            group: company.name,
-            value: company[c.key],
+            group: col.name,
+            value: col[c.key],
           };
         });
-        const countryChart = x.chart.map((c) => {
-          return {
-            ...c,
-            group: `Others in ${country?.name} (Average)`,
-            value: parseInt(
-              sumBy(otherInCountry, (v) => v[c.key]) / otherInCountry.length
-            ),
-          };
-        });
-        const sectorChart = x.chart.map((c) => {
-          return {
-            ...c,
-            group: `Others in ${crop} (Average)`,
-            value: parseInt(
-              sumBy(otherInSector, (v) => v[c.key]) / otherInSector.length
-            ),
-          };
-        });
-
-        let tableTmp = [];
-        if (x.hasTable) {
-          tableTmp = x.table.map((d) => {
-            const companyTable = d.column.map((t) => {
-              return {
-                ...t,
-                group: company.name,
-                value: company[t.key],
-              };
-            });
-            const countryTable = d.column.map((t) => {
-              return {
-                ...t,
-                group: `Avg. in ${country?.name}`,
-                value: parseInt(
-                  sumBy(otherInCountry, (v) => v[t.key]) / otherInCountry.length
-                ),
-              };
-            });
-            const sectorTable = d.column.map((t) => {
-              return {
-                ...t,
-                group: `Avg. in ${crop}`,
-                value: parseInt(
-                  sumBy(otherInSector, (v) => v[t.key]) / otherInSector.length
-                ),
-              };
-            });
-
-            if (type === "country") {
-              return {
-                ...d,
-                column: [...companyTable, ...countryTable],
-              };
-            } else {
-              return {
-                ...d,
-                column: [...companyTable, ...sectorTable],
-              };
-            }
-          });
-        }
-
-        if (type === "country") {
-          return {
-            ...x,
-            chart: [...companyChart, ...countryChart],
-            table: tableTmp,
-          };
-        }
-        return {
-          ...x,
-          chart: [...companyChart, ...sectorChart],
-          table: tableTmp,
-        };
       });
-      setChart(tmp);
-    },
-    [options.country, crops]
-  );
+      let tableTmp = [];
+      if (x.hasTable) {
+        tableTmp = x.table.map((d) => {
+          const dataCollection = cl.map((c) => {
+            return d.column.map((t) => {
+              return {
+                ...t,
+                group: c.name,
+                value: c[t.key],
+              };
+            });
+          })
+          return {
+            ...d,
+            column: dataCollection,
+          };
+        });
+      }
+      console.log('xchart', xChart)
+      return {
+        ...x,
+        chart: xChart.flatMap(val => val),
+        table: tableTmp,
+      };
+    });
+    setChart(tmp);
+  };
 
-  useEffect(() => {    
+  useEffect(() => {
     if (countries.length && crops.length) {
       const country = countries.filter((x) => x.company.length > 0)[0] || {};
       setOptions({
@@ -214,23 +152,27 @@ const Benchmarking = () => {
       })
     }
     if (loading && user) setLoading(false);
-  }, [loading, countries, crops, generateChartData, compare, user]);
+  }, [loading, countries, crops, compare, user]);
 
   const handleOnChangeCompare = (e) => {
     setCompare(e.target.value);
-    generateChartData(defCountry, defCompany, e.target.value);
+    generateChartData(collection);
   };
 
   const handleOnChangeCompany = (value) => {
     api.get(`/company/${value}`)
       .then(({ data: company }) => {
+        const dataCollection = [
+          ...[company],
+          ...company.comparison
+        ]
+        setCollection(dataCollection);
         setDefCompany(company);
-        generateChartData(defCountry, company, compare);
+        generateChartData(dataCollection);
       })
       .catch((e) => {
-        const { status } = e.response
         UIStore.update((p) => {
-          p.errorPage = status
+          p.errorPage = e?.response?.status
         })
       });
   };
@@ -247,7 +189,7 @@ const Benchmarking = () => {
       company: filterCountryOptions(countries, country, 'company')
     });
   };
-
+  console.log('collection', collection)
   const renderTable = (table) => {
     if (!table) {
       return;
