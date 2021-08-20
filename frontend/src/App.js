@@ -52,13 +52,10 @@ function App({ btnReff }) {
                 .get("/country-company")
                 .then((res) => res.data)
                 .catch((error) => {
-                  const { status, data } = error.response;
-                  if (status !== 200) {
-                    notification.error({
-                      message: data.detail,
-                    });
-                  }
-                  return false;
+                  const { status } = error.response;
+                  UIStore.update((p) => {
+                    p.errorPage = status
+                  })
                 })
                 .then((country) => {
                   api
@@ -72,7 +69,13 @@ function App({ btnReff }) {
                         c.loading = false;
                       });
                       setLoading(false);
-                    });
+                    })
+                    .catch((e) => {
+                      const { status } = e.response;
+                      UIStore.update((p) => {
+                        p.errorPage = status
+                      })
+                    })
                 });
             }
           })

@@ -1,7 +1,8 @@
 import React from 'react';
 import RVerify from 'rverify';
-import { Modal, notification } from 'antd';
+import { Modal } from 'antd';
 import api from '../lib/api';
+import { UIStore } from '../data/store';
 
 const handleUserStore = () => {
   api.post('/user/')
@@ -16,13 +17,9 @@ const handleUserStore = () => {
   })
   .catch((error) => {
     const { status } = error.response;
-    if (status !== 200) {
-      notification.error({
-        title: 'Whoops',
-        message: 'Sorry, we have errors in our system',
-      });
-    }
-    return false;
+    UIStore.update((p) => {
+      p.errorPage = status
+    })
   })
 }
 
