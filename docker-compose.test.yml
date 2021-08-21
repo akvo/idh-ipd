@@ -18,7 +18,7 @@ services:
     volumes:
       - ./backend:/app:delegated
     working_dir: /app
-    command: ["pytest"]
+    command: ["pytest -rP"]
     environment:
       - DATABASE_URL=postgresql://ipd:password@db:5432/idh_ipd
       - SKIP_MIGRATION=yes
