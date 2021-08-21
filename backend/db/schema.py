@@ -71,6 +71,7 @@ class CompanyMixin(BaseModel):
     living_income_gap: Optional[int] = None
     share_income: Optional[int] = None
     revenue: Optional[int] = None
+    percent_hh_income: Optional[float] = None
 
 
 class CountryId(BaseModel):
