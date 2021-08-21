@@ -266,14 +266,21 @@ const Case = () => {
     );
   };
 
-  const generateChartData = (config, group) => {
-    return config.map((x) => {
-      return {
-        group: group,
-        name: x,
-        value: data.company[x],
-      };
-    });
+  const generateChartData = (config) => {
+    const cl = [
+      ...[data.company],
+      ...data.company.comparison
+    ];
+    const results = cl.map(it => {
+      return config.map((c) => {
+        return {
+          group: it.name,
+          name: c,
+          value: it[c] || 0
+        };
+      });
+    }).flatMap(r => r);    
+    return results;
   };
 
   if (loading) {
@@ -380,10 +387,7 @@ const Case = () => {
                       title="Net Income Focus Crop"
                       type="BARSTACK"
                       height={350}
-                      data={generateChartData(
-                        ["revenue", "total_prod_cost"],
-                        data?.name
-                      )}
+                      data={generateChartData(["revenue", "total_prod_cost"])}
                       wrapper={false}
                     />
                   )}
@@ -436,7 +440,7 @@ const Case = () => {
                     title="Other income"
                     height={350}
                     type="BARSTACK"
-                    data={generateChartData(["other_income"], data?.name)}
+                    data={generateChartData(["other_income"])}
                     wrapper={false}
                   />
                 </Col>
@@ -453,10 +457,7 @@ const Case = () => {
                     key="The living income gap"
                     title="The living income gap"
                     type="BARSTACK"
-                    data={generateChartData(
-                      ["hh_income", "living_income_gap", "living_income"],
-                      data?.name
-                    )}
+                    data={generateChartData(["hh_income", "living_income_gap", "living_income"])}
                     wrapper={false}
                   />
                 </Col>
