@@ -29,6 +29,7 @@ def get_me(req: Request,
 @user_route.post("/user/",
                  response_model=UserBase,
                  summary="register new user",
+                 name="user:register",
                  tags=["User"])
 def add_user(req: Request,
              session: Session = Depends(get_session),

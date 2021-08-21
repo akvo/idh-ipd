@@ -10,8 +10,9 @@ from httpx import AsyncClient
 from alembic import command
 from alembic.config import Config
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session, sessionmaker
 
+from db import models
 from db.connection import get_session, get_db_url
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -31,13 +32,8 @@ def apply_migrations():
 @pytest.fixture
 def app(apply_migrations: None) -> FastAPI:
     from core.config import app
-    return app
-
-
-# Grab a reference to our database when needed
-@pytest.fixture
-def session(app: FastAPI) -> FastAPI:
     engine = create_engine(get_db_url())
+    models.Base.metadata.create_all(bind=engine)
     TestingSessionLocal = sessionmaker(autocommit=False,
                                        autoflush=False,
                                        bind=engine)
@@ -53,11 +49,23 @@ def session(app: FastAPI) -> FastAPI:
     return app
 
 
+# Grab a reference to our database when needed
+@pytest.fixture
+def session() -> Session:
+    engine = create_engine(get_db_url())
+    models.Base.metadata.create_all(bind=engine)
+    TestingSessionLocal = sessionmaker(autocommit=False,
+                                       autoflush=False,
+                                       bind=engine)
+
+    return TestingSessionLocal()
+
+
 # Make requests in our tests
 @pytest.fixture
-async def client(session: FastAPI) -> AsyncClient:
-    async with LifespanManager(session):
-        async with AsyncClient(app=session,
+async def client(app: FastAPI) -> AsyncClient:
+    async with LifespanManager(app):
+        async with AsyncClient(app=app,
                                base_url="http://testserver",
                                headers={"Content-Type":
                                         "application/json"}) as client:
