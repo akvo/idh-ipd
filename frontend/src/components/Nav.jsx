@@ -46,6 +46,9 @@ const Nav = ({ logout, loginWithPopup, isAuthenticated }) => {
           <Menu.Item key="benchmarking">
             <Link to="/benchmarking">Benchmarking</Link>
           </Menu.Item>
+          <Menu.Item key="income-driver-tool">
+            <Link to="/income-driver-tool">Income Driver Tool</Link>
+          </Menu.Item>
         </>
       )}
       {isAuthenticated ? (
