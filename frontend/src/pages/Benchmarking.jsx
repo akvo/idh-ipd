@@ -73,8 +73,8 @@ const chartTmp = [
         percent: false,
         column: [
           {
-            name: "share_income",
-            key: "share_income",
+            name: "she_above_li_income",
+            key: "she_above_li_income",
           },
         ],
       },
@@ -113,11 +113,16 @@ const Benchmarking = () => {
       if (x.hasTable) {
         tableTmp = x.table.map((d) => {
           const dataCollection = cl.map((c) => {
-            return d.column.map((t) => {
+            return d.column.map((t, i) => {
+              /**
+               * % of total HH income from focus crop 
+               * = net_income * 100 / hh_income
+               */
+              const value = t.key === 'hh_income' ? c?.revenue * 100 / c[t.key] : c[t.key]
               return {
                 ...t,
                 group: c.name,
-                value: c[t.key],
+                value: value,
               };
             });
           });
@@ -139,6 +144,7 @@ const Benchmarking = () => {
   useEffect(() => {
     if (countries.length && crops.length) {
       const country = countries.filter((x) => x.company.length > 0)[0] || {};
+      setDefCountry(country);
       setOptions({
         country: countries,
         company: filterCountryOptions(countries, country, "company"),
@@ -199,7 +205,7 @@ const Benchmarking = () => {
               <Card.Grid
                 key={`${c.group}-${i}`}
                 hoverable={false}
-                style={{ width: "50%" }}
+                style={{ width: "50%", height: 159 }}
                 className={`${c.value ? "" : "red-card"}`}
               >
                 <h4>{c.group}</h4>

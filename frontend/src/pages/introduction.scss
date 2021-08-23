@@ -140,7 +140,10 @@
 
     &:hover {
       img {
-        filter: brightness(0.3);
+        /**
+        * Previously 0.3
+        **/
+        filter: brightness(1);
       }
     }
   }
