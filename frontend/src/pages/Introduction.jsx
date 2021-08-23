@@ -59,13 +59,11 @@ const Introduction = ({ history }) => {
               <p>
                 Smallholder farmers are crucial in the effort to end hunger and
                 alleviate malnutrition worldwide. They account for 90% of the
-                world's farms and contribute substantially to global food
-                chains. What’s more, they are better at conserving natural
-                resources than large, industrial farms. In short, smallholder
-                farmers have the potential to feed the world sustainably.
+                world's farms and contribute substantially to global food chains.
+                What’s more, they are better at conserving natural resources than large, industrial farms.
+                In short, smallholder farmers have the potential to feed the world sustainably.
                 However, they are also a group that faces huge barriers. Many
-                live in impoverished conditions and are unable to achieve a
-                sustainable income.
+                live in impoverished conditions and are unable to achieve a living income.
               </p>
             </Col>
           </Row>
@@ -84,8 +82,8 @@ const Introduction = ({ history }) => {
             <Col sm={24} md={24} lg={10}>
               <h3>Living Income</h3>
               <p>
-                Smallholder farmers earn an income from growing one or more
-                crops. However, income from selling crops may not be sufficient
+                Smallholder farmers earn an income from various sources: on-farm income, off-farm labour income and other income.
+                However, income from selling crops may not be sufficient
                 to cover all their basic living costs. Therefore, farmer
                 households diversify their income. In the case of smallholder
                 farmers for example, income can be earned through off farm
@@ -165,10 +163,9 @@ const Introduction = ({ history }) => {
             <Col sm={24} md={24} lg={24} align="middle">
               <h3>Actual household income</h3>
               <p>
-                Smallholder farmers can earn an income from one or more crops.
-                The focus crop is the crop that generates the highest income for
-                the household. We define actual household income as the sum of
-                the profit from the focus crop and other income.
+                Smallholder farmers earn an income from various source.
+                With actual income we refer to the income earned by the farmer' households from various sources.
+                Actual income is calculated by taking the sum of net-income from the focus crop and other income.
               </p>
             </Col>
           </Row>
@@ -212,7 +209,7 @@ const Introduction = ({ history }) => {
                     height="45%"
                     src="/introduction/other-income.png"
                   />
-                  <h4>Other income</h4>
+                  <h4>Non-focus Crop Income</h4>
                 </Col>
               </Row>
             </Col>
@@ -364,10 +361,8 @@ const Introduction = ({ history }) => {
               <p>
                 The focus crop production costs are calculated by multiplying
                 the farm size and production costs ($/ha). Production costs
-                capture at a minimum two types of costs. Other costs that can be
-                considered are equipment costs, interest costs for loans that
-                are used for focus crop-related purposes or processing costs (if
-                applicable).
+                capture at a minimum two types of costs: labour and input costs.
+                Other costs that can be considered are equipment costs, interest costs for loans that are used for focus crop-related purposes or processing costs (if applicable).
               </p>
             </Col>
             <Col sm={24} md={24} lg={14}>
@@ -415,7 +410,7 @@ const Introduction = ({ history }) => {
         >
           <Row align="middle" justify="center" gutter={[24, 24]} wrap={true}>
             <Col sm={24} md={24} lg={24} align="middle">
-              <h3>Other income</h3>
+              <h3>Non-focus crop income</h3>
               <p>
                 The majority of farmer’ households also earn an income from
                 other sources than the focus crop. This can be income from other
@@ -462,7 +457,7 @@ const Introduction = ({ history }) => {
                     height="45%"
                     src="/introduction/other-income.png"
                   />
-                  <h4>Other income</h4>
+                  <h4>Non-focus crop income</h4>
                 </Col>
               </Row>
             </Col>

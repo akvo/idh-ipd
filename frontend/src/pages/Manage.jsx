@@ -65,7 +65,7 @@ const Manage = () => {
       api
         .get(`/user/?page=1&active=0`)
         .then((res) => {
-          setPageLoading(false);
+          setTableLoading(false);
           setUsers(res.data.data);
           setPaginate({
             pageSize: 10,
@@ -74,6 +74,7 @@ const Manage = () => {
           });
         })
         .catch((e) => {
+          setTableLoading(false);
           UIStore.update((p) => {
             p.loading = false
           })
@@ -91,7 +92,6 @@ const Manage = () => {
           }
         });
       setPageLoading(false);
-      setTableLoading(false);
     }
   }, [pageLoading, tableLoading, paginate, countries]);
 
