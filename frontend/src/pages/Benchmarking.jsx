@@ -115,10 +115,13 @@ const Benchmarking = () => {
           const dataCollection = cl.map((c) => {
             return d.column.map((t, i) => {
               /**
-               * % of total HH income from focus crop 
+               * % of total HH income from focus crop
                * = net_income * 100 / hh_income
                */
-              const value = t.key === 'hh_income' ? c?.revenue * 100 / c[t.key] : c[t.key]
+              const value =
+                t.key === "hh_income"
+                  ? (c?.revenue * 100) / c[t.key]
+                  : c[t.key];
               return {
                 ...t,
                 group: c.name,

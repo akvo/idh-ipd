@@ -1,4 +1,10 @@
-import { Easing, Color, TextStyle, backgroundColor } from "./chart-style.js";
+import {
+  Easing,
+  Color,
+  TextStyle,
+  backgroundColor,
+  Icons,
+} from "./chart-style.js";
 import _ from "lodash";
 import uniq from "lodash/uniq";
 import sortBy from "lodash/sortBy";
@@ -68,7 +74,19 @@ const BarGroup = (data, extra, axis) => {
       backgroundColor: "#ffffff",
       ...TextStyle,
     },
-    toolbox: { show: false },
+    toolbox: {
+      show: true,
+      right: "30px",
+      top: "20px",
+      orient: "horizontal",
+      feature: {
+        saveAsImage: {
+          type: "jpg",
+          title: "save image",
+          icon: Icons.saveAsImage,
+        },
+      },
+    },
     yAxis: [
       {
         data: yAxis,

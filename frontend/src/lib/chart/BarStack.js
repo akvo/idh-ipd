@@ -1,4 +1,10 @@
-import { Easing, Color, TextStyle, backgroundColor } from "./chart-style.js";
+import {
+  Easing,
+  Color,
+  TextStyle,
+  backgroundColor,
+  Icons,
+} from "./chart-style.js";
 import uniq from "lodash/uniq";
 import _ from "lodash";
 
@@ -145,7 +151,19 @@ const BarStack = (data, extra) => {
       backgroundColor: "#ffffff",
       ...TextStyle,
     },
-    toolbox: { show: false },
+    toolbox: {
+      show: true,
+      orient: "horizontal",
+      right: "30px",
+      top: "20px",
+      feature: {
+        saveAsImage: {
+          type: "jpg",
+          title: "save image",
+          icon: Icons.saveAsImage,
+        },
+      },
+    },
     yAxis: [
       {
         type: "value",
