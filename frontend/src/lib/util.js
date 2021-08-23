@@ -37,7 +37,7 @@ export const objectNames = {
   living_income: "Living income bechmark",
   living_income_gap: "Living income gap",
   net_income: "Net income focus crop",
-  other_income: "Other income",
+  other_income: "Non-focus crop income",
   price: "Price",
   prod_cost: "Production Cost/ha",
   total_prod_cost: "Total Production Cost",
