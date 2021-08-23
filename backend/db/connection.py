@@ -4,6 +4,21 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 
-engine = create_engine(environ["DATABASE_URL"])
+def get_db_url():
+    TESTING = environ.get("TESTING")
+    DATABASE_URL = environ.get("DATABASE_URL")
+    DB_URL = f"{DATABASE_URL}_test" if TESTING else DATABASE_URL
+    return DB_URL
+
+
+engine = create_engine(get_db_url())
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
+
+
+def get_session():
+    session = SessionLocal()
+    try:
+        yield session
+    finally:
+        session.close()

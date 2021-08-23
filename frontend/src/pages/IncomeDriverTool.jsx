@@ -203,7 +203,7 @@ const IncomeDriverTool = ({ history }) => {
           data-aos="fade-up"
           gutter={[12, 12]}
           wrap={true}
-          style={{ margin: 6 }}
+          style={{ marginTop: 6 }}
         >
           <Col sm={24} md={8} lg={4}>
             <Select

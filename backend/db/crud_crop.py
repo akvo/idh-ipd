@@ -21,5 +21,10 @@ def get_crop_by_id(session: Session, id: int) -> Crop:
 
 
 def get_company(session: Session) -> Crop:
-    country = session.query(Crop).filter(Crop.company != None).all()
-    return country
+    company = session.query(Crop).filter(Crop.company != None).all()
+    return company
+
+
+def get_name(session: Session, id: int) -> str:
+    crop = session.query(Crop).filter(Crop.id == id).one()
+    return crop.name

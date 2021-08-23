@@ -9,9 +9,10 @@ const EmptyText = ({ amount }) => {
 
   useEffect(() => {
     if (!show) {
-      setTimeout(() => {
+      const interval = setInterval(() => {
         setShow(true);
       }, timeout);
+      return () => clearInterval(interval);
     }
   }, [show]);
   if (!show) return <Loading />;

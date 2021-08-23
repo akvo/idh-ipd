@@ -7,10 +7,13 @@ from asgi_lifespan import LifespanManager
 
 from fastapi import FastAPI
 from httpx import AsyncClient
-from databases import Database
-
 from alembic import command
 from alembic.config import Config
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session, sessionmaker
+
+from db import models
+from db.connection import get_session, get_db_url
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
@@ -22,23 +25,40 @@ def apply_migrations():
     warnings.filterwarnings("ignore", category=DeprecationWarning)
     os.environ["TESTING"] = "1"
     config = Config("alembic.ini")
-
     command.upgrade(config, "head")
-    yield
-    command.downgrade(config, "base")
 
 
 # Create a new application for testing
 @pytest.fixture
 def app(apply_migrations: None) -> FastAPI:
-    from main import app
+    from core.config import app
+    engine = create_engine(get_db_url())
+    models.Base.metadata.create_all(bind=engine)
+    TestingSessionLocal = sessionmaker(autocommit=False,
+                                       autoflush=False,
+                                       bind=engine)
+
+    def override_get_db():
+        try:
+            db = TestingSessionLocal()
+            yield db
+        finally:
+            db.close()
+
+    app.dependency_overrides[get_session] = override_get_db
     return app
 
 
 # Grab a reference to our database when needed
 @pytest.fixture
-def db(app: FastAPI) -> Database:
-    return app.state._db
+def session() -> Session:
+    engine = create_engine(get_db_url())
+    models.Base.metadata.create_all(bind=engine)
+    TestingSessionLocal = sessionmaker(autocommit=False,
+                                       autoflush=False,
+                                       bind=engine)
+
+    return TestingSessionLocal()
 
 
 # Make requests in our tests

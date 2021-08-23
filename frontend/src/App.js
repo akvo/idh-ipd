@@ -34,14 +34,19 @@ function App({ btnReff }) {
     user,
     getIdTokenClaims,
   } = useAuth0();
+  const [token, setToken] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async function () {
       if (isAuthenticated) {
         const response = await getIdTokenClaims();
-        if (response) api.setToken(response.__raw);
-        api.get('/user/me')
+        if (response) {
+          api.setToken(response.__raw);
+          setToken(response.__raw);
+        }
+        api
+          .get("/user/me")
           .then(({ data }) => {
             const { active, access, role } = data || {}
             UIStore.update((u) => {
@@ -139,7 +144,9 @@ function App({ btnReff }) {
             component={IncomeDriverTool}
           />
           <ProtectedRoute exact path="/manage" component={Manage} />
-          <Route exact path="/docs" component={Doc} />
+          <Route exact path="/docs">
+            <Doc token={token} />
+          </Route>
         </Content>
         <Footer className={`footer ${!user && "fixed"}`}>
           IDH - IPD ©2021 Created by Akvo |{" "}

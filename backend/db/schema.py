@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional, List, Union
 from pydantic import BaseModel
 from .models import UserRole, DriverIncomeStatus
 
@@ -49,11 +49,16 @@ class CropBase(BaseModel):
         orm_mode = True
 
 
-class CompanyBase(BaseModel):
+class CompanyBaseSimple(BaseModel):
     id: int
     name: str
-    country: int
     crop: int
+
+    class Config:
+        orm_mode = True
+
+
+class CompanyMixin(BaseModel):
     land_size: Optional[float] = None
     price: Optional[float] = None
     yields: Optional[int] = None
@@ -66,9 +71,30 @@ class CompanyBase(BaseModel):
     living_income_gap: Optional[int] = None
     share_income: Optional[int] = None
     revenue: Optional[int] = None
+    percent_hh_income: Optional[float] = None
+
+
+class CountryId(BaseModel):
+    country: int
+
+
+class Name(BaseModel):
+    name: str
+
+
+class CompanyCompare(CompanyMixin, Name):
+    pass
+
+
+class CompanyBase(CompanyMixin, CountryId, CompanyBaseSimple):
+    pass
 
     class Config:
         orm_mode = True
+
+
+class CompanyComparison(CompanyBase):
+    comparison: List[CompanyCompare]
 
 
 class DriverIncomeBase(BaseModel):
@@ -97,7 +123,7 @@ class CountryCompanyBase(BaseModel):
     id: int
     name: str
     code: str
-    company: List[CompanyBase]
+    company: List[CompanyBaseSimple]
 
 
 class CropCompanyBase(BaseModel):

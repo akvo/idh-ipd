@@ -13,6 +13,7 @@ import { UIStore } from "../data/store";
 import sortBy from "lodash/sortBy";
 import EmptyText from "../components/EmptyText";
 import ErrorPage from "../components/ErrorPage";
+import api from "../lib/api";
 
 const { Option } = Select;
 const { Link } = Anchor;
@@ -177,7 +178,7 @@ const Case = () => {
       if (selectedCountry) {
         const filterCountry = countries.find((x) => x.id === selectedCountry);
         setDefCountry(selectedCountry);
-        
+
         const tmp = {
           ...filterCountry,
           company: filterCountry?.company[0],
@@ -204,13 +205,22 @@ const Case = () => {
   }, [loading, countries, crops, selectedCountry, user]);
 
   const handleOnChangeCompany = (value) => {
-    const country = countries.find((x) => x.id === defCountry);
-    const tmp = {
-      ...country,
-      company: country?.company.find((x) => x.id === value),
-    };
-    setData(tmp);
-    setDefCompany(value);
+    api.get(`/company/${value}`)
+      .then(({ data: company }) => {
+        const country = countries.find((x) => x.id === defCountry);
+        const tmp = {
+          ...country,
+          company: company,
+        };
+        setData(tmp);
+        setDefCompany(value);
+      })
+      .catch((e) => {
+        const { status } = e.response
+        UIStore.update((p) => {
+          p.errorPage = status
+        })
+      });
   };
 
   const handleOnChangeCountry = (value) => {
@@ -256,14 +266,21 @@ const Case = () => {
     );
   };
 
-  const generateChartData = (config, group) => {
-    return config.map((x) => {
-      return {
-        group: group,
-        name: x,
-        value: data.company[x],
-      };
-    });
+  const generateChartData = (config) => {
+    const cl = [
+      ...[data.company],
+      ...data.company.comparison
+    ];
+    const results = cl.map(it => {
+      return config.map((c) => {
+        return {
+          group: it.name,
+          name: c,
+          value: it[c] || 0
+        };
+      });
+    }).flatMap(r => r);    
+    return results;
   };
 
   if (loading) {
@@ -370,10 +387,7 @@ const Case = () => {
                       title="Net Income Focus Crop"
                       type="BARSTACK"
                       height={350}
-                      data={generateChartData(
-                        ["revenue", "total_prod_cost"],
-                        data?.name
-                      )}
+                      data={generateChartData(["revenue", "total_prod_cost"])}
                       wrapper={false}
                     />
                   )}
@@ -426,7 +440,7 @@ const Case = () => {
                     title="Other income"
                     height={350}
                     type="BARSTACK"
-                    data={generateChartData(["other_income"], data?.name)}
+                    data={generateChartData(["other_income"])}
                     wrapper={false}
                   />
                 </Col>
@@ -443,10 +457,7 @@ const Case = () => {
                     key="The living income gap"
                     title="The living income gap"
                     type="BARSTACK"
-                    data={generateChartData(
-                      ["hh_income", "living_income_gap", "living_income"],
-                      data?.name
-                    )}
+                    data={generateChartData(["hh_income", "living_income_gap", "living_income"])}
                     wrapper={false}
                   />
                 </Col>
