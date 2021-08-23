@@ -18,7 +18,7 @@ const chartTmp = [
   {
     title: "Comparing Net-Income",
     description:
-      "On the left we report the net-income of the farmers from your company against the average net-income of other <type> from <the same type>. Net-income from the focus crop is calculated by subtracting producing costs from the revenues from the focus crop.",
+      "On the left we report the net-income of the farmers from your company against the average net-income of <the same type>. Net-income from the focus crop is calculated by subtracting producing costs from the revenues from the focus crop.",
     hasTable: false,
     chart: [
       {
@@ -36,7 +36,7 @@ const chartTmp = [
   {
     title: "Comparing the Living Income gap",
     description:
-      "On the right we report the living income gap of the farmers from your company against the living income gap of <type> from <the same type>. By measuring the actual household income of the farmers, we can assess whether the households earn a living income. If farmers earn an income below the living income level, we can assess the difference between actual household income level and the living income level. This is what we call the living income gap.",
+      "On the right we report the living income gap of the farmers from your company against the living income gap of <the same type>. By measuring the actual household income of the farmers, we can assess whether the households earn a living income. If farmers earn an income below the living income level, we can assess the difference between actual household income level and the living income level. This is what we call the living income gap.",
     hasTable: true,
     chart: [
       {
@@ -84,17 +84,16 @@ const chartTmp = [
 
 const Benchmarking = () => {
   const { countries, crops, user, errorPage } = UIStore.useState((c) => c);
-  const [compare, setCompare] = useState("country");
   const [defCountry, setDefCountry] = useState(null);
   const [defCompany, setDefCompany] = useState(null);
   const [loading, setLoading] = useState(true);
   const [chart, setChart] = useState(null);
   const [options, setOptions] = useState({ country: [], company: [] });
-  const [collection, setCollection] = useState([]);
 
-  let compareWith = chart && defCompany
-    ? chart[0].chart.find((x) => x.group !== defCompany.name)
-    : false;
+  let compareWith =
+    chart && defCompany
+      ? chart[0].chart.find((x) => x.group !== defCompany.name)
+      : false;
   if (compareWith) {
     compareWith = compareWith.group.replace("Others in", "");
   }
@@ -121,7 +120,7 @@ const Benchmarking = () => {
                 value: c[t.key],
               };
             });
-          })
+          });
           return {
             ...d,
             column: dataCollection,
@@ -130,7 +129,7 @@ const Benchmarking = () => {
       }
       return {
         ...x,
-        chart: xChart.flatMap(val => val),
+        chart: xChart.flatMap((val) => val),
         table: tableTmp,
       };
     });
@@ -142,35 +141,27 @@ const Benchmarking = () => {
       const country = countries.filter((x) => x.company.length > 0)[0] || {};
       setOptions({
         country: countries,
-        company: filterCountryOptions(countries, country, 'company')
-      })
+        company: filterCountryOptions(countries, country, "company"),
+      });
       UIStore.update((p) => {
-        p.errorPage = false
-      })
+        p.errorPage = false;
+      });
     }
     if (loading && user) setLoading(false);
-  }, [loading, countries, crops, compare, user]);
-
-  const handleOnChangeCompare = (e) => {
-    setCompare(e.target.value);
-    generateChartData(collection);
-  };
+  }, [loading, countries, crops, user]);
 
   const handleOnChangeCompany = (value) => {
-    api.get(`/company/${value}`)
+    api
+      .get(`/company/${value}`)
       .then(({ data: company }) => {
-        const dataCollection = [
-          ...[company],
-          ...company.comparison
-        ]
-        setCollection(dataCollection);
+        const dataCollection = [...[company], ...company.comparison];
         setDefCompany(company);
         generateChartData(dataCollection);
       })
       .catch((e) => {
         UIStore.update((p) => {
-          p.errorPage = e?.response?.status
-        })
+          p.errorPage = e?.response?.status;
+        });
       });
   };
 
@@ -183,7 +174,7 @@ const Benchmarking = () => {
     setDefCompany(null);
     setOptions({
       ...options,
-      company: filterCountryOptions(countries, country, 'company')
+      company: filterCountryOptions(countries, country, "company"),
     });
   };
   const renderTable = (table) => {
@@ -253,10 +244,7 @@ const Benchmarking = () => {
                 <h3>{c.title}</h3>
                 <p>
                   {c.description
-                    .replace(
-                      "<type>",
-                      compare === "country" ? "company" : compare
-                    )
+                    .replace("<type>", defCountry)
                     .replace("<the same type>", compareWith)}
                 </p>
                 {c.hasTable && renderTable(c?.table)}
@@ -276,10 +264,7 @@ const Benchmarking = () => {
               <h3>{c.title}</h3>
               <p>
                 {c.description
-                  .replace(
-                    "<type>",
-                    compare === "country" ? "company" : compare
-                  )
+                  .replace("<type>", defCountry)
                   .replace("<the same type>", compareWith)}
               </p>
               {c.hasTable && renderTable(c?.table)}
@@ -304,7 +289,7 @@ const Benchmarking = () => {
   }
 
   if (errorPage) {
-    return <ErrorPage />
+    return <ErrorPage />;
   }
 
   return (
@@ -317,17 +302,6 @@ const Benchmarking = () => {
         gutter={[12, 12]}
         wrap={true}
       >
-        <Col sm={24} md={10} lg={8} className="compare-options-body">
-          <span className="text">Compare with</span>
-          <Radio.Group
-            onChange={(e) => handleOnChangeCompare(e)}
-            defaultValue={compare}
-            buttonStyle="solid"
-          >
-            <Radio.Button value="country" disabled={!defCountry || !defCompany}>Country</Radio.Button>
-            <Radio.Button value="sector" disabled={!defCountry || !defCompany}>Sector</Radio.Button>
-          </Radio.Group>
-        </Col>
         <Col sm={24} md={6} lg={4}>
           <DropdownCountry
             placeholder="Select Country"

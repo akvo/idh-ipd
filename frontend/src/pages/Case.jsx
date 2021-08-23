@@ -171,7 +171,13 @@ const renderHeroCard = (data) => {
 };
 
 const Case = () => {
-  const { countries, selectedCountry, crops, user, errorPage } = UIStore.useState();
+  const {
+    countries,
+    selectedCountry,
+    crops,
+    user,
+    errorPage,
+  } = UIStore.useState();
   const [defCountry, setDefCountry] = useState(null);
   const [defCompany, setDefCompany] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -194,7 +200,7 @@ const Case = () => {
           (x) => x.company.length > 0
         );
         setDefCountry(countriesHasCompany[0]?.id);
-        
+
         const tmp = {
           ...countriesHasCompany[0],
           company: countriesHasCompany[0]?.company[0],
@@ -202,14 +208,15 @@ const Case = () => {
         setData(tmp);
       }
       UIStore.update((p) => {
-        p.errorPage = false
-      })
+        p.errorPage = false;
+      });
     }
     if (loading && user) setLoading(false);
   }, [loading, countries, crops, selectedCountry, user]);
 
   const handleOnChangeCompany = (value) => {
-    api.get(`/company/${value}`)
+    api
+      .get(`/company/${value}`)
       .then(({ data: company }) => {
         const country = countries.find((x) => x.id === defCountry);
         const tmp = {
@@ -220,10 +227,10 @@ const Case = () => {
         setDefCompany(value);
       })
       .catch((e) => {
-        const { status } = e.response
+        const { status } = e.response;
         UIStore.update((p) => {
-          p.errorPage = status
-        })
+          p.errorPage = status;
+        });
       });
   };
 
@@ -271,19 +278,18 @@ const Case = () => {
   };
 
   const generateChartData = (config) => {
-    const cl = [
-      ...[data.company],
-      ...data.company.comparison
-    ];
-    const results = cl.map(it => {
-      return config.map((c) => {
-        return {
-          group: it.name,
-          name: c,
-          value: it[c] || 0
-        };
-      });
-    }).flatMap(r => r);    
+    const cl = [data.company];
+    const results = cl
+      .map((it) => {
+        return config.map((c) => {
+          return {
+            group: it.name,
+            name: c,
+            value: it[c] || 0,
+          };
+        });
+      })
+      .flatMap((r) => r);
     return results;
   };
 
@@ -292,7 +298,7 @@ const Case = () => {
   }
 
   if (errorPage) {
-    return <ErrorPage />
+    return <ErrorPage />;
   }
 
   return (
@@ -318,8 +324,9 @@ const Case = () => {
                 onChange={handleOnChangeCountry}
                 value={defCountry}
                 filterOption={(input, option) =>
-                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
-                  0
+                  option.props.children
+                    .toLowerCase()
+                    .indexOf(input.toLowerCase()) >= 0
                 }
               >
                 {renderOptions("country")}
@@ -334,8 +341,9 @@ const Case = () => {
                 onChange={handleOnChangeCompany}
                 value={defCompany}
                 filterOption={(input, option) =>
-                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
-                  0
+                  option.props.children
+                    .toLowerCase()
+                    .indexOf(input.toLowerCase()) >= 0
                 }
               >
                 {renderOptions("company")}
@@ -344,7 +352,7 @@ const Case = () => {
           </Row>
           {countries.length === 0 && (
             <Row>
-              <Col style={{ textAlign: 'center', width: '100%' }}>
+              <Col style={{ textAlign: "center", width: "100%" }}>
                 <EmptyText amount={countries.length} />
               </Col>
             </Row>
@@ -353,10 +361,19 @@ const Case = () => {
         <Col sm={24} md={12} lg={7} className="hero-map">
           {data?.name && <CaseMap name={data.name} />}
         </Col>
-        <Col sm={24} md={12} lg={17} className={countries.length > 0 ? "hero-content data-exist" : "hero-content"}>
+        <Col
+          sm={24}
+          md={12}
+          lg={17}
+          className={
+            countries.length > 0 ? "hero-content data-exist" : "hero-content"
+          }
+        >
           {defCompany && renderHeroTitle(data, crops)}
           {defCompany && renderHeroCard(data)}
-          {!defCompany && countries.length > 0 && <h1 className="no-data">Please select a Company</h1>}
+          {!defCompany && countries.length > 0 && (
+            <h1 className="no-data">Please select a Company</h1>
+          )}
         </Col>
       </Row>
       {/* // Charts */}
@@ -461,7 +478,11 @@ const Case = () => {
                     key="The living income gap"
                     title="The living income gap"
                     type="BARSTACK"
-                    data={generateChartData(["hh_income", "living_income_gap", "living_income"])}
+                    data={generateChartData([
+                      "hh_income",
+                      "living_income_gap",
+                      "living_income",
+                    ])}
                     wrapper={false}
                   />
                 </Col>
