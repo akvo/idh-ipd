@@ -62,10 +62,12 @@ const DataMap = ({ history }) => {
       const [min, max] = acc;
       return [min, v > max ? v : max];
     },
-    [0, 0]
+    [1, 1]
   );
 
   const colorScale = scaleQuantize().domain(domain).range(colorRange);
+
+  const legend = domain.map((x, i) => colorScale(x));
 
   const fillColor = (v) => {
     const color = v === 0 ? "#f6f6f6" : colorScale(v);
@@ -73,8 +75,9 @@ const DataMap = ({ history }) => {
   };
 
   const handleOnClickCountry = (country) => {
-    const allow = countries.length > 0 && countries.find(c => c.id === country.id)
-    if(!allow) return false;
+    const allow =
+      countries.length > 0 && countries.find((c) => c.id === country.id);
+    if (!allow) return false;
     UIStore.update((s) => {
       s.page = "case";
       s.selectedCountry = country.id;
@@ -88,6 +91,14 @@ const DataMap = ({ history }) => {
 
   return (
     <div className="container map-wrapper" data-aos="fade-up">
+      <div
+        className="map-legend"
+        style={{
+          background: `linear-gradient(to right, ${legend[0]}, ${legend[1]})`,
+        }}
+      >
+        <span># of data</span>
+      </div>
       <div className="map-buttons">
         <Tooltip title="zoom out">
           <Button
