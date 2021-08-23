@@ -7,7 +7,7 @@ import {
 } from "react-simple-maps";
 import ReactTooltip from "react-tooltip";
 import { scaleQuantize } from "d3-scale";
-import { Tooltip, Button } from "antd";
+import { Tooltip, Button, Alert } from "antd";
 import {
   ZoomInOutlined,
   ZoomOutOutlined,
@@ -27,10 +27,12 @@ const colorRange = ["#0BC1D9", "#0BBAE3", "#0096CC", "#0B99E3", "#0072C6"];
 const highlightColor = "#36aa40";
 const mapMaxZoom = 4;
 
-const ToolTipContent = ({ data, geo }) => {
+const ToolTipContent = ({ data, geo, countries }) => {
+  const allowed = (countries.length && countries.find((c) => c.id === data.id));
   return (
     <div className="map-tooltip">
       <h3>{geo.NAME}</h3>
+      {!allowed && <Alert type="warning" message="Sorry, you're not allowed" />}
       {data?.company && data.company.length > 0 && (
         <ul>
           <li key={1}>
@@ -75,8 +77,7 @@ const DataMap = ({ history }) => {
   };
 
   const handleOnClickCountry = (country) => {
-    const allow =
-      countries.length > 0 && countries.find((c) => c.id === country.id);
+    const allow = (countries.length && countries.find((c) => c.id === country.id));
     if (!allow) return false;
     UIStore.update((s) => {
       s.page = "case";
@@ -166,7 +167,7 @@ const DataMap = ({ history }) => {
                     onMouseEnter={() => {
                       country &&
                         setTooltipContent(
-                          <ToolTipContent data={country} geo={geo.properties} />
+                          <ToolTipContent data={country} geo={geo.properties} countries={countries} />
                         );
                     }}
                     onMouseLeave={() => {
