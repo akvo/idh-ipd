@@ -100,6 +100,62 @@ const chartTmp = [
       },
     ],
   },
+  {
+    type: "group",
+    title: "Price of ##crop##",
+    axis: {
+      xAxis: "Price (USD/kg)",
+      yAxis: "Average\nprice\n##crop##",
+    },
+    chart: [
+      {
+        name: "status",
+        key: "price",
+      },
+    ],
+  },
+  {
+    type: "group",
+    title: "Land size ##crop##",
+    axis: {
+      xAxis: "Land size ##crop## (ha)",
+      yAxis: "Average\nland size\n##crop##",
+    },
+    chart: [
+      {
+        name: "status",
+        key: "area",
+      },
+    ],
+  },
+  {
+    type: "group",
+    title: "Yield fee",
+    axis: {
+      xAxis: "Yield ##crop## (kg/ha)",
+      yAxis: "Average\nyield\n##crop##",
+    },
+    chart: [
+      {
+        name: "status",
+        key: "yields",
+      },
+    ],
+  },
+  {
+    type: "group",
+    title: "Production costs",
+    axis: {
+      xAxis: "Production costs ##crop## (USD/ha)",
+      yAxis: "Average\nproduction costs\n##crop##",
+    },
+    chart: [
+      {
+        name: "status",
+        key: "cop_pha",
+      },
+    ],
+  },
 ];
 
 const Benchmarking = () => {

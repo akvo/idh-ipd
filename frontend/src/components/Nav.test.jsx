@@ -52,7 +52,6 @@ describe("Nav rendering", () => {
         "Data Map",
         "Case",
         "Benchmarking",
-        "Income Driver Tool",
         "Logout",
       ]);
       expect(screen.queryByText("Admin")).not.toBeInTheDocument();
