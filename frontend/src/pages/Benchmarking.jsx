@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Radio, Card } from "antd";
-import CountUp from "react-countup";
+import { Row, Col } from "antd";
 
 import "./benchmarking.scss";
 
-import Chart from "../lib/chart";
 import Loading from "../components/Loading";
 
 import { UIStore } from "../data/store";
@@ -13,13 +11,11 @@ import { filterCountryOptions } from "../lib/util";
 import DropdownCountry from "../components/DropdownCountry";
 import ErrorPage from "../components/ErrorPage";
 import api from "../lib/api";
+import GridChart from "../components/GridChart";
 
 const chartTmp = [
   {
-    title: "Comparing Net-Income",
-    description:
-      "On the left we report the net-income of the farmers from your company against the average net-income of <the same type>. Net-income from the focus crop is calculated by subtracting producing costs from the revenues from the focus crop.",
-    hasTable: false,
+    type: "stack",
     chart: [
       {
         section: "comparing-net-income",
@@ -34,10 +30,45 @@ const chartTmp = [
     ],
   },
   {
+    type: "table",
+    title: "Comparing Net-Income",
+    description:
+      "On the left we report the net-income of the farmers from your company against the average net-income of <the same type>. Net-income from the focus crop is calculated by subtracting producing costs from the revenues from the focus crop.",
+    hasTable: false,
+  },
+  {
+    type: "table",
     title: "Comparing the Living Income gap",
     description:
       "On the right we report the living income gap of the farmers from your company against the living income gap of <the same type>. By measuring the actual household income of the farmers, we can assess whether the households earn a living income. If farmers earn an income below the living income level, we can assess the difference between actual household income level and the living income level. This is what we call the living income gap.",
     hasTable: true,
+    table: [
+      {
+        section: "comparing-the-living-income-gap",
+        title: "% of total HH income from focus crop",
+        percent: true,
+        column: [
+          {
+            name: "percent_hh_income",
+            key: "percent_hh_income",
+          },
+        ],
+      },
+      {
+        section: "comparing-the-living-income-gap",
+        title: "Share of households earning an income above the LI benchmark",
+        percent: false,
+        column: [
+          {
+            name: "she_above_li_income",
+            key: "she_above_li_income",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    type: "stack",
     chart: [
       {
         section: "comparing-the-living-income-gap",
@@ -68,30 +99,6 @@ const chartTmp = [
         },
       },
     ],
-    table: [
-      {
-        section: "comparing-the-living-income-gap",
-        title: "% of total HH income from focus crop",
-        percent: true,
-        column: [
-          {
-            name: "percent_hh_income",
-            key: "percent_hh_income",
-          },
-        ],
-      },
-      {
-        section: "comparing-the-living-income-gap",
-        title: "Share of households earning an income above the LI benchmark",
-        percent: false,
-        column: [
-          {
-            name: "she_above_li_income",
-            key: "she_above_li_income",
-          },
-        ],
-      },
-    ],
   },
 ];
 
@@ -113,42 +120,53 @@ const Benchmarking = () => {
 
   const generateChartData = (cl) => {
     const tmp = chartTmp.map((x) => {
-      const xChart = cl
-        .map((col) => {
-          return x.chart.map((c) => {
-            return {
-              ...c,
-              group: col.name,
-              value: c?.percentage ? c.percentage(col) : col[c.key],
-            };
-          });
-        })
-        .flatMap((val) => val);
-      let tableTmp = [];
-      if (x.hasTable) {
-        tableTmp = x.table.map((d) => {
-          const dataCollection = cl
-            .map((c) => {
-              return d.column.map((t, i) => {
+      if (x?.chart) {
+        return {
+          ...x,
+          chart: cl
+            .map((col) => {
+              return x.chart.map((c) => {
                 return {
-                  ...t,
-                  group: c.name,
-                  value: c[t.key],
+                  ...c,
+                  group: col.name,
+                  value: c?.percentage ? c.percentage(col) : col[c.key],
                 };
               });
             })
-            .flatMap((d) => d);
-          return {
-            ...d,
-            column: dataCollection,
-          };
-        });
+            .flatMap((val) => val),
+        };
       }
-      return {
-        ...x,
-        chart: xChart,
-        table: tableTmp,
-      };
+      if (x?.table) {
+        return {
+          ...x,
+          table: x.table.map((d) => {
+            const dataCl = cl
+              .map((c) => {
+                return d.column.map((t, i) => {
+                  return {
+                    ...t,
+                    group: c.name,
+                    value: c[t.key],
+                  };
+                });
+              })
+              .flatMap((d) => d);
+            return {
+              ...d,
+              column: dataCl,
+            };
+          }),
+        };
+      }
+      if (x?.description) {
+        return {
+          ...x,
+          description: x.description
+            .replace("<type>", defCountry)
+            .replace("<the same type>", compareWith),
+        };
+      }
+      return x;
     });
     setChart(tmp);
   };
@@ -172,9 +190,9 @@ const Benchmarking = () => {
     api
       .get(`/company/${value}`)
       .then(({ data: company }) => {
-        const dataCollection = [...[company], ...company.comparison];
+        const dataCl = [...[company], ...company.comparison];
         setDefCompany(company);
-        generateChartData(dataCollection);
+        generateChartData(dataCl);
       })
       .catch((e) => {
         UIStore.update((p) => {
@@ -194,112 +212,6 @@ const Benchmarking = () => {
       ...options,
       company: filterCountryOptions(countries, country, "company"),
     });
-  };
-  const renderTable = (table) => {
-    if (!table) {
-      return;
-    }
-
-    return table.map((x, i) => (
-      <Row
-        key={`${x.title}-wrapper`}
-        justify="space-between"
-        gutter={[12, 12]}
-        style={{ marginBottom: "25px" }}
-        wrap={true}
-      >
-        <Col span={24}>
-          <Card className="compare-card">
-            <Card.Grid hoverable={false} style={{ width: "100%" }}>
-              <h4>{x.title}</h4>
-            </Card.Grid>
-            {x.column.map((c, i) => (
-              <Card.Grid
-                key={`${c.group}-${i}`}
-                hoverable={false}
-                style={{ width: "50%", height: 159 }}
-                className={`${c.value ? "" : "red-card"}`}
-              >
-                <h4>{c.group}</h4>
-                <h3>
-                  {c.value ? (
-                    <CountUp start={0} end={c.value} duration={2} />
-                  ) : (
-                    "N.A."
-                  )}
-                  {c.percent ? "%" : ""}
-                </h3>
-              </Card.Grid>
-            ))}
-          </Card>
-        </Col>
-      </Row>
-    ));
-  };
-
-  const renderChart = () => {
-    return (
-      chart &&
-      chart.map((c, i) => {
-        if (i % 2 === 0) {
-          return (
-            <Row
-              key={`${c.title}-${i}-wrapper`}
-              className="compare-wrapper"
-              data-aos="fade-up"
-              gutter={[50, 50]}
-              wrap={true}
-            >
-              <Col sm={24} md={24} lg={12} className="compare-body">
-                <Chart
-                  key={`${c.title}-${i}`}
-                  type="BARSTACK"
-                  data={c.chart}
-                  wrapper={false}
-                />
-              </Col>
-              <Col sm={24} md={24} lg={12} className="compare-body">
-                <h3>{c.title}</h3>
-                <p>
-                  {c.description
-                    .replace("<type>", defCountry)
-                    .replace("<the same type>", compareWith)}
-                </p>
-                {c.hasTable && renderTable(c?.table)}
-              </Col>
-            </Row>
-          );
-        }
-        return (
-          <Row
-            key={`${c.title}-${i}-wrapper`}
-            className="compare-wrapper"
-            data-aos="fade-up"
-            gutter={[50, 50]}
-            wrap={true}
-          >
-            <Col sm={24} md={24} lg={12} className="compare-body">
-              <h3>{c.title}</h3>
-              <p>
-                {c.description
-                  .replace("<type>", defCountry)
-                  .replace("<the same type>", compareWith)}
-              </p>
-              {c.hasTable && renderTable(c?.table)}
-            </Col>
-            <Col sm={24} md={24} lg={12} className="compare-body">
-              <Chart
-                height={700}
-                key={`${c.title}-${i}`}
-                type="BARSTACK"
-                data={c.chart}
-                wrapper={false}
-              />
-            </Col>
-          </Row>
-        );
-      })
-    );
   };
 
   if (loading) {
@@ -338,7 +250,7 @@ const Benchmarking = () => {
         </Col>
       </Row>
       {/* // Chart */}
-      {defCompany && renderChart()}
+      {defCompany && chart && <GridChart items={chart} />}
       {!defCompany && <EmptyText amount={countries.length} />}
     </div>
   );
