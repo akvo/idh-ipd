@@ -31,16 +31,30 @@ const chartTmp = [
   },
   {
     type: "table",
-    title: "Comparing Net-Income",
+    title: "Comparing Focus Crop Income",
     description:
-      "On the left we report the net-income of the farmers from your company against the average net-income of <the same type>. Net-income from the focus crop is calculated by subtracting producing costs from the revenues from the focus crop.",
-    hasTable: false,
+      "We report the focus crop income of the farmers from your company against the average net-income of <the same type>. Net-income from the focus crop is calculated by subtracting producing costs from the revenues from the focus crop.",
+    hasTable: true,
+    table: [
+      {
+        section: "comparing-focus-income",
+        title: "Focus crop income",
+        percent: false,
+        column: [
+          {
+            percent: false,
+            name: "net_income",
+            key: "net_income",
+          },
+        ],
+      },
+    ],
   },
   {
     type: "table",
     title: "Comparing the Living Income gap",
     description:
-      "On the right we report the living income gap of the farmers from your company against the living income gap of <the same type>. By measuring the actual household income of the farmers, we can assess whether the households earn a living income. If farmers earn an income below the living income level, we can assess the difference between actual household income level and the living income level. This is what we call the living income gap.",
+      "We report the living income gap of the farmers from your company against the living income gap of <the same type>. By measuring the actual household income of the farmers, we can assess whether the households earn a living income. If farmers earn an income below the living income level, we can assess the difference between actual household income level and the living income level. This is what we call the living income gap.",
     hasTable: true,
     table: [
       {
@@ -49,6 +63,7 @@ const chartTmp = [
         percent: true,
         column: [
           {
+            percent: true,
             name: "percent_hh_income",
             key: "percent_hh_income",
           },
@@ -60,6 +75,7 @@ const chartTmp = [
         percent: false,
         column: [
           {
+            percent: false,
             name: "she_above_li_income",
             key: "she_above_li_income",
           },
@@ -72,31 +88,28 @@ const chartTmp = [
     chart: [
       {
         section: "comparing-the-living-income-gap",
-        name: "living_income",
-        key: "living_income",
+        name: "net_income",
+        key: "net_income",
       },
       {
         section: "comparing-the-living-income-gap",
         name: "hh_income",
         key: "hh_income",
-        percentage: (data) => {
-          return (
-            (data?.hh_income / (data?.living_income_gap + data?.hh_income)) *
-            100
-          ).toFixed(2);
-        },
+      },
+      {
+        section: "comparing-the-living-income-gap",
+        name: "other_income",
+        key: "other_income",
       },
       {
         section: "comparing-the-living-income-gap",
         name: "living_income_gap",
         key: "living_income_gap",
-        percentage: (data) => {
-          return (
-            (data?.living_income_gap /
-              (data?.living_income_gap + data?.hh_income)) *
-            100
-          ).toFixed(2);
-        },
+      },
+      {
+        section: "comparing-the-living-income-gap",
+        name: "living_income",
+        key: "living_income",
       },
     ],
   },
@@ -183,9 +196,15 @@ const Benchmarking = () => {
 
   const generateChartData = (cl, company) => {
     const tmp = chartTmp.map((x) => {
+      if (x?.description) {
+        x = {
+          ...x,
+          description: x.description.replace("<the same type>", compareWith),
+        };
+      }
       if (x?.chart) {
         const crop = crops.find((x) => x.id === company?.crop)?.name;
-        return {
+        x = {
           ...x,
           title: x?.title && crop ? replaceCrop(crop, x.title) : x?.title,
           chart: cl
@@ -202,7 +221,7 @@ const Benchmarking = () => {
         };
       }
       if (x?.table) {
-        return {
+        x = {
           ...x,
           table: x.table.map((d) => {
             const dataCl = cl
@@ -221,14 +240,6 @@ const Benchmarking = () => {
               column: dataCl,
             };
           }),
-        };
-      }
-      if (x?.description) {
-        return {
-          ...x,
-          description: x.description
-            .replace("<type>", defCountry)
-            .replace("<the same type>", compareWith),
         };
       }
       return x;

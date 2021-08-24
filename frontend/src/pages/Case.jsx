@@ -183,7 +183,7 @@ const Case = () => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
 
-  const countryName = countries.find((x) => x.id == defCountry);
+  const countryName = countries.find((x) => x.id === defCountry);
 
   useEffect(() => {
     if (loading && countries.length && crops.length) {
@@ -470,7 +470,7 @@ const Case = () => {
                   )}
                 </Col>
                 <Col sm={24} md={24} lg={10} className="case-detail">
-                  <h3>Net Income {getCrop(data, crops)}</h3>
+                  <h3>Focust crop {getCrop(data, crops)}</h3>
                   <p>
                     On the left we present the net-income from the{" "}
                     {getCrop(data, crops)}.
@@ -487,7 +487,7 @@ const Case = () => {
                       percent={false}
                       data={{
                         value: data?.company?.net_income,
-                        text: `${getCrop(data, crops)} Net Income (USD/year)`,
+                        text: `${getCrop(data, crops)} Focus crop (USD/year)`,
                       }}
                     />
                   </Row>

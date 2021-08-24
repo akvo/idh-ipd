@@ -128,13 +128,16 @@ const BarStack = (data, extra) => {
         data: guides,
       },
     };
-    series = series.map((x, i) => {
-      if (x.name === objectNames.living_income_gap) {
-        return { ...x, ...guide };
+    series = series?.map((x, i) => {
+      if (x?.name === objectNames.living_income_gap) {
+        if (x?.data.filter((d) => d).length) {
+          return { ...x, ...guide };
+        }
       }
       return x;
     });
   }
+  console.log(series);
   let option = {
     ...Color,
     legend: {

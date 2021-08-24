@@ -1,4 +1,7 @@
 @mixin gradient($from, $to) {
+  /* Chrome */
+  background: linear-gradient(to left, $from, $to);
+
   /* Firefox 3.6+ */
   background: -moz-linear-gradient(to left, $from 40%, $to);
 

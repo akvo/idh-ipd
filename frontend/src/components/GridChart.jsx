@@ -27,7 +27,12 @@ const DataTable = ({ items }) => {
               <h4>{c.group}</h4>
               <h3>
                 {c.value ? (
-                  <CountUp start={0} end={c.value} duration={2} />
+                  <CountUp
+                    start={0}
+                    end={c.value}
+                    duration={2}
+                    percent={c.percent}
+                  />
                 ) : (
                   "N.A."
                 )}
