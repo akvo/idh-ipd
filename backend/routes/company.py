@@ -80,7 +80,8 @@ def get_company_by_id(req: Request,
     country_name = crud_country.get_name(session=session, id=company.country)
     # this_crop_name = crud_crop.get_name(session=session, id=company.crop)
     in_country = crud_company.get_company_by_country(session=session,
-                                                     country=company.country)
+                                                     country=company.country,
+                                                     crop=company.crop)
     in_country = calc.avg(in_country, 'crop')
     for c in in_country:
         crop_name = crud_crop.get_name(session=session, id=c['crop'])

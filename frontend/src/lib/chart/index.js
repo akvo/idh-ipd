@@ -7,7 +7,7 @@ import BarStack from "./BarStack";
 import BarGroup from "./BarGroup";
 import LineStack from "./LineStack";
 import Line from "./Line";
-import { titleCase, objectNames } from "../util";
+import { objectNames } from "../util";
 
 export const generateOptions = ({ type, data }, extra, axis) => {
   switch (type) {

@@ -125,7 +125,7 @@ const BarStack = (data, extra) => {
             },
           },
         },
-        data: guides,
+        data: guides.filter((x) => x.yAxis),
       },
     };
     series = series?.map((x, i) => {

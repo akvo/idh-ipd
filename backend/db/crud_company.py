@@ -22,8 +22,13 @@ def get_company_by_id(session: Session, id: int) -> Company:
     return session.query(Company).filter(Company.id == id).first()
 
 
-def get_company_by_country(session: Session, country: int) -> List[Company]:
-    return session.query(Company).filter(Company.country == country).all()
+def get_company_by_country(session: Session,
+                           country: int,
+                           crop: int = 0) -> List[Company]:
+    if crop == 0:
+        return session.query(Company).filter(Company.country == country).all()
+    return session.query(Company).filter(Company.country == country).filter(
+        Company.crop == crop).all()
 
 
 def get_company_by_crop(session: Session,
