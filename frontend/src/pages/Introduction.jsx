@@ -181,9 +181,9 @@ const Introduction = ({ history }) => {
             gutter={[24, 24]}
             wrap={true}
           >
-            <Col sm={24} md={24} lg={24}>
+            <Col sm={20} md={20} lg={20}>
               <Row justify="space-around" align="middle" className="meta-body">
-                <Col sm={5} md={4} lg={3}>
+                <Col sm={3} md={3} lg={3}>
                   <Image
                     className="meta-img"
                     preview={false}
@@ -195,7 +195,7 @@ const Introduction = ({ history }) => {
                 <Col span={1} className="meta-symbol">
                   =
                 </Col>
-                <Col sm={5} md={4} lg={3}>
+                <Col sm={3} md={3} lg={3}>
                   <Image
                     className="meta-img"
                     preview={false}
@@ -207,7 +207,7 @@ const Introduction = ({ history }) => {
                 <Col span={1} className="meta-symbol">
                   +
                 </Col>
-                <Col sm={5} md={4} lg={3}>
+                <Col sm={3} md={3} lg={3}>
                   <Image
                     className="meta-img"
                     preview={false}

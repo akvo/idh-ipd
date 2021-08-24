@@ -129,9 +129,9 @@ const chartTmp = [
   },
   {
     type: "group",
-    title: "Land size ##crop##",
+    title: "Land size of ##crop##",
     axis: {
-      xAxis: "Land size ##crop## (ha)",
+      xAxis: "Land size of ##crop## (ha)",
       yAxis: "Average\nland size\n##crop##",
     },
     chart: [
@@ -145,7 +145,7 @@ const chartTmp = [
     type: "group",
     title: "Yield fee of ##crop##",
     axis: {
-      xAxis: "Yield ##crop## (kg/ha)",
+      xAxis: "Yield of ##crop## (kg/ha)",
       yAxis: "Average\nyield\n##crop##",
     },
     chart: [

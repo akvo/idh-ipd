@@ -141,7 +141,7 @@ const DataMap = ({ history }) => {
         data-tip=""
         projection="geoEquirectangular"
         projectionConfig={{ scale: 125 }}
-        height={375}
+        height={420}
         style={{ outline: "none" }}
       >
         <ZoomableGroup

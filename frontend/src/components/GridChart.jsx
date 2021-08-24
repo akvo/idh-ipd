@@ -87,7 +87,7 @@ const GridChart = ({ items }) => {
             title={item?.title}
             data={item?.chart}
             type="BARGROUP"
-            height={500}
+            height={300}
             span={12}
             axis={item?.axis}
             styles={{ marginBottom: 25 }}

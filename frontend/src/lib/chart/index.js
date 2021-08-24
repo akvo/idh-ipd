@@ -53,7 +53,7 @@ const Chart = ({
         lg={span}
         style={{ height: height, ...styles }}
       >
-        <Card title={titleCase(title)}>
+        <Card title={title}>
           <ReactECharts
             option={option}
             style={{ height: height - 50, width: "100%" }}
