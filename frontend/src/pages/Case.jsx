@@ -470,7 +470,7 @@ const Case = () => {
                   )}
                 </Col>
                 <Col sm={24} md={24} lg={10} className="case-detail">
-                  <h3>Focust crop {getCrop(data, crops)}</h3>
+                  <h3>Focus crop {getCrop(data, crops)}</h3>
                   <p>
                     On the left we present the net-income from the{" "}
                     {getCrop(data, crops)}.

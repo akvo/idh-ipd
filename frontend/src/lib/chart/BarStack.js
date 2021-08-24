@@ -137,7 +137,6 @@ const BarStack = (data, extra) => {
       return x;
     });
   }
-  console.log(series);
   let option = {
     ...Color,
     legend: {

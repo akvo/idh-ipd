@@ -43,7 +43,7 @@ const Introduction = ({ history }) => {
             wrap={true}
             style={{ paddingTop: "2rem", paddingBottom: "2rem" }}
           >
-            <Col sm={24} md={24} lg={10} className="img-title">
+            <Col sm={24} md={24} lg={6} className="img-title">
               <Image
                 height="90%"
                 src="/introduction/smallholder-farming.png"
@@ -55,7 +55,7 @@ const Introduction = ({ history }) => {
                 Farming
               </h3>
             </Col>
-            <Col sm={24} md={24} lg={14}>
+            <Col sm={24} md={24} lg={18}>
               <p>
                 Smallholder farmers are crucial in the effort to end hunger and
                 alleviate malnutrition worldwide. They account for 90% of the
