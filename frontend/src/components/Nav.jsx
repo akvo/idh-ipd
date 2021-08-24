@@ -29,7 +29,7 @@ const Nav = ({ logout, loginWithPopup, isAuthenticated }) => {
       selectedKeys={[page]}
       onClick={handleOnClickMenu}
       style={{
-        minWidth: isAuthenticated && user?.active ? "680px" : "225px",
+        minWidth: isAuthenticated && user?.active ? "640px" : "225px",
       }}
     >
       <Menu.Item key="">

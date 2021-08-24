@@ -109,7 +109,7 @@ const chartTmp = [
     },
     chart: [
       {
-        name: "status",
+        name: "price",
         key: "price",
       },
     ],
@@ -123,35 +123,35 @@ const chartTmp = [
     },
     chart: [
       {
-        name: "status",
+        name: "area",
         key: "area",
       },
     ],
   },
   {
     type: "group",
-    title: "Yield fee",
+    title: "Yield fee of ##crop##",
     axis: {
       xAxis: "Yield ##crop## (kg/ha)",
       yAxis: "Average\nyield\n##crop##",
     },
     chart: [
       {
-        name: "status",
+        name: "yields",
         key: "yields",
       },
     ],
   },
   {
     type: "group",
-    title: "Production costs",
+    title: "Production costs of ##crop##",
     axis: {
       xAxis: "Production costs ##crop## (USD/ha)",
       yAxis: "Average\nproduction costs\n##crop##",
     },
     chart: [
       {
-        name: "status",
+        name: "cop_pha",
         key: "cop_pha",
       },
     ],
@@ -174,11 +174,20 @@ const Benchmarking = () => {
     compareWith = compareWith.group.replace("Others in", "");
   }
 
-  const generateChartData = (cl) => {
+  const replaceCrop = (crop, text) => {
+    const replacedTitle = text.includes("##crop##")
+      ? text.replace("##crop##", crop)
+      : text;
+    return replacedTitle;
+  };
+
+  const generateChartData = (cl, company) => {
     const tmp = chartTmp.map((x) => {
       if (x?.chart) {
+        const crop = crops.find((x) => x.id === company?.crop)?.name;
         return {
           ...x,
+          title: x?.title && crop ? replaceCrop(crop, x.title) : x?.title,
           chart: cl
             .map((col) => {
               return x.chart.map((c) => {
@@ -248,7 +257,7 @@ const Benchmarking = () => {
       .then(({ data: company }) => {
         const dataCl = [...[company], ...company.comparison];
         setDefCompany(company);
-        generateChartData(dataCl);
+        generateChartData(dataCl, company);
       })
       .catch((e) => {
         UIStore.update((p) => {

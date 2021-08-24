@@ -21,7 +21,11 @@ const BarGroup = (data, extra, axis) => {
       },
     };
   }
+  const fiterData = data.filter((d) => d.value);
   let yAxis = uniq(data.map((x) => x.group));
+  yAxis = yAxis.map((x) =>
+    fiterData.find((f) => f.group === x) ? x : `${x}\nNo data`
+  );
   let legends = uniq(data.map((x) => x.name));
   let series = _.chain(data)
     .groupBy("name")
@@ -101,6 +105,10 @@ const BarGroup = (data, extra, axis) => {
           fontFamily: "Gotham A,Gotham B",
           fontSize: 12,
           color: "#222",
+        },
+        nameTextStyle: {
+          overflow: "truncate",
+          ellipsis: "...",
         },
       },
     ],

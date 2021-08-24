@@ -43,8 +43,15 @@ const BarStack = (data, extra) => {
     (x) => x.var === "living_income" || x.var === "hh_income"
   );
   /* End Custom Calculation */
-
+  const filterData = data
+    .filter((x) => x.value)
+    .filter((x) => x.var !== "living_income")
+    .filter((x) => x.var !== "hh_income")
+    .filter((x) => x.var !== "living_income_gap");
   let xAxis = uniq(data.map((x) => x.group));
+  xAxis = xAxis.map((x) =>
+    filterData.find((f) => f.group === x) ? x : `${x} (No data)`
+  );
   let legends = uniq(data.map((x) => x.name));
   let series = _.chain(data)
     .filter((x) => x.var !== "living_income")
@@ -69,11 +76,11 @@ const BarStack = (data, extra) => {
           show: true,
           position: "inside",
           formatter: (a) => {
-            const curr = x.find((g) => g.group === a.name);
-            if (curr.name === objectNames.revenue && curr?.actual_value) {
+            const curr = x.find((g) => g?.group === a?.name);
+            if (curr?.name === objectNames.revenue && curr?.actual_value) {
               return curr.actual_value;
             }
-            if (curr.name === objectNames.total_prod_cost) {
+            if (curr?.name === objectNames.total_prod_cost) {
               return -a.value;
             }
             return `${a.value}`;

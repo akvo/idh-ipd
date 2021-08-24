@@ -55,17 +55,6 @@ const ChartType = ({
       return (
         <Chart data={chart} type="BARSTACK" height={700} wrapper={false} />
       );
-    case "group":
-      return (
-        <Chart
-          title={title}
-          data={chart}
-          type="BARGROUP"
-          height={500}
-          span={12}
-          axis={axis}
-        />
-      );
     default:
       return (
         <>
@@ -81,15 +70,49 @@ const GridChart = ({ items }) => {
   return (
     <Row
       className="compare-wrapper"
+      justify="space-around"
       data-aos="fade-up"
       gutter={[50, 50]}
       wrap={true}
     >
-      {items.map((item, index) => (
-        <Col key={index} sm={24} md={24} lg={12} className="compare-body">
-          <ChartType {...item} />
-        </Col>
-      ))}
+      {items.map((item, index) =>
+        item?.type === "group" ? (
+          <Chart
+            key={index}
+            title={item?.title}
+            data={item?.chart}
+            type="BARGROUP"
+            height={500}
+            span={12}
+            axis={item?.axis}
+            styles={{ marginBottom: 25 }}
+            extra={{
+              grid: {
+                top: 60,
+                left: 100,
+                right: "auto",
+                bottom: "25px",
+                borderColor: "#ddd",
+                borderWidth: 0.5,
+                show: true,
+                label: {
+                  color: "#222",
+                  fontFamily: "Gotham A,Gotham B",
+                },
+              },
+              axisLabel: {
+                formatter: (x) => {
+                  return isNaN(x) ? x.replace("average", "\naverage\n") : x;
+                },
+              },
+            }}
+          />
+        ) : (
+          <Col key={index} sm={24} md={24} lg={12} className="compare-body">
+            <ChartType {...item} style={{ marginBottom: 20 }} />
+          </Col>
+        )
+      )}
     </Row>
   );
 };

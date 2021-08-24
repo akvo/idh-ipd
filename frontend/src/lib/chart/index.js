@@ -37,6 +37,7 @@ const Chart = ({
   extra = {},
   wrapper = true,
   axis = null,
+  styles = {},
 }) => {
   data = data.map((x) => ({
     ...x,
@@ -46,7 +47,12 @@ const Chart = ({
   const option = generateOptions({ type: type, data: data }, extra, axis);
   if (wrapper) {
     return (
-      <Col sm={24} md={span * 2} lg={span} style={{ height: height }}>
+      <Col
+        sm={24}
+        md={span * 2}
+        lg={span}
+        style={{ height: height, ...styles }}
+      >
         <Card title={titleCase(title)}>
           <ReactECharts
             option={option}
