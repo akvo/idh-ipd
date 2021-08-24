@@ -229,9 +229,8 @@ const Case = () => {
         setDefCompany(value);
       })
       .catch((e) => {
-        const { status } = e.response;
         UIStore.update((p) => {
-          p.errorPage = status;
+          p.errorPage = e?.response?.status;
         });
       });
   };
