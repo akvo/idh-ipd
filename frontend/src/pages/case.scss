@@ -1,5 +1,4 @@
 @mixin gradient($from, $to) {
-
   /* Firefox 3.6+ */
   background: -moz-linear-gradient(to left, $from 40%, $to);
 
@@ -36,7 +35,8 @@ main.ant-layout-content {
 
   .hero-content {
     padding-top: 125px;
-    &.data-exist{
+
+    &.data-exist {
       @include gradient(#f2f5fb, transparent);
     }
 

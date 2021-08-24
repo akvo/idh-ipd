@@ -108,21 +108,23 @@ const IncomeDriverTool = ({ history }) => {
       // const company = countriesHasCompany[0]?.company[0];
       setDefCountry(country);
       // setDefCompany(company);
-      api.get("/driver-income?skip=0&limit=100").then((res) => {
-        setData(res.data);
-        setLoading(false);
-      })
-      .catch((e) => {
-        const { status } = e.response
-        UIStore.update((p) => {
-          p.errorPage = status
+      api
+        .get("/driver-income?skip=0&limit=100")
+        .then((res) => {
+          setData(res.data);
+          setLoading(false);
         })
-      })
+        .catch((e) => {
+          const { status } = e.response;
+          UIStore.update((p) => {
+            p.errorPage = status;
+          });
+        });
       UIStore.update((p) => {
-        p.errorPage = false
-      })
+        p.errorPage = false;
+      });
     }
-    if (loading && user) setLoading(false) 
+    if (loading && user) setLoading(false);
   }, [loading, countries, crops, user]);
 
   useEffect(() => {
@@ -214,7 +216,9 @@ const IncomeDriverTool = ({ history }) => {
               onChange={handleOnChangeCountry}
               value={defCountry?.id}
               filterOption={(input, option) =>
-                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                option.props.children
+                  .toLowerCase()
+                  .indexOf(input.toLowerCase()) >= 0
               }
             >
               {renderOptions("country")}
@@ -229,7 +233,9 @@ const IncomeDriverTool = ({ history }) => {
               onChange={handleOnChangeCompany}
               value={defCompany?.id}
               filterOption={(input, option) =>
-                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                option.props.children
+                  .toLowerCase()
+                  .indexOf(input.toLowerCase()) >= 0
               }
             >
               {renderOptions("company")}

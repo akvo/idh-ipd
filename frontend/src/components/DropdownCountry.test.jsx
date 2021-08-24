@@ -1,5 +1,5 @@
-import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
-import DropdownCountry from './DropdownCountry';
+import { render, fireEvent, waitFor } from "@testing-library/react";
+import DropdownCountry from "./DropdownCountry";
 
 const testCountries = [
   {
@@ -10,14 +10,14 @@ const testCountries = [
       {
         id: 5,
         name: "Company 5",
-        country: 72
+        country: 72,
       },
       {
         id: 13,
         name: "Company 13",
-        country: 72
-      }
-    ]
+        country: 72,
+      },
+    ],
   },
   {
     id: 73,
@@ -27,18 +27,24 @@ const testCountries = [
       {
         id: 7,
         name: "Company 7",
-        country: 73
-      }
-    ]
-  }
+        country: 73,
+      },
+    ],
+  },
 ];
 
-test('call function when dropdown clicked', async () => {
+test("call function when dropdown clicked", async () => {
   const handleOnChange = jest.fn();
-  const { getByRole, getByTitle } = render(<DropdownCountry options={testCountries} onChange={handleOnChange} placeholder="Select Country" />);
-  fireEvent.click(getByRole('combobox'));
-  fireEvent.mouseDown(getByRole('combobox'));
-  fireEvent.click(getByTitle('Cameroon'));
+  const { getByRole, getByTitle } = render(
+    <DropdownCountry
+      options={testCountries}
+      onChange={handleOnChange}
+      placeholder="Select Country"
+    />
+  );
+  fireEvent.click(getByRole("combobox"));
+  fireEvent.mouseDown(getByRole("combobox"));
+  fireEvent.click(getByTitle("Cameroon"));
 
   await waitFor(() => {
     expect(handleOnChange).toHaveBeenCalledTimes(1);

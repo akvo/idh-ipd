@@ -1,7 +1,7 @@
 import { Auth0Provider } from "@auth0/auth0-react";
 import React from "react";
 import ReactDOM from "react-dom";
-import RVerify from 'rverify';
+import RVerify from "rverify";
 import "./index.css";
 import "./font.css";
 import App from "./App";

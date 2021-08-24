@@ -15,7 +15,7 @@ const Introduction = ({ history }) => {
     if (loading) {
       UIStore.update((s) => {
         s.page = "introduction";
-        s.loading = false
+        s.loading = false;
       });
     }
   }, [loading]);
@@ -59,11 +59,13 @@ const Introduction = ({ history }) => {
               <p>
                 Smallholder farmers are crucial in the effort to end hunger and
                 alleviate malnutrition worldwide. They account for 90% of the
-                world's farms and contribute substantially to global food chains.
-                What’s more, they are better at conserving natural resources than large, industrial farms.
-                In short, smallholder farmers have the potential to feed the world sustainably.
+                world's farms and contribute substantially to global food
+                chains. What’s more, they are better at conserving natural
+                resources than large, industrial farms. In short, smallholder
+                farmers have the potential to feed the world sustainably.
                 However, they are also a group that faces huge barriers. Many
-                live in impoverished conditions and are unable to achieve a living income.
+                live in impoverished conditions and are unable to achieve a
+                living income.
               </p>
             </Col>
           </Row>
@@ -82,12 +84,13 @@ const Introduction = ({ history }) => {
             <Col sm={24} md={24} lg={10}>
               <h3>Living Income</h3>
               <p>
-                Smallholder farmers earn an income from various sources: on-farm income, off-farm labour income and other income.
-                However, income from selling crops may not be sufficient
-                to cover all their basic living costs. Therefore, farmer
-                households diversify their income. In the case of smallholder
-                farmers for example, income can be earned through off farm
-                business and remittances as well as from crop sales.
+                Smallholder farmers earn an income from various sources: on-farm
+                income, off-farm labour income and other income. However, income
+                from selling crops may not be sufficient to cover all their
+                basic living costs. Therefore, farmer households diversify their
+                income. In the case of smallholder farmers for example, income
+                can be earned through off farm business and remittances as well
+                as from crop sales.
               </p>
               <p>
                 Living income is about households having the ability to afford a
@@ -163,9 +166,11 @@ const Introduction = ({ history }) => {
             <Col sm={24} md={24} lg={24} align="middle">
               <h3>Actual household income</h3>
               <p>
-                Smallholder farmers earn an income from various source.
-                With actual income we refer to the income earned by the farmer' households from various sources.
-                Actual income is calculated by taking the sum of net-income from the focus crop and other income.
+                Smallholder farmers earn an income from various source. With
+                actual income we refer to the income earned by the farmer'
+                households from various sources. Actual income is calculated by
+                taking the sum of net-income from the focus crop and other
+                income.
               </p>
             </Col>
           </Row>
@@ -362,7 +367,9 @@ const Introduction = ({ history }) => {
                 The focus crop production costs are calculated by multiplying
                 the farm size and production costs ($/ha). Production costs
                 capture at a minimum two types of costs: labour and input costs.
-                Other costs that can be considered are equipment costs, interest costs for loans that are used for focus crop-related purposes or processing costs (if applicable).
+                Other costs that can be considered are equipment costs, interest
+                costs for loans that are used for focus crop-related purposes or
+                processing costs (if applicable).
               </p>
             </Col>
             <Col sm={24} md={24} lg={14}>

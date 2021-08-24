@@ -49,7 +49,10 @@ const chartTmp = [
         name: "hh_income",
         key: "hh_income",
         percentage: (data) => {
-          return ((data?.hh_income / (data?.living_income_gap + data?.hh_income)) * 100).toFixed(2);
+          return (
+            (data?.hh_income / (data?.living_income_gap + data?.hh_income)) *
+            100
+          ).toFixed(2);
         },
       },
       {
@@ -57,7 +60,11 @@ const chartTmp = [
         name: "living_income_gap",
         key: "living_income_gap",
         percentage: (data) => {
-          return ((data?.living_income_gap / (data?.living_income_gap + data?.hh_income)) * 100).toFixed(2);
+          return (
+            (data?.living_income_gap /
+              (data?.living_income_gap + data?.hh_income)) *
+            100
+          ).toFixed(2);
         },
       },
     ],

@@ -10,7 +10,7 @@ const defaultState = {
   data: [],
   selectedCountry: null,
   countryMap: [],
-  errorPage: false
+  errorPage: false,
 };
 
 export const UIStore = new Store(defaultState);

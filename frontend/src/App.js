@@ -48,7 +48,7 @@ function App({ btnReff }) {
         api
           .get("/user/me")
           .then(({ data }) => {
-            const { active, access, role } = data || {}
+            const { active, access, role } = data || {};
             UIStore.update((u) => {
               u.user = data;
             });
@@ -59,8 +59,8 @@ function App({ btnReff }) {
                 .catch((error) => {
                   const { status } = error.response;
                   UIStore.update((p) => {
-                    p.errorPage = status
-                  })
+                    p.errorPage = status;
+                  });
                 })
                 .then((country) => {
                   api
@@ -68,8 +68,12 @@ function App({ btnReff }) {
                     .then((res) => res.data)
                     .then((crop) => {
                       UIStore.update((c) => {
-                        c.countries = country ? role === 'user' ? filterCountry(access, country) : country : [];
-                        c.countryMap = country
+                        c.countries = country
+                          ? role === "user"
+                            ? filterCountry(access, country)
+                            : country
+                          : [];
+                        c.countryMap = country;
                         c.crops = crop;
                         c.loading = false;
                       });
@@ -78,9 +82,9 @@ function App({ btnReff }) {
                     .catch((e) => {
                       const { status } = e.response;
                       UIStore.update((p) => {
-                        p.errorPage = status
-                      })
-                    })
+                        p.errorPage = status;
+                      });
+                    });
                 });
             }
           })

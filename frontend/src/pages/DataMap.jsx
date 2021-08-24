@@ -77,7 +77,7 @@ const DataMap = ({ history }) => {
   const openWarningModal = () => {
     return Modal.warning({
       title: "Access Denied",
-      content: "You don't have access to any company for this country"
+      content: "You don't have access to any company for this country",
     });
   };
 

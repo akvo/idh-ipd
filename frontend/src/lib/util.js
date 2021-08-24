@@ -55,35 +55,40 @@ export const objectNames = {
 };
 
 export const isAuthCookie = () => {
-  return document.cookie.split(';')
-    .map(item => trim(item))
-    .includes('_legacy_auth0.is.authenticated=true')
-}
+  return document.cookie
+    .split(";")
+    .map((item) => trim(item))
+    .includes("_legacy_auth0.is.authenticated=true");
+};
 
 export const rverifyOptions = {
   mask: 0.5,
-  title: 'Human Verification',
-  text: '',
-  extra: 'Drag to make angle positive',
-  extraLink: '#',
-  album: [
-    '/introduction/house.png',
-  ]
-}
+  title: "Human Verification",
+  text: "",
+  extra: "Drag to make angle positive",
+  extraLink: "#",
+  album: ["/introduction/house.png"],
+};
 
 export const filterCountry = (access, countries) => {
-  const allows = access.map(item => item?.company)
+  const allows = access.map((item) => item?.company);
   return countries
-    .filter(country => {
-      return country.company.filter(item => allows.includes(item.id)).length > 0
+    .filter((country) => {
+      return (
+        country.company.filter((item) => allows.includes(item.id)).length > 0
+      );
     })
-    .map(country => ({
+    .map((country) => ({
       ...country,
-      company: country.company.filter(item => allows.includes(item.id))
-    }))
-}
+      company: country.company.filter((item) => allows.includes(item.id)),
+    }));
+};
 
-export const filterCountryOptions = (countries, country = {}, type = "country") => {
+export const filterCountryOptions = (
+  countries,
+  country = {},
+  type = "country"
+) => {
   let options = countries;
   if (type === "company") {
     const companies = countries

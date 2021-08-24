@@ -14,7 +14,7 @@ import {
   Radio,
 } from "antd";
 import { UIStore } from "../data/store";
-import ErrorPage from '../components/ErrorPage';
+import ErrorPage from "../components/ErrorPage";
 import api from "../lib/api";
 
 const { Option, OptGroup } = Select;
@@ -76,8 +76,8 @@ const Manage = () => {
         .catch((e) => {
           setTableLoading(false);
           UIStore.update((p) => {
-            p.loading = false
-          })
+            p.loading = false;
+          });
           if (e.response?.status === 404) {
             setUsers([]);
             setPaginate({
@@ -88,7 +88,7 @@ const Manage = () => {
           } else {
             UIStore.update((p) => {
               p.errorPage = true;
-            })
+            });
           }
         });
       setPageLoading(false);
@@ -186,10 +186,10 @@ const Manage = () => {
         showAccess(false);
       })
       .catch((e) => {
-        const { status } = e.response
+        const { status } = e.response;
         UIStore.update((p) => {
-          p.errorPage = status
-        })
+          p.errorPage = status;
+        });
       });
   };
 
