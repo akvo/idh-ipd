@@ -169,6 +169,20 @@ const chartTmp = [
       },
     ],
   },
+  {
+    type: "group",
+    title: "Non-focus crop income (USD)",
+    axis: {
+      xAxis: "Non-focus crop income (USD)",
+      yAxis: "Average non-focus crop income",
+    },
+    chart: [
+      {
+        name: "other_income",
+        key: "other_income",
+      },
+    ],
+  },
 ];
 
 const Benchmarking = () => {
