@@ -48,11 +48,17 @@ const chartTmp = [
         section: "comparing-the-living-income-gap",
         name: "hh_income",
         key: "hh_income",
+        percentage: (data) => {
+          return ((data?.hh_income / (data?.living_income_gap + data?.hh_income)) * 100).toFixed(2);
+        },
       },
       {
         section: "comparing-the-living-income-gap",
         name: "living_income_gap",
         key: "living_income_gap",
+        percentage: (data) => {
+          return ((data?.living_income_gap / (data?.living_income_gap + data?.hh_income)) * 100).toFixed(2);
+        },
       },
     ],
     table: [
@@ -62,8 +68,8 @@ const chartTmp = [
         percent: true,
         column: [
           {
-            name: "hh_income",
-            key: "hh_income",
+            name: "percent_hh_income",
+            key: "percent_hh_income",
           },
         ],
       },
@@ -100,35 +106,31 @@ const Benchmarking = () => {
 
   const generateChartData = (cl) => {
     const tmp = chartTmp.map((x) => {
-      const xChart = cl.map((col) => {
-        return x.chart.map((c) => {
-          return {
-            ...c,
-            group: col.name,
-            value: col[c.key],
-          };
-        });
-      });
+      const xChart = cl
+        .map((col) => {
+          return x.chart.map((c) => {
+            return {
+              ...c,
+              group: col.name,
+              value: c?.percentage ? c.percentage(col) : col[c.key],
+            };
+          });
+        })
+        .flatMap((val) => val);
       let tableTmp = [];
       if (x.hasTable) {
         tableTmp = x.table.map((d) => {
-          const dataCollection = cl.map((c) => {
-            return d.column.map((t, i) => {
-              /**
-               * % of total HH income from focus crop
-               * = net_income * 100 / hh_income
-               */
-              const value =
-                t.key === "hh_income"
-                  ? (c?.revenue * 100) / c[t.key]
-                  : c[t.key];
-              return {
-                ...t,
-                group: c.name,
-                value: value,
-              };
-            });
-          });
+          const dataCollection = cl
+            .map((c) => {
+              return d.column.map((t, i) => {
+                return {
+                  ...t,
+                  group: c.name,
+                  value: c[t.key],
+                };
+              });
+            })
+            .flatMap((d) => d);
           return {
             ...d,
             column: dataCollection,
@@ -137,7 +139,7 @@ const Benchmarking = () => {
       }
       return {
         ...x,
-        chart: xChart.flatMap((val) => val),
+        chart: xChart,
         table: tableTmp,
       };
     });
