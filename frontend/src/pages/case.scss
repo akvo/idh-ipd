@@ -62,9 +62,13 @@ main.ant-layout-content {
     margin-bottom: 40px;
     width: 100%;
 
-    &.odd {
+    &.first {
       padding-bottom: 50px;
+    }
+
+    &.odd {
       padding-top: 50px;
+      padding-bottom: 50px;
     }
 
     &.even {

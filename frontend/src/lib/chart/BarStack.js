@@ -5,6 +5,7 @@ import {
   backgroundColor,
   Icons,
 } from "./chart-style.js";
+import { objectNames } from "../util.js";
 import uniq from "lodash/uniq";
 import _ from "lodash";
 
@@ -38,15 +39,30 @@ const BarStack = (data, extra) => {
       actual_value: x.value,
     };
   });
-  let living_income_benchmark = data.filter((x) => x.var === "living_income");
+  let guides = data.filter(
+    (x) => x.var === "living_income" || x.var === "hh_income"
+  );
   /* End Custom Calculation */
 
   let xAxis = uniq(data.map((x) => x.group));
   let legends = uniq(data.map((x) => x.name));
   let series = _.chain(data)
     .filter((x) => x.var !== "living_income")
+    .filter((x) => x.var !== "hh_income")
     .groupBy("name")
     .map((x, i) => {
+      let itemStyle = {};
+      let labelColor = "#ffffff";
+      if (objectNames.living_income_gap === i) {
+        labelColor = "#000";
+        itemStyle = {
+          itemStyle: {
+            color: "#f2f2f2",
+            borderType: "dashed",
+            borderColor: "red",
+          },
+        };
+      }
       return {
         name: i,
         label: {
@@ -54,18 +70,18 @@ const BarStack = (data, extra) => {
           position: "inside",
           formatter: (a) => {
             const curr = x.find((g) => g.group === a.name);
-            if (curr.name === "Revenues from main crop" && curr?.actual_value) {
+            if (curr.name === objectNames.revenue && curr?.actual_value) {
               return curr.actual_value;
             }
-            if (curr.name === "Total Production Cost") {
+            if (curr.name === objectNames.total_prod_cost) {
               return -a.value;
             }
-            return a.value;
+            return `${a.value}`;
           },
           textStyle: {
-            color: "#FFF",
+            color: labelColor,
             fontFamily: "Gotham A,Gotham B",
-            fontSize: "1rem",
+            fontSize: ".75rem",
             fontWeight: "bold",
           },
         },
@@ -73,36 +89,43 @@ const BarStack = (data, extra) => {
         stack: "t",
         type: "bar",
         data: x.map((v) => v.value),
+        ...itemStyle,
       };
     })
     .value();
-  let guide = [];
-  if (living_income_benchmark.length) {
-    guide = living_income_benchmark.map((x, i) => {
-      return {
-        type: "line",
-        markLine: {
-          lineStyle: {
-            type: "dashed",
-            color: "red",
-          },
-          symbol: "circle",
-          label: {
-            show: true,
-            position: i > 0 ? "insideMiddleBottom" : "insideStartTop",
-            backgroundColor: "#f2f2f2",
-            formatter: "{custom|{b}}",
-            padding: 5,
-            elipsis: "break",
-            rich: {
-              custom: {
-                align: "center",
-              },
+  let guide = {};
+  if (guides.length) {
+    guides = guides.map((x, i) => {
+      return { name: `${x.name}`, yAxis: x.value };
+    });
+    guide = {
+      markLine: {
+        lineStyle: {
+          type: "dashed",
+          color: "red",
+        },
+        symbol: "rect",
+        label: {
+          show: true,
+          position: "insideEndTop",
+          formatter: "{custom|{b}}",
+          padding: 5,
+          elipsis: "break",
+          backgroundColor: "white",
+          rich: {
+            custom: {
+              align: "center",
             },
           },
-          data: [{ name: `Living income @ ${x.group}`, yAxis: x.value }],
         },
-      };
+        data: guides,
+      },
+    };
+    series = series.map((x, i) => {
+      if (x.name === objectNames.living_income_gap) {
+        return { ...x, ...guide };
+      }
+      return x;
     });
   }
   let option = {
@@ -110,10 +133,10 @@ const BarStack = (data, extra) => {
     legend: {
       data: legends,
       icon: "circle",
-      left: "center",
+      left: "right",
       itemGap: 10,
-      align: "auto",
-      orient: "horizontal",
+      align: "right",
+      orient: "vertical",
       textStyle: {
         fontFamily: "Gotham A,Gotham B",
         fontWeight: "normal",
@@ -122,7 +145,7 @@ const BarStack = (data, extra) => {
       },
     },
     grid: {
-      top: 50,
+      top: series.length * 30,
       left: "auto",
       right: "auto",
       bottom: "25px",
@@ -154,8 +177,8 @@ const BarStack = (data, extra) => {
     toolbox: {
       show: true,
       orient: "horizontal",
-      right: "30px",
-      top: "20px",
+      left: "30px",
+      top: "0px",
       feature: {
         saveAsImage: {
           type: "jpg",
@@ -200,7 +223,7 @@ const BarStack = (data, extra) => {
         color: "#222",
       },
     },
-    series: [...series, ...guide],
+    series: series,
     ...Color,
     ...backgroundColor,
     ...Easing,
