@@ -67,7 +67,7 @@ export const rverifyOptions = {
   text: "",
   extra: "Drag to make angle positive",
   extraLink: "#",
-  album: ["/introduction/house.png"],
+  album: ["/images/verify01.jpeg", "/images/verify02.jpeg"],
 };
 
 export const filterCountry = (access, countries) => {

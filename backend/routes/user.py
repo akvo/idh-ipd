@@ -61,6 +61,7 @@ def get_user(req: Request,
     if not active:
         auth0_data = get_auth0_user()
         auth0_data = pd.DataFrame(auth0_data)
+        auth0_data = auth0_data.drop_duplicates(subset='email')
         user = pd.DataFrame(user)
         user = user.merge(auth0_data, on='email', how='left')
         for col in list(user):

@@ -114,7 +114,7 @@ const Manage = () => {
       key: "name",
       render: (t, r) => (
         <div key={r.email}>
-          <Avatar src={r.picture || "/default-avatar.jpeg"} />{" "}
+          <Avatar src={r.picture || "/default-avatar.jpg"} />{" "}
           <span>
             {t || r.email}{" "}
             {!r?.email_verified && <Tag color="red">Not Verified</Tag>}
