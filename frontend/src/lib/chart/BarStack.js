@@ -60,6 +60,28 @@ const BarStack = (data, extra) => {
     .map((x, i) => {
       let itemStyle = {};
       let labelColor = "#ffffff";
+      const formatter = (a) => {
+        const curr = x.find((g) => g?.group === a?.name);
+        if (curr?.name === objectNames.revenue && curr?.actual_value) {
+          return curr.actual_value;
+        }
+        if (curr?.name === objectNames.total_prod_cost) {
+          return -a.value;
+        }
+        if (curr?.name === objectNames.living_income_gap) {
+          const combined_income = data
+            .filter(
+              (d) =>
+                d.var === "net_income" ||
+                d.var === "other_income" ||
+                d.var === "living_income_gap"
+            )
+            .map((d) => d.value)
+            .reduce((k, v) => k + v);
+          return ((a.value / combined_income) * 100).toFixed(2) + "%";
+        }
+        return `${a.value}`;
+      };
       if (objectNames.living_income_gap === i) {
         labelColor = "#000";
         itemStyle = {
@@ -75,16 +97,7 @@ const BarStack = (data, extra) => {
         label: {
           show: true,
           position: "inside",
-          formatter: (a) => {
-            const curr = x.find((g) => g?.group === a?.name);
-            if (curr?.name === objectNames.revenue && curr?.actual_value) {
-              return curr.actual_value;
-            }
-            if (curr?.name === objectNames.total_prod_cost) {
-              return -a.value;
-            }
-            return `${a.value}`;
-          },
+          formatter: formatter,
           textStyle: {
             color: labelColor,
             fontFamily: "Gotham A,Gotham B",
