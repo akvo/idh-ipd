@@ -159,9 +159,10 @@ const BarStack = (data, extra) => {
           show: true,
           position: "insideEndTop",
           formatter: "{custom|{b}}",
-          padding: 5,
           elipsis: "break",
           backgroundColor: "white",
+          borderColor: "#ffffff",
+          borderWidth: 5,
           rich: {
             custom: {
               align: "center",

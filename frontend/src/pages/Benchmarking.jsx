@@ -31,14 +31,14 @@ const chartTmp = [
   },
   {
     type: "table",
-    title: "Comparing Focus Crop Income",
+    title: "Comparing Net-income from Focus Crop",
     description:
-      "We report the focus crop income of the farmers from your company against the average net-income of <the same type>. Net-income from the focus crop is calculated by subtracting producing costs from the revenues from the focus crop.",
+      "We report the focus crop income of the farmers from your company against the average net-income of focus crop. Net-income from the focus crop is calculated by subtracting producing costs from the revenues from the focus crop.",
     hasTable: true,
     table: [
       {
         section: "comparing-focus-income",
-        title: "Focus crop income",
+        title: "Net-income from focus crop",
         percent: false,
         column: [
           {
@@ -184,12 +184,13 @@ const Benchmarking = () => {
 
   let compareWith =
     chart && defCompany
-      ? chart[0].chart.find((x) => x.group !== defCompany.name)
+      ? chart
+          .find((x) => x.type === "stack")
+          .chart.find((x) => x.group !== defCompany.name)
       : false;
   if (compareWith) {
-    compareWith = compareWith.group.replace("Others in", "");
+    compareWith = compareWith.group;
   }
-
   const replaceCrop = (crop, text) => {
     const replacedTitle = text.includes("##crop##")
       ? text.replace("##crop##", crop)
@@ -202,6 +203,7 @@ const Benchmarking = () => {
       if (x?.description) {
         x = {
           ...x,
+          title: x.title.replace("<the same type>", compareWith),
           description: x.description.replace("<the same type>", compareWith),
         };
       }

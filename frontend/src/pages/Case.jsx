@@ -422,7 +422,7 @@ const Case = () => {
                   />
                 </Col>
                 <Col sm={24} md={24} lg={10} className="case-detail">
-                  <h3>The living income gap</h3>
+                  <h3>The Living Income Gap</h3>
                   <p>
                     The living income gap is the difference between the actual
                     income of smallholder farmers and the living income
@@ -476,7 +476,7 @@ const Case = () => {
                   )}
                 </Col>
                 <Col sm={24} md={24} lg={10} className="case-detail">
-                  <h3>Focus crop {getCrop(data, crops)}</h3>
+                  <h3>{getCrop(data, crops)} Focus Crop</h3>
                   <p>
                     On the left we present the net-income from the{" "}
                     {getCrop(data, crops)}.
@@ -494,7 +494,7 @@ const Case = () => {
                       suffix="<small class='unit'>USD/Year</small>"
                       data={{
                         value: data?.company?.net_income,
-                        text: `${getCrop(data, crops)} Focus crop`,
+                        text: `${getCrop(data, crops)} focus crop`,
                       }}
                     />
                   </Row>
