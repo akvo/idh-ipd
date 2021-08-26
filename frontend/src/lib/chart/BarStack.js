@@ -40,7 +40,7 @@ const BarStack = (data, extra) => {
     };
   });
   let guides = data.filter(
-    (x) => x.var === "living_income" || x.var === "hh_income"
+    (x) => x.var === "living_income" || x.var === "net_income"
   );
   /* End Custom Calculation */
   const filterData = data
