@@ -11,6 +11,7 @@ import { filterCountryOptions } from "../lib/util";
 import DropdownCountry from "../components/DropdownCountry";
 import ErrorPage from "../components/ErrorPage";
 import api from "../lib/api";
+import LiB from "../data/links.json";
 import GridChart from "../components/GridChart";
 
 const chartTmp = [
@@ -57,6 +58,7 @@ const chartTmp = [
     description:
       "We report the living income gap of the farmers from your company against the living income gap of <the same type>. By measuring the actual household income of the farmers, we can assess whether the households earn a living income. If farmers earn an income below the living income level, we can assess the difference between actual household income level and the living income level. This is what we call the living income gap.",
     hasTable: true,
+    link: true,
     table: [
       {
         section: "comparing-the-living-income-gap",
@@ -181,6 +183,7 @@ const Benchmarking = () => {
   const [loading, setLoading] = useState(true);
   const [chart, setChart] = useState(null);
   const [options, setOptions] = useState({ country: [], company: [] });
+  const [BiLink, setBiLink] = useState(false);
 
   let compareWith =
     chart && defCompany
@@ -247,6 +250,9 @@ const Benchmarking = () => {
           }),
         };
       }
+      if (x?.link) {
+        x = { ...x, link: BiLink };
+      }
       return x;
     });
     setChart(tmp);
@@ -256,6 +262,7 @@ const Benchmarking = () => {
     if (countries.length && crops.length) {
       const country = countries.filter((x) => x.company.length > 0)[0] || {};
       setDefCountry(country);
+      setBiLink(LiB.find((x) => x.country === country.name));
       setOptions({
         country: countries,
         company: filterCountryOptions(countries, country, "company"),
@@ -287,6 +294,7 @@ const Benchmarking = () => {
       s.selectedCountry = null;
     });
     const country = countries.find((x) => x.id === value);
+    setBiLink(LiB.find((x) => x.country === country.name));
     setDefCountry(country);
     setDefCompany(null);
     setOptions({

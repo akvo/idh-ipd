@@ -55,6 +55,7 @@ const ChartType = ({
   table,
   chart,
   axis,
+  link = false,
 }) => {
   switch (type) {
     case "stack":
@@ -67,6 +68,15 @@ const ChartType = ({
           <h3>{title}</h3>
           <p>{description}</p>
           {hasTable && <DataTable items={table} />}
+          {link && (
+            <Card title="Principal Source">
+              <p className="source-link">
+                <a href={link.link} target="_blank" rel="noopener noreferrer">
+                  {link.link}
+                </a>
+              </p>
+            </Card>
+          )}
         </>
       );
   }
