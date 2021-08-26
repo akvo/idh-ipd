@@ -1,30 +1,46 @@
 def get_revenue(x):
-    if x["land_size"] and x["price"] and x["yields"]:
-        return (x["land_size"] * x["price"] * x["yields"])
-    return None
+    for i in ["land_size", "price", "yields"]:
+        if i not in x:
+            return None
+        if not x[i]:
+            return None
+    return (x["land_size"] * x["price"] * x["yields"])
 
 
 def get_total_prod_cost(x):
-    if x["land_size"] and x["prod_cost"]:
-        return (x["land_size"] * x["prod_cost"])
-    return None
+    for i in ["land_size", "prod_cost"]:
+        if i not in x:
+            return None
+        if not x[i]:
+            return None
+    return (x["land_size"] * x["prod_cost"])
 
 
 def get_living_income_gap(x):
-    if x["living_income"] and x["hh_income"]:
-        return x["living_income"] - x["hh_income"]
-    return None
+    for i in ["living_income", "hh_income"]:
+        if i not in x:
+            return None
+        if not x[i]:
+            return None
+    return x["living_income"] - x["hh_income"]
 
 
 def get_share_income(x):
-    if x["net_income"] and x["hh_income"]:
-        return (x["net_income"] / x["hh_income"] * 100)
-    return None
+    for i in ["net_income", "hh_income"]:
+        if i not in x:
+            return None
+        if not x[i]:
+            return None
+    return (x["net_income"] / x["hh_income"] * 100)
 
 
 def get_percentage_hh_income(x):
-    if x["net_income"] and x["hh_income"]:
-        return (x["hh_income"] / x["net_income"] * 100)
+    for i in ["net_income", "hh_income"]:
+        if i not in x:
+            return None
+        if not x[i]:
+            return None
+    return (x["hh_income"] / (x["net_income"] + x["hh_income"]) * 100)
 
 
 def with_extra_data(data):
