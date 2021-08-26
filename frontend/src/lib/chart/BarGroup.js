@@ -55,7 +55,7 @@ const BarGroup = (data, extra, axis) => {
       orient: "horizontal",
       textStyle: {
         fontFamily: "Gotham A,Gotham B",
-        fontWeight: "bold",
+        fontWeight: "normal",
         fontSize: 12,
       },
     },
