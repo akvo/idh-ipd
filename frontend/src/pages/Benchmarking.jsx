@@ -132,7 +132,7 @@ const chartTmp = [
   },
   {
     type: "group",
-    title: "Yield fee of ##crop##",
+    title: "Yield of ##crop##",
     axis: {
       xAxis: "Yield of ##crop## (kg/ha)",
       yAxis: "Average\nyield\n##crop##",

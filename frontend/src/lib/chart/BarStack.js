@@ -69,16 +69,24 @@ const BarStack = (data, extra) => {
           return -a.value;
         }
         if (curr?.name === objectNames.living_income_gap) {
-          const combined_income = data
+          if (!a.value) {
+            return "Nothing";
+          }
+          let combined_income = data
+            .filter((d) => d.group === curr.group)
             .filter(
               (d) =>
                 d.var === "net_income" ||
                 d.var === "other_income" ||
                 d.var === "living_income_gap"
             )
-            .map((d) => d.value)
-            .reduce((k, v) => k + v);
-          return ((a.value / combined_income) * 100).toFixed(2) + "%";
+            .filter((d) => d.value)
+            .map((d) => d.value);
+          if (combined_income.length) {
+            combined_income = combined_income.reduce((k, v) => k + v);
+            return ((a.value / combined_income) * 100).toFixed(2) + "%";
+          }
+          return "Nothing";
         }
         return `${a.value}`;
       };
@@ -89,6 +97,17 @@ const BarStack = (data, extra) => {
             color: "#f2f2f2",
             borderType: "dashed",
             borderColor: "red",
+          },
+          label: {
+            show: true,
+            position: "inside",
+            formatter: formatter,
+            textStyle: {
+              color: labelColor,
+              fontFamily: "Gotham A,Gotham B",
+              fontSize: "1.5rem",
+              fontWeight: "bold",
+            },
           },
         };
       }
@@ -108,7 +127,18 @@ const BarStack = (data, extra) => {
         barWidth: 150,
         stack: "t",
         type: "bar",
-        data: x.map((v) => v.value),
+        data: x.map((v) => {
+          if (v.var === "living_income_gap") {
+            const curr = data
+              .filter((g) => g?.group === v.group)
+              .filter((g) => g.value)
+              .map((x) => x.var);
+            if (!curr.includes("net_income")) {
+              return null;
+            }
+          }
+          return v.value;
+        }),
         ...itemStyle,
       };
     })
@@ -251,7 +281,6 @@ const BarStack = (data, extra) => {
     ...Easing,
     ...extra,
   };
-  console.log(option);
   return option;
 };
 

@@ -33,7 +33,7 @@ const chartTmp = [
     },
   },
   {
-    title: "Yield fee",
+    title: "Yield",
     name: "status",
     key: "yields",
     axis: {

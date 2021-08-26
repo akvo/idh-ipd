@@ -43,7 +43,7 @@ export const objectNames = {
   total_prod_cost: "Total Production Cost",
   revenue: "Revenues from main crop",
   share_income: "Share of income coming from focus crop",
-  yields: "Yield",
+  yields: "Yield (kg/ha)",
   status: "Current/Feasible",
   area: "Area (ha)",
   cop_pha: "Cost of production (USD/ha)",
