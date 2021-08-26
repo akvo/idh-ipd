@@ -9,6 +9,7 @@ const CountUpCard = ({
   span = 4,
   extraStyle = "",
   percent = false,
+  suffix = "",
   data,
 }) => {
   const { value, text, unit } = data;
@@ -17,6 +18,7 @@ const CountUpCard = ({
     start: 0,
     end: value,
     duration: 2,
+    suffix: suffix,
   };
   if (!isInteger(Number(value))) {
     props = {
@@ -38,11 +40,7 @@ const CountUpCard = ({
           {countUp}
           {percentMark}
         </h3>
-        <p>
-          {text}
-          {unit && <br />}
-          {unit}
-        </p>
+        <p>{text}</p>
       </>
     );
   }

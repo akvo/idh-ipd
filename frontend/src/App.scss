@@ -126,6 +126,12 @@ code {
   h3 {
     font-size: 1.75rem;
     font-weight: 600;
+
+    .unit {
+      display: block;
+      font-size: 12px;
+      font-weight: normal;
+    }
   }
 
   h4 {

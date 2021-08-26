@@ -28,6 +28,7 @@ const DataTable = ({ items }) => {
               <h3>
                 {c.value ? (
                   <CountUp
+                    suffix={c.suffix || ""}
                     start={0}
                     end={c.value}
                     duration={2}

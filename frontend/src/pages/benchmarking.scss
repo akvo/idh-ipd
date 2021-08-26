@@ -1,5 +1,6 @@
 .compare-options-wrapper {
   margin-bottom: 75px;
+
   .compare-options-body {
     .text {
       margin-right: 10px;
@@ -11,29 +12,48 @@
 .compare-wrapper {
   margin-top: 25px;
   margin-bottom: 70px;
+
   .compare-body {
     margin-top: 25px;
     margin-bottom: 50px;
+
     h3 {
       font-size: 22px;
       font-weight: 500;
     }
+
     .compare-card {
       box-shadow: 0px 0 30px rgba(1, 41, 112, 0.08);
       text-align: center;
+
       h3 {
         font-size: 26px;
         font-weight: 600;
+
+        .unit {
+          display: block;
+          font-size: 12px;
+          font-weight: normal;
+        }
       }
+
       h4 {
         font-size: 16px;
         font-weight: 500;
+
+        .unit {
+          display: block;
+          font-size: 12px;
+          font-weight: normal;
+        }
       }
     }
   }
 }
+
 .ant-card-grid.red-card {
   color: #8d0101;
+
   h3,
   h4 {
     color: #8d0101;

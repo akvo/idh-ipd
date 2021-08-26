@@ -42,6 +42,7 @@ const chartTmp = [
         percent: false,
         column: [
           {
+            suffix: "<small class='unit'>USD/year</small>",
             percent: false,
             name: "net_income",
             key: "net_income",
@@ -66,18 +67,6 @@ const chartTmp = [
             percent: true,
             name: "percent_hh_income",
             key: "percent_hh_income",
-          },
-        ],
-      },
-      {
-        section: "comparing-the-living-income-gap",
-        title: "Share of households earning an income above the LI benchmark",
-        percent: false,
-        column: [
-          {
-            percent: false,
-            name: "she_above_li_income",
-            key: "she_above_li_income",
           },
         ],
       },

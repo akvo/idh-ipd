@@ -251,6 +251,7 @@ const BarStack = (data, extra) => {
     ...Easing,
     ...extra,
   };
+  console.log(option);
   return option;
 };
 

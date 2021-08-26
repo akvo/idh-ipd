@@ -79,25 +79,25 @@ const renderHeroCard = (data) => {
           span: 4,
           value: land_size,
           text: "Farm size - Mean",
-          unit: "(ha)",
+          unit: "ha",
         },
         {
           span: 4,
           value: price,
           text: "Price - Mean",
-          unit: "(USD/kg)",
+          unit: "USD/kg",
         },
         {
           span: 4,
           value: yields,
           text: "Yield - Mean",
-          unit: "(kg/ha)",
+          unit: "kg/ha",
         },
         {
           span: 4,
           value: prod_cost,
-          text: "Production Costs -  Mean",
-          unit: "(USD/ha)",
+          text: "Production Costs - Mean",
+          unit: "USD/ha",
           info:
             "We consider two types of production costs: costs for hired labour and costs for inputs.",
         },
@@ -105,7 +105,7 @@ const renderHeroCard = (data) => {
           span: 4,
           value: other_income,
           text: "Non-focus crop income - Mean",
-          unit: "(USD/year)",
+          unit: "USD/year",
         },
       ],
     },
@@ -116,7 +116,7 @@ const renderHeroCard = (data) => {
           span: 5,
           value: net_income,
           text: "Net-income focus crop - Mean",
-          unit: "(USD/year)",
+          unit: "USD/year",
           info:
             "Net-income of the focus crop is calculated by subtracting the production costs of the focus crop from the revenues from the focus crop.",
           nan:
@@ -126,7 +126,7 @@ const renderHeroCard = (data) => {
           span: 5,
           value: hh_income,
           text: "Actual income - Mean",
-          unit: "(USD/year)",
+          unit: "USD/year",
           info:
             "Actual income is the sum of net-income from the focus crop and non-focus crop income of the household.",
           nan: "",
@@ -135,7 +135,7 @@ const renderHeroCard = (data) => {
           span: 5,
           value: living_income,
           text: "Living income benchmark",
-          unit: "(USD/year)",
+          unit: "USD/year",
           info:
             "The net annual income required for a household in a particular place to afford a decent standard of living for all members of that household. Elements of a decent standard of living include: food, water, housing, education, healthcare, transport, clothing, and other essential needs including provision for unexpected events",
         },
@@ -143,7 +143,7 @@ const renderHeroCard = (data) => {
           span: 5,
           value: living_income_gap,
           text: "Living income gap - Mean",
-          unit: "(USD/year)",
+          unit: "USD/year",
           info:
             "The living income gap is the difference between the living income benchmark and the actual household income.",
           nan:
@@ -163,7 +163,12 @@ const renderHeroCard = (data) => {
         wrap={true}
       >
         {x.cards.map((c, j) => (
-          <CountUpCard key={`${c.text}-${j}`} span={c.span} data={c} />
+          <CountUpCard
+            key={`${c.text}-${j}`}
+            span={c.span}
+            data={c}
+            suffix={`<br/><small class="unit">${c.unit}</small>`}
+          />
         ))}
       </Row>
     );
@@ -442,6 +447,7 @@ const Case = () => {
                       span={11}
                       type="reverse"
                       percent={false}
+                      suffix="<small class='unit'>USD/Year</small>"
                       data={{
                         value: data?.company?.living_income_gap || null,
                         text: `Mean value of living income gap in ${countryName.name}`,
@@ -485,9 +491,10 @@ const Case = () => {
                       span={11}
                       type="reverse"
                       percent={false}
+                      suffix="<small class='unit'>USD/Year</small>"
                       data={{
                         value: data?.company?.net_income,
-                        text: `${getCrop(data, crops)} Focus crop (USD/year)`,
+                        text: `${getCrop(data, crops)} Focus crop`,
                       }}
                     />
                   </Row>
