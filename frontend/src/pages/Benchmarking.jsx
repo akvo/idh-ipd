@@ -160,7 +160,7 @@ const chartTmp = [
   },
   {
     type: "group",
-    title: "Non-focus crop income (USD)",
+    title: "Non-focus crop income",
     axis: {
       xAxis: "Non-focus crop income (USD)",
       yAxis: "Average non-focus crop income",
