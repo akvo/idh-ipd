@@ -450,7 +450,7 @@ const Case = () => {
                       suffix="<small class='unit'>USD/Year</small>"
                       data={{
                         value: data?.company?.living_income_gap || null,
-                        text: `Mean value of living income gap in ${countryName.name}`,
+                        text: `Mean value of living income gap`,
                       }}
                     />
                   </Row>
