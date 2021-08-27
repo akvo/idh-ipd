@@ -79,7 +79,6 @@ def get_company_by_id(req: Request,
     if company is None:
         raise HTTPException(status_code=404, detail="Not Found")
     country_name = crud_country.get_name(session=session, id=company.country)
-    # this_crop_name = crud_crop.get_name(session=session, id=company.crop)
     in_country = crud_company.get_company_by_country(session=session,
                                                      country=company.country,
                                                      crop=company.crop)
@@ -89,14 +88,6 @@ def get_company_by_id(req: Request,
         c.update({
             'name': f"{country_name} average in {crop_name}"
         })
-
-    # same_crop = crud_company.get_company_by_crop(
-    #     session=session, crop=company.crop, exclude_country=company.country)
-    # same_crop = calc.avg(same_crop, 'crop')
-    # for c in same_crop:
-    #     c.update({'name': f"Other countries average in {this_crop_name}"})
-
-    # company['comparison'] = same_crop + in_country
     company = params.with_extra_data(company.serialize)
     company['comparison'] = in_country
     return company

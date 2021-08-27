@@ -5,6 +5,8 @@ from .params import with_extra_data
 def avg(data, col):
     data = [d.serialize for d in data]
     data = pd.DataFrame(data)
+    data = data[data['net_income'].notna()]
+    data = data[data['other_income'].notna()]
     data = data.groupby(col).mean()
     data = data.reset_index()
     data = data.astype(object).where(pd.notnull(data), None)

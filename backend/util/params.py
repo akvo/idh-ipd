@@ -35,12 +35,12 @@ def get_share_income(x):
 
 
 def get_percentage_hh_income(x):
-    for i in ["net_income", "hh_income"]:
+    for i in ["living_income", "hh_income"]:
         if i not in x:
             return None
         if not x[i]:
             return None
-    return (x["hh_income"] / (x["net_income"] + x["hh_income"]) * 100)
+    return ((x["living_income"] - x["hh_income"]) / (x["living_income"]) * 100)
 
 
 def with_extra_data(data):

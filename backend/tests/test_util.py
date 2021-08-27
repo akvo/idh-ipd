@@ -35,7 +35,7 @@ def test_company_data_extra_parameter():
     assert result["total_prod_cost"] == 0.3 * 1300
     assert result["living_income_gap"] == 3288 - 365
     assert result["share_income"] == 166 / 365 * 100
-    assert result["percent_hh_income"] == 365 / (166 + 365) * 100
+    assert result["percent_hh_income"] == ((3288 - 365) / 3288) * 100
 
 
 def test_company_data_extra_parameter_with_incomplete_input():
