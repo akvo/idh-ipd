@@ -41,7 +41,7 @@ const Introduction = ({ history }) => {
             justify="center"
             gutter={[24, 24]}
             wrap={true}
-            style={{ paddingTop: "2rem", paddingBottom: "2rem" }}
+            style={{ paddingTop: "32px", paddingBottom: "32px" }}
           >
             <Col sm={24} md={24} lg={6} className="img-title">
               <Image
@@ -124,8 +124,8 @@ const Introduction = ({ history }) => {
             gutter={[24, 24]}
             wrap={true}
             style={{
-              paddingTop: "2rem",
-              paddingBottom: "2rem",
+              paddingTop: "32px",
+              paddingBottom: "32px",
             }}
           >
             <Col sm={24} md={24} lg={10} className="img-title">

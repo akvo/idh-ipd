@@ -438,7 +438,8 @@ const Case = () => {
                           data?.company?.net_income &&
                           data?.company?.living_income
                             ? (data.company.net_income * 100) /
-                              data.company.living_income
+                              (data.company.net_income +
+                                (data.company.other_income || 0))
                             : null,
                         text: "% of actual income coming from focus crop",
                       }}

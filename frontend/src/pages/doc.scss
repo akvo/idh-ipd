@@ -4,7 +4,7 @@ $secondary: #4bb946;
 $font: "Gotham A", "Gotham B", Verdana, sans-serif !important;
 
 .swagger-ui {
-  margin-top: -4rem;
+  margin-top: -64px;
   font-family: $font;
 
   .opblock {
@@ -47,19 +47,19 @@ $font: "Gotham A", "Gotham B", Verdana, sans-serif !important;
     pre {
       &.microlight {
         border-radius: 0px;
-        margin-bottom: 1rem;
+        margin-bottom: 16px;
       }
     }
   }
 
   .response-col_status {
     font-family: $font;
-    font-size: 1rem;
+    font-size: 16px;
   }
 
   .response-col_links {
     font-family: $font;
-    font-size: 1rem;
+    font-size: 16px;
   }
 
   .opblock-tag {
@@ -113,12 +113,12 @@ $font: "Gotham A", "Gotham B", Verdana, sans-serif !important;
       tr {
         td {
           font-family: $font;
-          font-size: 1rem;
+          font-size: 16px;
         }
 
         th {
           font-family: $font;
-          font-size: 1rem;
+          font-size: 16px;
         }
       }
     }
@@ -132,7 +132,7 @@ $font: "Gotham A", "Gotham B", Verdana, sans-serif !important;
     font-size: 12px;
 
     p {
-      margin-bottom: 0.5rem;
+      margin-bottom: 8px;
     }
   }
 

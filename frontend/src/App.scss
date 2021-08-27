@@ -6,7 +6,7 @@ $secondary: #0081e0;
 body {
   margin: 0;
   font-family: "Gotham A", "Gotham B", Verdana, sans-serif;
-  font-size: 1rem;
+  font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -33,7 +33,7 @@ code {
 .ant-menu.ant-menu-dark .ant-menu-sub {
   color: #fff;
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 16px;
   background: #2872c6;
 }
 
@@ -109,7 +109,7 @@ code {
 }
 
 .container {
-  padding: 0 4rem;
+  padding: 0 64px;
 }
 
 .count-up-card {
@@ -124,7 +124,7 @@ code {
   }
 
   h3 {
-    font-size: 1.75rem;
+    font-size: 28px;
     font-weight: 600;
 
     .unit {
@@ -135,7 +135,7 @@ code {
   }
 
   h4 {
-    font-size: 0.8rem;
+    font-size: 12px;
     font-weight: 500;
   }
 

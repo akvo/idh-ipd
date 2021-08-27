@@ -105,7 +105,7 @@ const BarStack = (data, extra) => {
             textStyle: {
               color: labelColor,
               fontFamily: "Gotham A,Gotham B",
-              fontSize: "1.5rem",
+              fontSize: 28,
               fontWeight: "bold",
             },
           },
@@ -120,7 +120,7 @@ const BarStack = (data, extra) => {
           textStyle: {
             color: labelColor,
             fontFamily: "Gotham A,Gotham B",
-            fontSize: ".75rem",
+            fontSize: 18,
             fontWeight: "bold",
           },
         },

@@ -8,7 +8,7 @@
 
   h1 {
     color: #ffffff;
-    font-size: 3.5rem;
+    font-size: 56px;
     line-height: 1.15625;
     font-weight: 600;
     margin-bottom: 0;
@@ -16,13 +16,13 @@
 
   p {
     color: #ffffff;
-    font-size: 1.5rem;
+    font-size: 24px;
   }
 }
 
 .content-wrapper {
-  padding: 0 10rem;
-  margin: 5rem 0;
+  padding: 0 160px;
+  margin: 80px 0;
 
   &.odd {
     background: #0081e0;
@@ -108,7 +108,7 @@
   }
 
   h3 {
-    font-size: 2rem;
+    font-size: 32px;
     font-weight: 700;
   }
 
@@ -130,19 +130,19 @@
     h3 {
       position: absolute;
       margin: auto;
-      height: 4rem;
+      height: 64px;
       width: calc(100% - 24px);
       height: auto;
       color: #fff;
-      top: calc(50% - 4rem);
+      top: calc(50% - 64px);
       bottom: 0;
     }
 
     &:hover {
       img {
         /**
-        * Previously 0.3
-        **/
+                                                        * Previously 0.3
+                                                        **/
         filter: brightness(1);
       }
     }

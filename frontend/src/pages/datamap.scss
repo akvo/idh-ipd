@@ -1,13 +1,13 @@
 .map-wrapper {
   position: relative;
   background-color: #f4fdff;
-  margin-top: -2rem;
+  margin-top: -32px;
   min-height: calc(100vh - 140px);
 
   .map-buttons {
     position: absolute;
     z-index: 1;
-    top: 2rem;
+    top: 32px;
 
     button {
       margin-left: 10px;
@@ -18,9 +18,9 @@
     content: "";
     z-index: 1;
     height: 14px;
-    width: 10rem;
+    width: 160px;
     position: absolute;
-    bottom: 4rem;
+    bottom: 64px;
     margin: auto;
     color: #fff;
     text-align: center;

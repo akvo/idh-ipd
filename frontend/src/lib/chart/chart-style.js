@@ -26,7 +26,7 @@ export const TextStyle = {
   textStyle: {
     color: "#000",
     fontFamily: "Gotham A,Gotham B",
-    fontSize: "1rem",
+    fontSize: 14,
     fontWeight: "bold",
   },
 };

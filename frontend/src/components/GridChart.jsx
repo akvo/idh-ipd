@@ -101,7 +101,7 @@ const GridChart = ({ items }) => {
             height={300}
             span={12}
             axis={item?.axis}
-            styles={{ marginBottom: 25 }}
+            styles={{ marginBottom: "100px" }}
             extra={{
               grid: {
                 top: 60,
