@@ -146,7 +146,7 @@ const BarStack = (data, extra) => {
   let guide = {};
   if (guides.length) {
     guides = guides.map((x, i) => {
-      return { name: `${x.name}`, yAxis: x.value };
+      return { name: `${x.name} ${x.group}`, yAxis: x.value };
     });
     guide = {
       markLine: {

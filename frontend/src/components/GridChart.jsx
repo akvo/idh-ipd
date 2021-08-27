@@ -69,7 +69,7 @@ const ChartType = ({
           <p>{description}</p>
           {hasTable && <DataTable items={table} />}
           {link && (
-            <Card title="Principal Source">
+            <Card title="Benchmark source">
               <p className="source-link">
                 <a href={link.link} target="_blank" rel="noopener noreferrer">
                   {link.link}
