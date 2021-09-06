@@ -3,10 +3,47 @@ import { Row, Col, Card } from "antd";
 import CountUp from "react-countup";
 import Chart from "../lib/chart";
 
+const DataItem = ({ item }) => {
+  const Group = () =>
+    item.column.map((c, i) => (
+      <Card.Grid
+        key={`${c.group}-${i}`}
+        hoverable={false}
+        style={{ width: "50%", height: 150 }}
+        className={`${c.value ? "" : "red-card"}`}
+      >
+        <h4>{c.group}</h4>
+        <h3>
+          {c.value ? (
+            <CountUp
+              suffix={c.suffix || ""}
+              start={0}
+              end={c.value}
+              duration={2}
+              percent={c.percent}
+            />
+          ) : (
+            "N.A."
+          )}
+          {c.percent ? "%" : ""}
+        </h3>
+      </Card.Grid>
+    ));
+  return [
+    <Card.Grid
+      key={`${item.name}-1`}
+      hoverable={false}
+      style={{ width: "100%" }}
+    >
+      <h4>{item.title}</h4>
+    </Card.Grid>,
+    <Group key={`${item.name}-2`} />,
+  ];
+};
+
 const DataTable = ({ items }) => {
-  return items.map((item) => (
+  return (
     <Row
-      key={`${item.title}-wrapper`}
       justify="space-between"
       gutter={[12, 12]}
       style={{ marginBottom: "25px" }}
@@ -14,37 +51,13 @@ const DataTable = ({ items }) => {
     >
       <Col span={24}>
         <Card className="compare-card">
-          <Card.Grid hoverable={false} style={{ width: "100%" }}>
-            <h4>{item.title}</h4>
-          </Card.Grid>
-          {item.column.map((c, i) => (
-            <Card.Grid
-              key={`${c.group}-${i}`}
-              hoverable={false}
-              style={{ width: "50%", height: 159 }}
-              className={`${c.value ? "" : "red-card"}`}
-            >
-              <h4>{c.group}</h4>
-              <h3>
-                {c.value ? (
-                  <CountUp
-                    suffix={c.suffix || ""}
-                    start={0}
-                    end={c.value}
-                    duration={2}
-                    percent={c.percent}
-                  />
-                ) : (
-                  "N.A."
-                )}
-                {c.percent ? "%" : ""}
-              </h3>
-            </Card.Grid>
+          {items.map((item, index) => (
+            <DataItem key={index} item={item} />
           ))}
         </Card>
       </Col>
     </Row>
-  ));
+  );
 };
 
 const ChartType = ({
@@ -69,13 +82,13 @@ const ChartType = ({
           <p>{description}</p>
           {hasTable && <DataTable items={table} />}
           {link && (
-            <Card title="Benchmark source">
-              <p className="source-link">
-                <a href={link.link} target="_blank" rel="noopener noreferrer">
-                  {link.link}
-                </a>
-              </p>
-            </Card>
+            <p className="source-link">
+              Benchmark Source:
+              <br />
+              <a href={link.link} target="_blank" rel="noopener noreferrer">
+                {link.link}
+              </a>
+            </p>
           )}
         </>
       );

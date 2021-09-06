@@ -56,7 +56,7 @@ const chartTmp = [
     type: "table",
     title: "Comparing the Living Income gap",
     description:
-      "We report the living income gap of the farmers from your company against the living income gap of <the same type>. By measuring the actual household income of the farmers, we can assess whether the households earn a living income. If farmers earn an income below the living income level, we can assess the difference between actual household income level and the living income level. This is what we call the living income gap.",
+      "We report the living income gap of the farmers from your company against the living income gap of Average <crop> in <country>. By measuring the actual household income of the farmers, we can assess whether the households earn a living income. If farmers earn an income below the living income level, we can assess the difference between actual household income level and the living income level. This is what we call the living income gap.",
     hasTable: true,
     link: true,
     table: [
@@ -88,6 +88,7 @@ const chartTmp = [
   },
   {
     type: "stack",
+    height: 1000,
     chart: [
       {
         section: "comparing-the-living-income-gap",
@@ -213,20 +214,27 @@ const Benchmarking = () => {
     return replacedTitle;
   };
 
+  const crop = defCompany
+    ? crops.find((x) => x.id === defCompany?.crop)?.name
+    : "";
+
   const generateChartData = (cl, company) => {
+    const cropName = crops.find((x) => x.id === company?.crop)?.name;
+    const countryName = countries.find((x) => x.id === company?.country)?.name;
     const tmp = chartTmp.map((x) => {
       if (x?.description) {
         x = {
           ...x,
-          title: x.title.replace("<the same type>", compareWith),
-          description: x.description.replace("<the same type>", compareWith),
+          title: x.title.replace("<crop>", cropName),
+          description: x.description
+            .replace("<crop>", cropName)
+            .replace("<country>", countryName),
         };
       }
       if (x?.chart) {
-        const crop = crops.find((x) => x.id === company?.crop)?.name;
         x = {
           ...x,
-          title: x?.title && crop ? replaceCrop(crop, x.title) : x?.title,
+          title: x?.title ? replaceCrop(cropName, x.title) : x?.title,
           chart: cl
             .map((col) => {
               return x.chart.map((c) => {
@@ -322,10 +330,8 @@ const Benchmarking = () => {
   if (errorPage) {
     return <ErrorPage />;
   }
-
   return (
     <div className="container">
-      {/* // Option */}
       <Row
         justify="end"
         className="compare-options-wrapper"
@@ -333,6 +339,13 @@ const Benchmarking = () => {
         gutter={[12, 12]}
         wrap={true}
       >
+        {defCompany && (
+          <Col sm={24} md={12} lg={16}>
+            The averages used for benchmarking on this page reflect the average
+            values of the companies included in this data set, for that specific
+            sector and country.
+          </Col>
+        )}
         <Col sm={24} md={6} lg={4}>
           <DropdownCountry
             placeholder="Select Country"
@@ -350,6 +363,35 @@ const Benchmarking = () => {
           />
         </Col>
       </Row>
+      {defCompany && (
+        <Row
+          justify="center"
+          align="middle"
+          className="compare-title"
+          gutter={[24, 24]}
+          wrap={true}
+        >
+          <Col sm={24} md={24} lg={7} className="company-title">
+            <h2>Country</h2>
+            <span>{defCountry.name}</span>
+          </Col>
+          <Col sm={24} md={24} lg={7} className="company-title">
+            <h2>Company</h2>
+            <span>{defCompany?.name}</span>
+          </Col>
+          <Col sm={24} md={8} lg={5} className="company-title">
+            <h2>Commodity</h2>
+            <span>{crop}</span>
+          </Col>
+          <Col sm={24} md={6} lg={5} className="company-title">
+            <img
+              className="crop-img"
+              src={`/icons/${crop?.toLowerCase()}.png`}
+              alt={crop}
+            />
+          </Col>
+        </Row>
+      )}
       {/* // Chart */}
       {defCompany && chart && <GridChart items={chart} />}
       {!defCompany && <EmptyText amount={countries.length} />}
