@@ -78,25 +78,25 @@ const renderHeroCard = (data) => {
         {
           span: 4,
           value: land_size,
-          text: "Farm size - Mean",
+          text: "Farm size - Average",
           unit: "ha",
         },
         {
           span: 4,
           value: price,
-          text: "Price - Mean",
+          text: "Price - Average",
           unit: "USD/kg",
         },
         {
           span: 4,
           value: yields,
-          text: "Yield - Mean",
+          text: "Yield - Average",
           unit: "kg/ha",
         },
         {
           span: 4,
           value: prod_cost,
-          text: "Production Costs - Mean",
+          text: "Production Costs - Average",
           unit: "USD/ha",
           info:
             "We consider two types of production costs: costs for hired labour and costs for inputs.",
@@ -104,7 +104,7 @@ const renderHeroCard = (data) => {
         {
           span: 4,
           value: other_income,
-          text: "Non-focus crop income - Mean",
+          text: "Non-focus crop income - Average",
           unit: "USD/year",
         },
       ],
@@ -115,7 +115,7 @@ const renderHeroCard = (data) => {
         {
           span: 5,
           value: net_income,
-          text: "Net-income focus crop - Mean",
+          text: "Net-income focus crop - Average",
           unit: "USD/year",
           info:
             "Net-income of the focus crop is calculated by subtracting the production costs of the focus crop from the revenues from the focus crop.",
@@ -125,7 +125,7 @@ const renderHeroCard = (data) => {
         {
           span: 5,
           value: hh_income,
-          text: "Actual income - Mean",
+          text: "Actual income - Average",
           unit: "USD/year",
           info:
             "Actual income is the sum of net-income from the focus crop and non-focus crop income of the household.",
@@ -142,7 +142,7 @@ const renderHeroCard = (data) => {
         {
           span: 5,
           value: living_income_gap,
-          text: "Living income gap - Mean",
+          text: "Living income gap - Average",
           unit: "USD/year",
           info:
             "The living income gap is the difference between the living income benchmark and the actual household income.",
@@ -451,7 +451,7 @@ const Company = () => {
                       suffix="<small class='unit'>USD/Year</small>"
                       data={{
                         value: data?.company?.living_income_gap || null,
-                        text: `Mean value of living income gap`,
+                        text: `Average value of living income gap`,
                       }}
                     />
                   </Row>

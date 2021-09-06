@@ -12,7 +12,7 @@ const CountUpCard = ({
   suffix = "",
   data,
 }) => {
-  const { value, text, unit } = data;
+  const { value, text } = data;
 
   let props = {
     start: 0,
@@ -24,7 +24,7 @@ const CountUpCard = ({
     props = {
       ...props,
       decimals: 2,
-      decimal: ",",
+      decimal: ".",
     };
   }
 

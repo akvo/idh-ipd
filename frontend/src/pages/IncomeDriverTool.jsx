@@ -192,7 +192,7 @@ const IncomeDriverTool = ({ history }) => {
               income.
               <br />
               How should the numbers be interpreted. What does reaching the
-              feasible value mean.
+              feasible value average.
             </p>
           </Col>
         </div>
