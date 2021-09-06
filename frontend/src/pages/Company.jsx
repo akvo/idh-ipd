@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Row, Col, Select, Anchor } from "antd";
 import StickyBox from "react-sticky-box";
 
-import "./case.scss";
+import "./company.scss";
 
 import Chart from "../lib/chart";
-import CaseMap from "../components/CaseMap";
+import CompanyMap from "../components/CompanyMap";
 import CountUpCard from "../components/CountUpCard";
 import Loading from "../components/Loading";
 
@@ -30,24 +30,24 @@ const renderHeroTitle = (data, crops) => {
     <Row
       justify="center"
       align="middle"
-      className="case-body"
+      className="company-body"
       gutter={[24, 24]}
       data-aos="fade-up"
       wrap={true}
     >
-      <Col sm={24} md={24} lg={7} className="case-title">
+      <Col sm={24} md={24} lg={7} className="company-title">
         <h2>Country</h2>
         <span>{country}</span>
       </Col>
-      <Col sm={24} md={24} lg={7} className="case-title">
+      <Col sm={24} md={24} lg={7} className="company-title">
         <h2>Company</h2>
         <span>{data?.company?.name}</span>
       </Col>
-      <Col sm={24} md={8} lg={5} className="case-title">
+      <Col sm={24} md={8} lg={5} className="company-title">
         <h2>Commodity</h2>
         <span>{crop}</span>
       </Col>
-      <Col sm={24} md={6} lg={5} className="case-title">
+      <Col sm={24} md={6} lg={5} className="company-title">
         <img
           className="crop-img"
           src={`/icons/${crop?.toLowerCase()}.png`}
@@ -157,7 +157,7 @@ const renderHeroCard = (data) => {
     return (
       <Row
         key={x.section}
-        className="case-body"
+        className="company-body"
         justify={`${i % 2 === 0 ? "space-between" : "space-around"}`}
         data-aos="fade-up"
         wrap={true}
@@ -175,7 +175,7 @@ const renderHeroCard = (data) => {
   });
 };
 
-const Case = () => {
+const Company = () => {
   const {
     countries,
     selectedCountry,
@@ -365,7 +365,7 @@ const Case = () => {
           )}
         </div>
         <Col sm={24} md={12} lg={7} className="hero-map">
-          {data?.name && <CaseMap name={data.name} />}
+          {data?.name && <CompanyMap name={data.name} />}
         </Col>
         <Col
           sm={24}
@@ -386,7 +386,7 @@ const Case = () => {
       {defCompany && (
         <>
           <Row
-            className="container case-wrapper"
+            className="container company-wrapper"
             data-aos="fade-up"
             wrap={true}
           >
@@ -401,7 +401,7 @@ const Case = () => {
             <Col sm={16} md={18} lg={19}>
               <Row
                 id="living-income"
-                className="case-body first anchor"
+                className="company-body first anchor"
                 data-aos="fade-up"
                 gutter={[50, 50]}
                 wrap={true}
@@ -421,7 +421,7 @@ const Case = () => {
                     wrapper={false}
                   />
                 </Col>
-                <Col sm={24} md={24} lg={10} className="case-detail">
+                <Col sm={24} md={24} lg={10} className="company-detail">
                   <h3>The Living Income Gap</h3>
                   <p>
                     The living income gap is the difference between the actual
@@ -458,7 +458,7 @@ const Case = () => {
                 </Col>
               </Row>
               <Row
-                className="case-body even anchor"
+                className="company-body even anchor"
                 id="net-income"
                 data-aos="fade-up"
                 gutter={[50, 50]}
@@ -476,7 +476,7 @@ const Case = () => {
                     />
                   )}
                 </Col>
-                <Col sm={24} md={24} lg={10} className="case-detail">
+                <Col sm={24} md={24} lg={10} className="company-detail">
                   <h3>Net-income from {getCrop(data, crops)}</h3>
                   <p>
                     On the left we present the net-income from the{" "}
@@ -509,4 +509,4 @@ const Case = () => {
   );
 };
 
-export default Case;
+export default Company;

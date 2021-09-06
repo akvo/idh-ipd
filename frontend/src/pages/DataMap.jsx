@@ -85,10 +85,10 @@ const DataMap = ({ history }) => {
     const allow =
       countries.length > 0 && countries.find((c) => c.id === country.id);
     UIStore.update((s) => {
-      s.page = "case";
+      s.page = "company";
       s.selectedCountry = country.id;
     });
-    allow ? history.push("/case") : openWarningModal();
+    allow ? history.push("/company") : openWarningModal();
   };
 
   if (loading) {

@@ -12,7 +12,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Nav from "./components/Nav";
 import Introduction from "./pages/Introduction";
 import DataMap from "./pages/DataMap";
-import Case from "./pages/Case";
+import Company from "./pages/Company";
 import Benchmarking from "./pages/Benchmarking";
 import IncomeDriverTool from "./pages/IncomeDriverTool";
 import Manage from "./pages/Manage";
@@ -140,7 +140,7 @@ function App({ btnReff }) {
         <Content>
           <Route exact path="/" component={Introduction} />
           <ProtectedRoute exact path="/data-map" component={DataMap} />
-          <ProtectedRoute exact path="/case" component={Case} />
+          <ProtectedRoute exact path="/company" component={Company} />
           <ProtectedRoute exact path="/benchmarking" component={Benchmarking} />
           <ProtectedRoute
             exact

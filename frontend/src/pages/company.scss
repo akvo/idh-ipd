@@ -45,18 +45,18 @@ main.ant-layout-content {
     }
   }
 
-  .case-body {
+  .company-body {
     padding-right: 64px;
     margin-top: 25px;
     width: 100%;
   }
 }
 
-.case-wrapper {
+.company-wrapper {
   margin-top: 40px;
   margin-bottom: 40px;
 
-  .case-body {
+  .company-body {
     margin-top: 25px;
     margin-bottom: 40px;
     width: 100%;
@@ -76,7 +76,7 @@ main.ant-layout-content {
       background: #f2f5fc;
     }
 
-    .case-detail {
+    .company-detail {
       h3 {
         font-weight: 600;
       }
@@ -84,7 +84,7 @@ main.ant-layout-content {
   }
 }
 
-.case-title {
+.company-title {
   text-align: center;
 
   h2 {

@@ -6,14 +6,14 @@ import {
   Geography,
 } from "react-simple-maps";
 
-import "./casemap.scss";
+import "./companymap.scss";
 
 import { center } from "../data/country-center";
 
 const geoUrl = "/world.topo.json";
 const zoom = 1.5;
 
-const CaseMap = ({ name }) => {
+const CompanyMap = ({ name }) => {
   return (
     <ComposableMap
       projectionConfig={{
@@ -66,4 +66,4 @@ const CaseMap = ({ name }) => {
   );
 };
 
-export default CaseMap;
+export default CompanyMap;

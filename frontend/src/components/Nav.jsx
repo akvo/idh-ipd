@@ -29,7 +29,7 @@ const Nav = ({ logout, loginWithPopup, isAuthenticated }) => {
       selectedKeys={[page]}
       onClick={handleOnClickMenu}
       style={{
-        minWidth: isAuthenticated && user?.active ? "640px" : "225px",
+        minWidth: isAuthenticated && user?.active ? "690px" : "225px",
       }}
     >
       <Menu.Item key="">
@@ -40,8 +40,8 @@ const Nav = ({ logout, loginWithPopup, isAuthenticated }) => {
           <Menu.Item key="data-map">
             <Link to="/data-map">Data Map</Link>
           </Menu.Item>
-          <Menu.Item key="case">
-            <Link to="/case">Case</Link>
+          <Menu.Item key="company">
+            <Link to="/company">Company Data</Link>
           </Menu.Item>
           <Menu.Item key="benchmarking">
             <Link to="/benchmarking">Benchmarking</Link>
