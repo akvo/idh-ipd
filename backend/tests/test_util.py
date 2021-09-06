@@ -23,7 +23,7 @@ incomplete = {
     "yields": 6395,
     "prod_cost": 1300,
     "net_income": 166,
-    "other_income": 199,
+    "other_income": None,
     "hh_income": None,
     "living_income": 3288
 }
@@ -35,7 +35,8 @@ def test_company_data_extra_parameter():
     assert result["total_prod_cost"] == 0.3 * 1300
     assert result["living_income_gap"] == 3288 - 365
     assert result["share_income"] == 166 / 365 * 100
-    assert result["percent_hh_income"] == ((3288 - 365) / 3288) * 100
+    assert result["percent_li_gap"] == ((3288 - 365) / 3288) * 100
+    assert result["percent_hh_income"] == (166 / (166 + 199)) * 100
 
 
 def test_company_data_extra_parameter_with_incomplete_input():
@@ -44,4 +45,5 @@ def test_company_data_extra_parameter_with_incomplete_input():
     assert result["total_prod_cost"] is None
     assert result["living_income_gap"] is None
     assert result["share_income"] is None
-    assert result["percent_hh_income"] is None
+    assert result["percent_li_gap"] is None
+    assert result["percent_hh_income"] == 100

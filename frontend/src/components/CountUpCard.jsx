@@ -23,7 +23,7 @@ const CountUpCard = ({
   if (!isInteger(Number(value))) {
     props = {
       ...props,
-      decimals: 2,
+      decimals: percent ? 0 : 2,
       decimal: ".",
     };
   }

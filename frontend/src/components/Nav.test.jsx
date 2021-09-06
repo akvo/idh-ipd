@@ -50,7 +50,7 @@ describe("Nav rendering", () => {
       expect(Array.from(elements).map((el) => el.text)).toMatchObject([
         "Introduction",
         "Data Map",
-        "Case",
+        "Company",
         "Benchmarking",
         "Logout",
       ]);

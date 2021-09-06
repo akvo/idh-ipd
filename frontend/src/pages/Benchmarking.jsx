@@ -72,6 +72,18 @@ const chartTmp = [
           },
         ],
       },
+      {
+        section: "comparing-the-living-income-gap",
+        title: "% of living income gap",
+        percent: true,
+        column: [
+          {
+            percent: true,
+            name: "percent_li_gap",
+            key: "percent_li_gap",
+          },
+        ],
+      },
     ],
   },
   {

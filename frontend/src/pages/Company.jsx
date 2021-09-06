@@ -188,8 +188,6 @@ const Company = () => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
 
-  const countryName = countries.find((x) => x.id === defCountry);
-
   useEffect(() => {
     if (loading && countries.length && crops.length) {
       if (selectedCountry) {
@@ -434,24 +432,17 @@ const Company = () => {
                       type="reverse"
                       percent={true}
                       data={{
-                        value:
-                          data?.company?.net_income &&
-                          data?.company?.living_income
-                            ? (data.company.net_income * 100) /
-                              (data.company.net_income +
-                                (data.company.other_income || 0))
-                            : null,
+                        value: data?.company?.percent_hh_income || null,
                         text: "% of actual income coming from focus crop",
                       }}
                     />
                     <CountUpCard
                       span={11}
                       type="reverse"
-                      percent={false}
-                      suffix="<small class='unit'>USD/Year</small>"
+                      percent={true}
                       data={{
-                        value: data?.company?.living_income_gap || null,
-                        text: `Average value of living income gap`,
+                        value: data?.company?.percent_li_gap || null,
+                        text: `% of Average living income gap`,
                       }}
                     />
                   </Row>

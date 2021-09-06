@@ -40,7 +40,7 @@ const BarStack = (data, extra) => {
     };
   });
   let guides = data.filter(
-    (x) => x.var === "living_income" || x.var === "net_income"
+    (x) => x.var === "living_income" || x.var === "hh_income"
   );
   /* End Custom Calculation */
   const filterData = data
@@ -58,8 +58,6 @@ const BarStack = (data, extra) => {
     .filter((x) => x.var !== "hh_income")
     .groupBy("name")
     .map((x, i) => {
-      let itemStyle = {};
-      let labelColor = "#ffffff";
       const formatter = (a) => {
         const curr = x.find((g) => g?.group === a?.name);
         if (curr?.name === objectNames.revenue && curr?.actual_value) {
@@ -68,46 +66,15 @@ const BarStack = (data, extra) => {
         if (curr?.name === objectNames.total_prod_cost) {
           return -a.value;
         }
-        if (curr?.name === objectNames.living_income_gap) {
-          if (!a.value) {
-            return "Nothing";
-          }
-          let combined_income = data
-            .filter((d) => d.group === curr.group)
-            .filter(
-              (d) =>
-                d.var === "net_income" ||
-                d.var === "other_income" ||
-                d.var === "living_income_gap"
-            )
-            .filter((d) => d.value)
-            .map((d) => d.value);
-          if (combined_income.length) {
-            combined_income = combined_income.reduce((k, v) => k + v);
-            return ((a.value / combined_income) * 100).toFixed(2) + "%";
-          }
-          return "Nothing";
-        }
         return `${a.value}`;
       };
+      let itemStyle = {};
       if (objectNames.living_income_gap === i) {
-        labelColor = "#000";
         itemStyle = {
           itemStyle: {
             color: "#f2f2f2",
             borderType: "dashed",
             borderColor: "red",
-          },
-          label: {
-            show: true,
-            position: "inside",
-            formatter: formatter,
-            textStyle: {
-              color: labelColor,
-              fontFamily: "Gotham A,Gotham B",
-              fontSize: 28,
-              fontWeight: "bold",
-            },
           },
         };
       }
@@ -118,7 +85,7 @@ const BarStack = (data, extra) => {
           position: "inside",
           formatter: formatter,
           textStyle: {
-            color: labelColor,
+            color: objectNames.living_income_gap === i ? "#000" : "#FFF",
             fontFamily: "Gotham A,Gotham B",
             fontSize: 18,
             fontWeight: "bold",
@@ -143,43 +110,52 @@ const BarStack = (data, extra) => {
       };
     })
     .value();
-  let guide = {};
   if (guides.length) {
     guides = guides.map((x, i) => {
-      return { name: `${x.name} ${x.group}`, yAxis: x.value };
+      return { name: `${x.name} ${x.group}`, group: x.group, yAxis: x.value };
     });
-    guide = {
-      markLine: {
-        lineStyle: {
-          type: "dashed",
-          color: "red",
-        },
-        symbol: "rect",
-        label: {
-          show: true,
-          position: "insideEndTop",
-          formatter: "{custom|{b}}",
-          elipsis: "break",
-          backgroundColor: "white",
-          borderColor: "#ffffff",
-          borderWidth: 5,
-          rich: {
-            custom: {
-              align: "center",
-            },
+    guides = _.chain(guides)
+      .groupBy("group")
+      .map((x, i) => {
+        const pos = i.includes("Company")
+          ? "insideMiddleTop"
+          : "insideMiddleBottom";
+        return {
+          type: "line",
+          label: {
+            show: false,
           },
-        },
-        data: guides.filter((x) => x.yAxis),
-      },
-    };
-    series = series?.map((x, i) => {
-      if (x?.name === objectNames.living_income_gap) {
-        if (x?.data.filter((d) => d).length) {
-          return { ...x, ...guide };
-        }
-      }
-      return x;
-    });
+          tooltip: {
+            show: false,
+          },
+          markLine: {
+            lineStyle: {
+              type: "dashed",
+              color: "red",
+            },
+            symbol: "rect",
+            label: {
+              show: true,
+              position: pos,
+              formatter: "{custom|{b}}",
+              backgroundColor: "transparent",
+              rich: {
+                custom: {
+                  align: "center",
+                  fontSize: "10px",
+                  color: "#000",
+                  textBorderColor: "#FFF",
+                  textBorderWidth: 3,
+                  width: "100%",
+                },
+              },
+            },
+            data: x.filter((d) => d.yAxis),
+          },
+        };
+      })
+      .value();
+    series = [...series, ...guides];
   }
   let option = {
     ...Color,
