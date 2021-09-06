@@ -88,7 +88,6 @@ const chartTmp = [
   },
   {
     type: "stack",
-    height: 1000,
     chart: [
       {
         section: "comparing-the-living-income-gap",
@@ -116,6 +115,10 @@ const chartTmp = [
         key: "living_income",
       },
     ],
+  },
+  {
+    type: "separator",
+    title: "Income Driver",
   },
   {
     type: "group",

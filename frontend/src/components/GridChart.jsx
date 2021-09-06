@@ -136,6 +136,10 @@ const GridChart = ({ items }) => {
               },
             }}
           />
+        ) : item?.type === "separator" ? (
+          <Col key={index} sm={24} md={24} lg={24} className="compare-title">
+            <h1>{item?.title}</h1>
+          </Col>
         ) : (
           <Col key={index} sm={24} md={24} lg={12} className="compare-body">
             <ChartType {...item} style={{ marginBottom: 20 }} />
