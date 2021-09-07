@@ -118,7 +118,7 @@ const chartTmp = [
   },
   {
     type: "separator",
-    title: "Income Driver",
+    title: "Income Drivers",
   },
   {
     type: "group",
