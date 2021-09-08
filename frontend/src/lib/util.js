@@ -35,7 +35,7 @@ export const objectNames = {
   hh_income: "Actual household income (USD)",
   land_size: "Land Size (ha)",
   living_income: "Living income bechmark (USD)",
-  living_income_gap: "Living income gap (%)",
+  living_income_gap: "Living income gap (USD)",
   net_income: "Net income focus crop (USD/year)",
   other_income: "Non-focus crop income (USD/year)",
   price: "Price (USD/kg)",

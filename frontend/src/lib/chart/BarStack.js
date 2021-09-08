@@ -63,9 +63,6 @@ const BarStack = (data, extra) => {
         if (curr?.name === objectNames.revenue && curr?.actual_value) {
           return curr.actual_value;
         }
-        if (curr?.name === objectNames.total_prod_cost) {
-          return -a.value;
-        }
         return `${a.value}`;
       };
       let itemStyle = {};
