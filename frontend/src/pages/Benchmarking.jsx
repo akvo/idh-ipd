@@ -406,17 +406,19 @@ const Benchmarking = () => {
           <Col sm={24} md={24} lg={24}>
             <Divider>
               <table>
-                <tr>
-                  <td>Sector Average: 1</td>
-                  <td>Actual data: 2020</td>
-                  <td>Benchmark: 2018</td>
-                </tr>
-                <tr>
-                  <td colspan={3}>
-                    Number companies considered in sector average:{" "}
-                    {defCompany?.other_company}
-                  </td>
-                </tr>
+                <tbody>
+                  <tr>
+                    <td>Sector Average: 1</td>
+                    <td>Actual data: 2020</td>
+                    <td>Benchmark: 2018</td>
+                  </tr>
+                  <tr>
+                    <td colspan={3}>
+                      Number companies considered in sector average:{" "}
+                      {defCompany?.other_company}
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </Divider>
           </Col>
