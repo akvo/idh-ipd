@@ -75,6 +75,13 @@ const BarStack = (data, extra) => {
           },
         };
       }
+      if (objectNames.total_prod_cost === i) {
+        itemStyle = {
+          itemStyle: {
+            color: "#8d0101",
+          },
+        };
+      }
       return {
         name: i,
         label: {
