@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Select, Anchor } from "antd";
+import { Row, Col, Select, Anchor, Divider } from "antd";
 import StickyBox from "react-sticky-box";
 
 import "./company.scss";
@@ -380,6 +380,28 @@ const Company = () => {
           )}
         </Col>
       </Row>
+      {defCompany && (
+        <Row
+          justify="center"
+          align="middle"
+          className="info-divider"
+          gutter={[24, 24]}
+          wrap={true}
+        >
+          <Col sm={24} md={24} lg={24}>
+            <Divider>
+              <table>
+                <tr>
+                  <td>Number farmer HH: 500</td>
+                  <td>Number of datasets included: 1</td>
+                  <td>Actual data: 2020</td>
+                  <td>Benchmark: 2018</td>
+                </tr>
+              </table>
+            </Divider>
+          </Col>
+        </Row>
+      )}
       {/* // Charts */}
       {defCompany && (
         <>

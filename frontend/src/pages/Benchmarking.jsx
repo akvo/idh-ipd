@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col } from "antd";
+import { Row, Col, Divider } from "antd";
 
 import "./benchmarking.scss";
 
@@ -392,6 +392,33 @@ const Benchmarking = () => {
               src={`/icons/${crop?.toLowerCase()}.png`}
               alt={crop}
             />
+          </Col>
+        </Row>
+      )}
+      {defCompany && (
+        <Row
+          justify="center"
+          align="middle"
+          className="info-divider"
+          gutter={[24, 24]}
+          wrap={true}
+        >
+          <Col sm={24} md={24} lg={24}>
+            <Divider>
+              <table>
+                <tr>
+                  <td>Sector Average: 1</td>
+                  <td>Actual data: 2020</td>
+                  <td>Benchmark: 2018</td>
+                </tr>
+                <tr>
+                  <td colspan={3}>
+                    Number companies considered in sector average:{" "}
+                    {defCompany?.other_company}
+                  </td>
+                </tr>
+              </table>
+            </Divider>
           </Col>
         </Row>
       )}

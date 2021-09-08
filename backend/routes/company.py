@@ -82,6 +82,7 @@ def get_company_by_id(req: Request,
     in_country = crud_company.get_company_by_country(session=session,
                                                      country=company.country,
                                                      crop=company.crop)
+    total_company = len(in_country)
     in_country = calc.avg(in_country, 'crop')
     for c in in_country:
         crop_name = crud_crop.get_name(session=session, id=c['crop'])
@@ -89,5 +90,6 @@ def get_company_by_id(req: Request,
             'name': f"{country_name} average in {crop_name}"
         })
     company = params.with_extra_data(company.serialize)
+    company['other_company'] = total_company
     company['comparison'] = in_country
     return company

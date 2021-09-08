@@ -83,6 +83,10 @@ class Name(BaseModel):
     name: str
 
 
+class OtherCompany(BaseModel):
+    other_company: int
+
+
 class CompanyCompare(CompanyMixin, Name):
     pass
 
@@ -94,7 +98,7 @@ class CompanyBase(CompanyMixin, CountryId, CompanyBaseSimple):
         orm_mode = True
 
 
-class CompanyComparison(CompanyBase):
+class CompanyComparison(OtherCompany, CompanyBase):
     comparison: List[CompanyCompare]
 
 
