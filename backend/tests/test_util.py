@@ -43,7 +43,7 @@ def test_company_data_extra_parameter_with_incomplete_input():
     result = params.with_extra_data(incomplete)
     assert result["revenue"] is None
     assert result["total_prod_cost"] is None
-    assert result["living_income_gap"] is None
+    assert result["living_income_gap"] == 3288 - 166
     assert result["share_income"] is None
     assert result["percent_li_gap"] is None
     assert result["percent_hh_income"] == 100

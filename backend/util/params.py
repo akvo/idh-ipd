@@ -17,12 +17,15 @@ def get_total_prod_cost(x):
 
 
 def get_living_income_gap(x):
-    for i in ["living_income", "hh_income"]:
-        if i not in x:
-            return None
-        if not x[i]:
-            return None
-    return x["living_income"] - x["hh_income"]
+    if x["living_income"] is None:
+        return None
+    if x["hh_income"]:
+        return x["living_income"] - x["hh_income"]
+    living_income = x["living_income"]
+    for i in ["other_income", "net_income"]:
+        if x[i]:
+            living_income = living_income - x[i]
+    return living_income
 
 
 def get_share_income(x):
