@@ -413,7 +413,7 @@ const Benchmarking = () => {
                     <td>Benchmark: 2018</td>
                   </tr>
                   <tr>
-                    <td colspan={3}>
+                    <td colSpan={3}>
                       Number companies considered in sector average:{" "}
                       {defCompany?.other_company}
                     </td>
