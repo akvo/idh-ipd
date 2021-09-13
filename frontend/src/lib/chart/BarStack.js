@@ -42,6 +42,45 @@ const BarStack = (data, extra) => {
   let guides = data.filter(
     (x) => x.var === "living_income" || x.var === "hh_income"
   );
+  let revenue = _.chain(data)
+    .groupBy("group")
+    .map((x, i) => {
+      let rev = x.filter(
+        (d) => d.var === "net_income" || d.var === "total_prod_cost"
+      );
+      rev = rev.filter((d) => d.value !== 0);
+      if (rev.length === 2) {
+        const tref = rev.reduce((r, ix) => ix.actual_value + r.actual_value);
+        return {
+          type: "line",
+          data: [],
+          markLine: {
+            silent: true,
+            data: [
+              rev.map((r) => ({
+                name: `Revenue: ${tref}`,
+                coord: [i, r.value],
+                symbol: "square",
+              })),
+            ],
+            offset: 50,
+            lineStyle: {
+              type: "dashed",
+              color: "transparent",
+            },
+            label: {
+              padding: 80,
+              show: true,
+              position: "insideMiddleTop",
+              align: "center",
+            },
+          },
+        };
+      }
+      return false;
+    })
+    .value()
+    .filter((x) => x);
   /* End Custom Calculation */
   const filterData = data
     .filter((x) => x.value)
@@ -160,6 +199,9 @@ const BarStack = (data, extra) => {
       })
       .value();
     series = [...series, ...guides];
+  }
+  if (revenue.length) {
+    series = [...series, ...revenue];
   }
   let option = {
     ...Color,

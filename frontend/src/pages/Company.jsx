@@ -486,7 +486,10 @@ const Company = () => {
                       title="Net Income Focus Crop"
                       type="BARSTACK"
                       height={350}
-                      data={generateChartData(["revenue", "total_prod_cost"])}
+                      data={generateChartData([
+                        "net_income",
+                        "total_prod_cost",
+                      ])}
                       wrapper={false}
                     />
                   )}
