@@ -397,6 +397,7 @@ const Company = () => {
                     <td>Number of datasets included: 1</td>
                     <td>Actual data: 2020</td>
                     <td>Benchmark: 2018</td>
+                    <td>Project / Coalition name(s): Beyond Chocolate</td>
                   </tr>
                 </tbody>
               </table>

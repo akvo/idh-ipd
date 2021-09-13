@@ -410,8 +410,12 @@ const Benchmarking = () => {
                   <tr>
                     <td>Sector Average: 1</td>
                     <td>Actual data: 2020</td>
-                    <td>Benchmark: 2018</td>
+                    <td>
+                      Benchmark: {defCountry?.name}, Rural {crop} growing areas,
+                      Anker method/CIRES, 2018
+                    </td>
                   </tr>
+                  <tr></tr>
                   <tr>
                     <td colSpan={3}>
                       Number companies considered in sector average:{" "}
