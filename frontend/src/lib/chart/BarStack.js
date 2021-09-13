@@ -58,7 +58,7 @@ const BarStack = (data, extra) => {
             silent: true,
             data: [
               rev.map((r) => ({
-                name: `◀------ Revenue: ${tref} USD/year -------▶`,
+                name: `◀------- Revenue: ${tref} USD/year -------▶`,
                 coord: [i, r.value],
                 symbol: "square",
               })),
@@ -69,10 +69,15 @@ const BarStack = (data, extra) => {
               color: "transparent",
             },
             label: {
-              padding: 80,
+              padding: 50,
               show: true,
               position: "insideMiddleTop",
               align: "center",
+              textStyle: {
+                fontFamily: "Gotham A,Gotham B",
+                fontSize: 18,
+                fontWeight: "bold",
+              },
             },
           },
         };
@@ -101,6 +106,9 @@ const BarStack = (data, extra) => {
         const curr = x.find((g) => g?.group === a?.name);
         if (curr?.name === objectNames.revenue && curr?.actual_value) {
           return curr.actual_value;
+        }
+        if (curr?.name === objectNames.total_prod_cost) {
+          return -a.value;
         }
         return `${a.value}`;
       };

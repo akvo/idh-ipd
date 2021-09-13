@@ -408,7 +408,7 @@ const Benchmarking = () => {
               <table>
                 <tbody>
                   <tr>
-                    <td>Sector Average: 1</td>
+                    <td>Sector Average: 2020</td>
                     <td>Actual data: 2020</td>
                     <td>
                       Benchmark: {defCountry?.name}, Rural {crop} growing areas,

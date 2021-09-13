@@ -305,6 +305,9 @@ const Company = () => {
     return <ErrorPage />;
   }
 
+  const country = countries.find((x) => x.id === defCountry);
+  const crop = crops.find((x) => x.id === data?.company?.crop);
+
   return (
     <>
       {/* // Detail */}
@@ -380,7 +383,7 @@ const Company = () => {
           )}
         </Col>
       </Row>
-      {defCompany && (
+      {defCompany && defCountry && (
         <Row
           justify="center"
           align="middle"
@@ -396,8 +399,13 @@ const Company = () => {
                     <td>Number farmer HH: 500</td>
                     <td>Number of datasets included: 1</td>
                     <td>Actual data: 2020</td>
-                    <td>Benchmark: 2018</td>
                     <td>Project / Coalition name(s): Beyond Chocolate</td>
+                  </tr>
+                  <tr>
+                    <td colSpan={4}>
+                      Benchmark: {country?.name}, Rural {crop?.name} growing
+                      areas, Anker method/CIRES, 2018
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -486,7 +494,7 @@ const Company = () => {
                       key="Net Income Focus Crop"
                       title="Net Income Focus Crop"
                       type="BARSTACK"
-                      height={350}
+                      height={650}
                       data={generateChartData([
                         "net_income",
                         "total_prod_cost",
