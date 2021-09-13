@@ -58,7 +58,7 @@ const BarStack = (data, extra) => {
             silent: true,
             data: [
               rev.map((r) => ({
-                name: `Revenue: ${tref}`,
+                name: `◀------ Revenue: ${tref} USD/year -------▶`,
                 coord: [i, r.value],
                 symbol: "square",
               })),
