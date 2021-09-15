@@ -20,11 +20,7 @@ const BarGroup = (data, extra, axis) => {
       },
     };
   }
-  const fiterData = data.filter((d) => d.value);
   let yAxis = uniq(data.map((x) => x.name));
-  yAxis = yAxis.map((x) =>
-    fiterData.find((f) => f.group === x) ? x : `${x}\nNo data`
-  );
   let legends = data.map((x) => x.group);
   let series = data.map((x) => {
     return {
