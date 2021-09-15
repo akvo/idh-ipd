@@ -95,7 +95,7 @@ export const filterCountryOptions = (
       .filter((x) => x.id === country?.id)
       .map((x) => x.company)
       .flat();
-    options = sortBy(companies, (x) => x.name);
+    options = sortBy(companies, (x) => x.id);
   }
   return options;
 };
