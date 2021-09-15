@@ -466,7 +466,9 @@ const Company = () => {
                       percent={true}
                       data={{
                         value: data?.company?.percent_hh_income || null,
-                        text: "% of actual income coming from focus crop",
+                        text: "% share of actual income coming from focus crop",
+                        info:
+                          "Share of actual income coming from focus crop = (focus crop income/actual income) * 100%",
                       }}
                     />
                     <CountUpCard
@@ -475,7 +477,7 @@ const Company = () => {
                       percent={true}
                       data={{
                         value: data?.company?.percent_li_gap || null,
-                        text: `% of Average living income gap`,
+                        text: `% share of living income gap`,
                       }}
                     />
                   </Row>

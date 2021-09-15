@@ -1,5 +1,6 @@
 import React from "react";
-import { Row, Col, Card } from "antd";
+import { Row, Col, Card, Tooltip } from "antd";
+import { InfoCircleFilled } from "@ant-design/icons";
 import CountUp from "react-countup";
 import Chart from "../lib/chart";
 
@@ -35,6 +36,13 @@ const DataItem = ({ item }) => {
       hoverable={false}
       style={{ width: "100%" }}
     >
+      {item?.info && (
+        <Tooltip title={item.info} placement="top">
+          <span className="icon-info">
+            <InfoCircleFilled />
+          </span>
+        </Tooltip>
+      )}
       <h4>{item.title}</h4>
     </Card.Grid>,
     <Group key={`${item.name}-2`} />,

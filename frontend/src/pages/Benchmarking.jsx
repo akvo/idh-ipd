@@ -62,8 +62,10 @@ const chartTmp = [
     table: [
       {
         section: "comparing-the-living-income-gap",
-        title: "% of total HH income from focus crop",
+        title: "% share of actual income coming from focus crop",
         percent: true,
+        info:
+          "Share of actual income coming from focus crop = (focus crop income/actual income) * 100%",
         column: [
           {
             percent: true,
@@ -74,7 +76,7 @@ const chartTmp = [
       },
       {
         section: "comparing-the-living-income-gap",
-        title: "% of living income gap",
+        title: `% share of living income gap`,
         percent: true,
         column: [
           {
@@ -143,8 +145,8 @@ const chartTmp = [
     },
     chart: [
       {
-        name: "area",
-        key: "area",
+        name: "land_size",
+        key: "land_size",
       },
     ],
   },
@@ -171,8 +173,8 @@ const chartTmp = [
     },
     chart: [
       {
-        name: "cop_pha",
-        key: "cop_pha",
+        name: "total_prod_cost",
+        key: "total_prod_cost",
       },
     ],
   },
