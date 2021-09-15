@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Row, Col, Card, Tooltip } from "antd";
-import { InfoCircleFilled } from "@ant-design/icons";
+import { InfoCircleFilled, CameraFilled } from "@ant-design/icons";
 import CountUp from "react-countup";
 import Chart from "../lib/chart";
+import { toJpeg } from "html-to-image";
 
 const DataItem = ({ item }) => {
   const Group = () =>
@@ -104,59 +105,94 @@ const ChartType = ({
   }
 };
 
-const GridChart = ({ items }) => {
+const GroupType = ({ items, company }) => {
+  const [show, setShow] = useState(true);
+  company = company.toLowerCase().replace(" ", "-");
   return (
     <Row
+      id="income-drivers"
       className="compare-wrapper"
       justify="space-around"
-      data-aos="fade-up"
       gutter={[50, 50]}
       wrap={true}
     >
-      {items.map((item, index) =>
-        item?.type === "group" ? (
-          <Chart
-            key={index}
-            title={item?.title}
-            data={item?.chart}
-            type="BARGROUP"
-            height={300}
-            span={12}
-            axis={item?.axis}
-            styles={{ marginBottom: "100px" }}
-            extra={{
-              grid: {
-                top: 60,
-                left: 150,
-                right: "auto",
-                bottom: "25px",
-                borderColor: "#ddd",
-                borderWidth: 0.5,
-                show: true,
-                label: {
-                  color: "#222",
-                  fontFamily: "Gotham A,Gotham B",
-                },
+      <Col sm={24} md={24} lg={24} className="compare-title-separator">
+        <h1>
+          Income Drivers{" "}
+          <Tooltip title="save as image" placement="top">
+            <CameraFilled
+              className={show ? "show" : "hide"}
+              onClick={() => {
+                setShow(false);
+                toJpeg(document.getElementById("income-drivers"), {
+                  quality: 0.95,
+                }).then(function (dataUrl) {
+                  setShow(true);
+                  const link = document.createElement("a");
+                  link.download = `${company}-income-drivers.jpeg`;
+                  link.href = dataUrl;
+                  link.click();
+                });
+              }}
+            />
+          </Tooltip>
+        </h1>
+      </Col>
+      {items.map((item, index) => (
+        <Chart
+          key={index}
+          title={item?.title}
+          data={item?.chart}
+          type="BARGROUP"
+          height={300}
+          span={12}
+          axis={item?.axis}
+          styles={{ marginBottom: "100px" }}
+          extra={{
+            grid: {
+              top: 60,
+              left: 150,
+              right: "auto",
+              bottom: "25px",
+              borderColor: "#ddd",
+              borderWidth: 0.5,
+              show: true,
+              label: {
+                color: "#222",
+                fontFamily: "Gotham A,Gotham B",
               },
-              axisLabel: {
-                formatter: (x) => {
-                  return isNaN(x) ? x.replace("average", "\naverage\n") : x;
-                },
+            },
+            axisLabel: {
+              formatter: (x) => {
+                return isNaN(x) ? x.replace("average", "\naverage\n") : x;
               },
-            }}
-          />
-        ) : item?.type === "separator" ? (
-          <Col key={index} sm={24} md={24} lg={24} className="compare-title">
-            <h1>{item?.title}</h1>
-          </Col>
-        ) : (
-          <Col key={index} sm={24} md={24} lg={12} className="compare-body">
-            <ChartType {...item} style={{ marginBottom: 20 }} />
-          </Col>
-        )
-      )}
+            },
+          }}
+        />
+      ))}
     </Row>
   );
+};
+
+const GridChart = ({ items, company }) => {
+  const groups = items.filter((x) => x.type === "group");
+  items = items.filter((x) => x.type !== "group");
+  return [
+    <Row
+      key={"non-group"}
+      className="compare-wrapper"
+      justify="space-around"
+      gutter={[50, 50]}
+      wrap={true}
+    >
+      {items.map((item, index) => (
+        <Col key={index} sm={24} md={24} lg={12} className="compare-body">
+          <ChartType {...item} style={{ marginBottom: 20 }} />
+        </Col>
+      ))}
+    </Row>,
+    <GroupType key={"group"} items={groups} company={company} />,
+  ];
 };
 
 export default GridChart;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Divider } from "antd";
-
+import { Row, Col, Divider, Tooltip } from "antd";
+import { CameraFilled } from "@ant-design/icons";
+import { toJpeg } from "html-to-image";
 import "./benchmarking.scss";
 
 import Loading from "../components/Loading";
@@ -117,10 +118,6 @@ const chartTmp = [
         key: "living_income",
       },
     ],
-  },
-  {
-    type: "separator",
-    title: "Income Drivers",
   },
   {
     type: "group",
@@ -345,10 +342,29 @@ const Benchmarking = () => {
         wrap={true}
       >
         {defCompany && (
-          <Col sm={24} md={12} lg={16}>
+          <Col sm={22} md={10} lg={14}>
             The averages used for benchmarking on this page reflect the average
             values of the companies included in this data set, for that specific
             sector and country.
+          </Col>
+        )}
+        {defCompany && (
+          <Col sm={2} md={2} lg={2}>
+            <Tooltip title="save as image" placement="top">
+              <CameraFilled
+                className={"image-capture"}
+                onClick={() => {
+                  toJpeg(document.getElementById("benchmark"), {
+                    quality: 0.95,
+                  }).then(function (dataUrl) {
+                    const link = document.createElement("a");
+                    link.download = `${defCompany.name}-benchmark.jpeg`;
+                    link.href = dataUrl;
+                    link.click();
+                  });
+                }}
+              />
+            </Tooltip>
           </Col>
         )}
         <Col sm={24} md={6} lg={4}>
@@ -368,70 +384,74 @@ const Benchmarking = () => {
           />
         </Col>
       </Row>
-      {defCompany && (
-        <Row
-          justify="center"
-          align="middle"
-          className="compare-title"
-          gutter={[24, 24]}
-          wrap={true}
-        >
-          <Col sm={24} md={24} lg={7} className="company-title">
-            <h2>Country</h2>
-            <span>{defCountry.name}</span>
-          </Col>
-          <Col sm={24} md={24} lg={7} className="company-title">
-            <h2>Company</h2>
-            <span>{defCompany?.name}</span>
-          </Col>
-          <Col sm={24} md={8} lg={5} className="company-title">
-            <h2>Commodity</h2>
-            <span>{crop}</span>
-          </Col>
-          <Col sm={24} md={6} lg={5} className="company-title">
-            <img
-              className="crop-img"
-              src={`/icons/${crop?.toLowerCase()}.png`}
-              alt={crop}
-            />
-          </Col>
-        </Row>
-      )}
-      {defCompany && (
-        <Row
-          justify="center"
-          align="middle"
-          className="info-divider"
-          gutter={[24, 24]}
-          wrap={true}
-        >
-          <Col sm={24} md={24} lg={24}>
-            <Divider>
-              <table>
-                <tbody>
-                  <tr>
-                    <td>Sector Average: 2020</td>
-                    <td>Actual data: 2020</td>
-                    <td>
-                      Benchmark: {defCountry?.name}, Rural {crop} growing areas,
-                      Anker method/CIRES, 2018
-                    </td>
-                  </tr>
-                  <tr></tr>
-                  <tr>
-                    <td colSpan={3}>
-                      Number companies considered in sector average:{" "}
-                      {defCompany?.other_company}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </Divider>
-          </Col>
-        </Row>
-      )}
-      {/* // Chart */}
-      {defCompany && chart && <GridChart items={chart} />}
+      <div className="capture-block" id="benchmark">
+        {defCompany && (
+          <Row
+            justify="center"
+            align="middle"
+            className="compare-title"
+            gutter={[24, 24]}
+            wrap={true}
+          >
+            <Col sm={24} md={24} lg={7} className="company-title">
+              <h2>Country</h2>
+              <span>{defCountry.name}</span>
+            </Col>
+            <Col sm={24} md={24} lg={7} className="company-title">
+              <h2>Company</h2>
+              <span>{defCompany?.name}</span>
+            </Col>
+            <Col sm={24} md={8} lg={5} className="company-title">
+              <h2>Commodity</h2>
+              <span>{crop}</span>
+            </Col>
+            <Col sm={24} md={6} lg={5} className="company-title">
+              <img
+                className="crop-img"
+                src={`/icons/${crop?.toLowerCase()}.png`}
+                alt={crop}
+              />
+            </Col>
+          </Row>
+        )}
+        {defCompany && (
+          <Row
+            justify="center"
+            align="middle"
+            className="info-divider"
+            gutter={[24, 24]}
+            wrap={true}
+          >
+            <Col sm={24} md={24} lg={24}>
+              <Divider>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>Sector Average: 2020</td>
+                      <td>Actual data: 2020</td>
+                      <td>
+                        Benchmark: {defCountry?.name}, Rural {crop} growing
+                        areas, Anker method/CIRES, 2018
+                      </td>
+                    </tr>
+                    <tr></tr>
+                    <tr>
+                      <td colSpan={3}>
+                        Number companies considered in sector average:{" "}
+                        {defCompany?.other_company}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </Divider>
+            </Col>
+          </Row>
+        )}
+        {/* // Chart */}
+        {defCompany && chart && (
+          <GridChart items={chart} company={defCompany?.name} />
+        )}
+      </div>
       {!defCompany && <EmptyText amount={countries.length} />}
     </div>
   );
