@@ -127,7 +127,7 @@ const GridChart = ({ items }) => {
             extra={{
               grid: {
                 top: 60,
-                left: 100,
+                left: 150,
                 right: "auto",
                 bottom: "25px",
                 borderColor: "#ddd",

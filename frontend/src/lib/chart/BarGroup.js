@@ -5,7 +5,6 @@ import {
   backgroundColor,
   Icons,
 } from "./chart-style.js";
-import _ from "lodash";
 import uniq from "lodash/uniq";
 import sortBy from "lodash/sortBy";
 
@@ -22,30 +21,24 @@ const BarGroup = (data, extra, axis) => {
     };
   }
   const fiterData = data.filter((d) => d.value);
-  let yAxis = uniq(data.map((x) => x.group));
+  let yAxis = uniq(data.map((x) => x.name));
   yAxis = yAxis.map((x) =>
     fiterData.find((f) => f.group === x) ? x : `${x}\nNo data`
   );
-  let legends = uniq(data.map((x) => x.name));
-  let series = _.chain(data)
-    .groupBy("name")
-    .map((x, i) => {
-      return {
-        name: i,
-        label: {
-          show: true,
-          position: "inside",
-          textStyle: { ...TextStyle.textStyle, color: "#FFF" },
-        },
-        type: "bar",
-        barWidth: 100 / x.length,
-        data: x.map((v) => v.value),
-      };
-    })
-    .value();
-  series = sortBy(series, "name");
+  let legends = data.map((x) => x.group);
+  let series = data.map((x) => {
+    return {
+      name: x.group,
+      label: {
+        show: true,
+        position: "inside",
+        textStyle: { ...TextStyle.textStyle, color: "#FFF" },
+      },
+      type: "bar",
+      data: [x.value],
+    };
+  });
   let option = {
-    ...Color,
     legend: {
       data: sortBy(legends),
       icon: "circle",
@@ -61,7 +54,7 @@ const BarGroup = (data, extra, axis) => {
     },
     grid: {
       top: "50px",
-      left: "100px",
+      left: "300px",
       right: axis ? "25px" : "auto",
       bottom: axis ? "75px" : "25px",
       borderColor: "#ddd",
@@ -113,7 +106,6 @@ const BarGroup = (data, extra, axis) => {
       },
     ],
     xAxis: {
-      name: axis ? axis?.xAxis : "",
       nameLocation: "center",
       nameGap: axis ? 50 : 0,
       type: "value",
