@@ -20,8 +20,8 @@ const chartTmp = [
     chart: [
       {
         section: "comparing-net-income",
-        name: "net_income",
-        key: "net_income",
+        name: "revenue",
+        key: "revenue",
       },
       {
         section: "comparing-net-income",

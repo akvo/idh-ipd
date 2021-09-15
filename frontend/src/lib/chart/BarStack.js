@@ -9,6 +9,41 @@ import { objectNames } from "../util.js";
 import uniq from "lodash/uniq";
 import _ from "lodash";
 
+const marklineBase = {
+  type: "line",
+  label: {
+    show: false,
+  },
+  tooltip: {
+    show: false,
+  },
+  markLine: {
+    silent: true,
+    lineStyle: {
+      type: "dashed",
+      color: "red",
+    },
+    symbol: "rect",
+    label: {
+      show: true,
+      position: "",
+      formatter: "{custom|{b}}",
+      backgroundColor: "transparent",
+      padding: [5, 15, 5, 15],
+      rich: {
+        custom: {
+          align: "center",
+          fontSize: "10px",
+          color: "#000",
+          textBorderColor: "#FFF",
+          textBorderWidth: 3,
+          width: "100%",
+        },
+      },
+    },
+  },
+};
+
 const BarStack = (data, extra) => {
   if (!data) {
     return {
@@ -42,6 +77,35 @@ const BarStack = (data, extra) => {
   let guides = data.filter(
     (x) => x.var === "living_income" || x.var === "hh_income"
   );
+  let net_income_guide = data.filter(
+    (x) => x.var === "revenue" || x.var === "total_prod_cost"
+  );
+  net_income_guide = _.chain(net_income_guide)
+    .groupBy("group")
+    .map((x, i) => {
+      const pos = i.includes("Company") ? "insideStartTop" : "insideEndTop";
+      if (x.length === 2) {
+        return {
+          ...marklineBase,
+          markLine: {
+            ...marklineBase.markLine,
+            label: {
+              ...marklineBase.markLine.label,
+              position: pos,
+            },
+            data: [
+              {
+                name: `Net income ${i}`,
+                yAxis: x.reduce((a, b) => a.value + b.value),
+              },
+            ],
+          },
+        };
+      }
+      return null;
+    })
+    .value();
+
   /* End Custom Calculation */
   const filterData = data
     .filter((x) => x.value)
@@ -131,35 +195,12 @@ const BarStack = (data, extra) => {
       .map((x, i) => {
         const pos = i.includes("Company") ? "insideStartTop" : "insideEndTop";
         return {
-          type: "line",
-          label: {
-            show: false,
-          },
-          tooltip: {
-            show: false,
-          },
+          ...marklineBase,
           markLine: {
-            lineStyle: {
-              type: "dashed",
-              color: "red",
-            },
-            symbol: "rect",
+            ...marklineBase.markLine,
             label: {
-              show: true,
+              ...marklineBase.markLine.label,
               position: pos,
-              formatter: "{custom|{b}}",
-              backgroundColor: "transparent",
-              padding: [5, 15, 5, 15],
-              rich: {
-                custom: {
-                  align: "center",
-                  fontSize: "10px",
-                  color: "#000",
-                  textBorderColor: "#FFF",
-                  textBorderWidth: 3,
-                  width: "100%",
-                },
-              },
             },
             data: x.filter((d) => d.yAxis),
           },
@@ -168,6 +209,7 @@ const BarStack = (data, extra) => {
       .value();
     series = [...series, ...guides];
   }
+  series = [...series, ...net_income_guide];
   let option = {
     ...Color,
     legend: {
