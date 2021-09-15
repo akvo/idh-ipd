@@ -82,13 +82,14 @@ const ChartType = ({
           <p>{description}</p>
           {hasTable && <DataTable items={table} />}
           {link && (
-            <p className="source-link">
-              Benchmark Source:
-              <br />
-              <a href={link.link} target="_blank" rel="noopener noreferrer">
-                {link.link}
-              </a>
-            </p>
+            <a
+              href={link.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ant-btn ant-btn-primary"
+            >
+              Benchmark Source
+            </a>
           )}
         </>
       );
