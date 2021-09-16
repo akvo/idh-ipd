@@ -18,7 +18,6 @@ const marklineBase = {
     show: false,
   },
   markLine: {
-    silent: true,
     lineStyle: {
       type: "dashed",
       color: "red",
