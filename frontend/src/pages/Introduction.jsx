@@ -4,7 +4,7 @@ import { Row, Col, Image } from "antd";
 import "./introduction.scss";
 
 import Loading from "../components/Loading";
-import LivingIncomeImg from "../components/LivingIncomeImg";
+// import LivingIncomeImg from "../components/LivingIncomeImg";
 
 import { UIStore } from "../data/store";
 
@@ -81,7 +81,7 @@ const Introduction = ({ history }) => {
             gutter={[24, 24]}
             wrap={true}
           >
-            <Col sm={24} md={24} lg={10}>
+            <Col sm={24} md={24} lg={13}>
               <h3>Living Income</h3>
               <p>
                 Smallholder farmers earn an income from various sources: on-farm
@@ -103,13 +103,8 @@ const Introduction = ({ history }) => {
                 essential needs including provision for unexpected events".
               </p>
             </Col>
-            <Col
-              sm={24}
-              md={24}
-              lg={14}
-              style={{ borderTop: "2px dashed #000" }}
-            >
-              <LivingIncomeImg />
+            <Col sm={24} md={24} lg={11}>
+              <Image preview={false} src="/images/li-benchmark.jpg" />
             </Col>
           </Row>
         </div>
