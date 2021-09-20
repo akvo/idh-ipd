@@ -270,9 +270,15 @@ const BarStack = (data, extra) => {
     yAxis: [
       {
         type: "value",
+        name: "USD/Year",
         axisLabel: {
           inside: false,
           backgroundColor: "#f2f2f2",
+          padding: 5,
+          fontFamily: "Gotham A,Gotham B",
+          fontSize: 12,
+        },
+        nameTextStyle: {
           padding: 5,
           fontFamily: "Gotham A,Gotham B",
           fontSize: 12,
