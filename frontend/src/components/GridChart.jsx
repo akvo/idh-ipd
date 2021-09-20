@@ -151,8 +151,8 @@ const GroupType = ({ items, company }) => {
           extra={{
             grid: {
               top: 60,
-              left: 150,
-              right: "auto",
+              left: 80,
+              right: 20,
               bottom: "25px",
               borderColor: "#ddd",
               borderWidth: 0.5,

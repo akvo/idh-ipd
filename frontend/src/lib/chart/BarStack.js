@@ -227,7 +227,6 @@ const BarStack = (data, extra) => {
     },
     grid: {
       top: series.length * 30,
-      left: "auto",
       right: "auto",
       bottom: "25px",
       borderColor: "#ddd",
@@ -272,7 +271,7 @@ const BarStack = (data, extra) => {
       {
         type: "value",
         axisLabel: {
-          inside: true,
+          inside: false,
           backgroundColor: "#f2f2f2",
           padding: 5,
           fontFamily: "Gotham A,Gotham B",

@@ -50,7 +50,7 @@ const BarGroup = (data, extra, axis) => {
     },
     grid: {
       top: "50px",
-      left: "300px",
+      left: "320px",
       right: axis ? "25px" : "auto",
       bottom: axis ? "75px" : "25px",
       borderColor: "#ddd",
@@ -91,6 +91,9 @@ const BarGroup = (data, extra, axis) => {
           },
         },
         axisLabel: {
+          formatter: (v, i) => {
+            return v.replaceAll(" ", "\n");
+          },
           fontFamily: "Gotham A,Gotham B",
           fontSize: 12,
           color: "#222",
