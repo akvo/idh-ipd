@@ -155,7 +155,7 @@ function App({ btnReff }) {
         <Footer className={`footer ${!user && "fixed"}`}>
           IDH - IPD ©2021 Created by Akvo |{" "}
           <a
-            href="/ipd_methodology.docx"
+            href="/ipd_methodology.pdf"
             target="_blank"
             rel="noopener noreferrer"
           >
